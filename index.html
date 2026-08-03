@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>臻略咨询 — 以智驭势 · 以略致远</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #111118;
+  --bg-card: rgba(255,255,255,0.03);
+  --gold: #c5a572;
+  --gold-bright: #e8c987;
+  --gold-deep: #9a7d4a;
+  --text-primary: #f0ede4;
+  --text-secondary: #a8a299;
+  --text-muted: #6b6660;
+  --border: rgba(197,165,114,0.15);
+  --border-strong: rgba(197,165,114,0.35);
+}
+
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Background pattern */
+.bg-pattern {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index:0;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(197,165,114,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(197,165,114,0.04) 0%, transparent 50%);
+}
+
+.bg-grid {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index:0;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Navigation */
+nav {
+  position: fixed;
+  top:0; left:0;
+  width:100%;
+  z-index:100;
+  padding: 20px 60px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background: rgba(10,10,15,0.7);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: padding 0.3s ease;
+}
+
+nav .logo {
+  font-family:'Noto Serif SC', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--gold-bright);
+  letter-spacing: 4px;
+}
+
+nav .logo span { color: var(--text-secondary); font-weight:300; }
+
+nav ul {
+  display:flex;
+  list-style:none;
+  gap: 40px;
+}
+
+nav ul a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  letter-spacing: 1px;
+  transition: color 0.3s;
+  position: relative;
+}
+
+nav ul a:hover { color: var(--gold-bright); }
+nav ul a::after {
+  content:'';
+  position:absolute;
+  bottom:-4px; left:0;
+  width:0; height:1px;
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+nav ul a:hover::after { width:100%; }
+
+/* Hero */
+.hero {
+  position: relative;
+  height: 100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  z-index:1;
+  padding: 0 20px;
+}
+
+.hero::before {
+  content:'';
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width: 600px; height:600px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(197,165,114,0.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.hero-tagline {
+  font-size: 14px;
+  letter-spacing: 6px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 30px;
+  opacity:0;
+  animation: fadeInUp 1s ease 0.3s forwards;
+}
+
+.hero h1 {
+  font-family:'Noto Serif SC', serif;
+  font-size: 72px;
+  font-weight: 600;
+  letter-spacing: 8px;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  opacity:0;
+  animation: fadeInUp 1s ease 0.5s forwards;
+}
+
+.hero h1 .accent { color: var(--gold-bright); }
+
+.hero .slogan {
+  font-family:'Noto Serif SC', serif;
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--text-secondary);
+  letter-spacing: 4px;
+  margin-bottom: 50px;
+  opacity:0;
+  animation: fadeInUp 1s ease 0.7s forwards;
+}
+
+.hero .slogan .dot {
+  display:inline-block;
+  margin: 0 16px;
+  color: var(--gold);
+}
+
+.hero-cta {
+  opacity:0;
+  animation: fadeInUp 1s ease 0.9s forwards;
+}
+
+.btn {
+  display:inline-block;
+  padding: 16px 50px;
+  font-size: 15px;
+  letter-spacing: 2px;
+  text-decoration: none;
+  border: 1px solid var(--gold);
+  color: var(--gold-bright);
+  background: transparent;
+  transition: all 0.4s ease;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+
+.btn::before {
+  content:'';
+  position:absolute;
+  top:0; left:-100%;
+  width:100%; height:100%;
+  background: linear-gradient(90deg, transparent, rgba(197,165,114,0.15), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn:hover::before { left:100%; }
+.btn:hover {
+  background: rgba(197,165,114,0.08);
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 30px rgba(197,165,114,0.2);
+}
+
+.scroll-hint {
+  position:absolute;
+  bottom: 40px;
+  left:50%;
+  transform:translateX(-50%);
+  color: var(--text-muted);
+  font-size: 12px;
+  letter-spacing:2px;
+  animation: bob 2s ease-in-out infinite;
+}
+
+.scroll-hint::after {
+  content:'';
+  display:block;
+  width:1px; height:30px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  margin: 8px auto 0;
+}
+
+/* Sections */
+section {
+  position:relative;
+  z-index:1;
+  padding: 120px 60px;
+}
+
+.section-header {
+  text-align:center;
+  margin-bottom: 80px;
+}
+
+.section-num {
+  font-family:'Noto Serif SC', serif;
+  font-size: 14px;
+  color: var(--gold-deep);
+  letter-spacing: 6px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family:'Noto Serif SC', serif;
+  font-size: 40px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 4px;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-top: 16px;
+  letter-spacing: 1px;
+}
+
+.divider {
+  width: 60px;
+  height: 1px;
+  background: var(--gold);
+  margin: 24px auto 0;
+  position:relative;
+}
+
+.divider::before, .divider::after {
+  content:'';
+  position:absolute;
+  top:50%;
+  width: 6px; height:6px;
+  border-radius:50%;
+  background: var(--gold);
+  transform: translateY(-50%);
+}
+.divider::before { left:-16px; }
+.divider::after { right:-16px; }
+
+/* Services */
+.services-grid {
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--border);
+}
+
+.service-card {
+  background: var(--bg-secondary);
+  padding: 50px 40px;
+  transition: all 0.4s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.service-card::before {
+  content:'';
+  position:absolute;
+  top:0; left:0;
+  width:0; height:2px;
+  background: var(--gold);
+  transition: width 0.4s ease;
+}
+
+.service-card:hover::before { width:100%; }
+.service-card:hover { background: rgba(197,165,114,0.04); }
+
+.service-icon {
+  width: 56px; height:56px;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: var(--gold-bright);
+  transition: all 0.3s;
+}
+
+.service-card:hover .service-icon {
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(197,165,114,0.2);
+}
+
+.service-card h3 {
+  font-family:'Noto Serif SC', serif;
+  font-size: 24px;
+  font-weight:500;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  letter-spacing:2px;
+}
+
+.service-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.service-tags {
+  margin-top: 24px;
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+}
+
+.service-tags span {
+  font-size: 12px;
+  color: var(--gold-deep);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  letter-spacing:1px;
+}
+
+/* Clients / Cases */
+.clients {
+  background: var(--bg-secondary);
+}
+
+.cases-grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.case-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 40px 30px;
+  transition: all 0.4s ease;
+  position:relative;
+}
+
+.case-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-4px);
+}
+
+.case-industry {
+  font-size: 12px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.case-card h4 {
+  font-family:'Noto Serif SC', serif;
+  font-size: 20px;
+  font-weight:500;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.case-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height:1.8;
+  margin-bottom: 24px;
+}
+
+.case-result {
+  display:flex;
+  gap: 30px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+
+.case-result-item .num {
+  font-family:'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight:600;
+  color: var(--gold-bright);
+}
+
+.case-result-item .label {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing:1px;
+}
+
+/* Logo wall */
+.logo-wall {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap: 60px;
+  margin-top: 60px;
+  padding-top: 60px;
+  border-top: 1px solid var(--border);
+}
+
+.logo-item {
+  font-family:'Noto Serif SC', serif;
+  font-size: 18px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.logo-item:hover { opacity:1; color: var(--text-secondary); }
+
+/* Team */
+.team-grid {
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.team-card {
+  text-align:center;
+  transition: all 0.4s ease;
+}
+
+.team-avatar {
+  width: 120px; height:120px;
+  border-radius:50%;
+  margin: 0 auto 24px;
+  border: 2px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Noto Serif SC', serif;
+  font-size: 36px;
+  color: var(--gold-bright);
+  background: var(--bg-secondary);
+  position:relative;
+  transition: all 0.4s ease;
+}
+
+.team-card:hover .team-avatar {
+  border-color: var(--gold);
+  box-shadow: 0 0 30px rgba(197,165,114,0.15);
+}
+
+.team-card h4 {
+  font-family:'Noto Serif SC', serif;
+  font-size: 20px;
+  font-weight:500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  letter-spacing:2px;
+}
+
+.team-title {
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing:1px;
+  margin-bottom: 16px;
+}
+
+.team-bio {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height:1.7;
+}
+
+/* Process */
+.process {
+  background: var(--bg-secondary);
+}
+
+.process-timeline {
+  max-width: 1000px;
+  margin: 0 auto;
+  display:flex;
+  justify-content:space-between;
+  position:relative;
+}
+
+.process-timeline::before {
+  content:'';
+  position:absolute;
+  top: 40px;
+  left: 5%; right:5%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+}
+
+.process-step {
+  text-align:center;
+  flex:1;
+  position:relative;
+}
+
+.process-num {
+  width: 80px; height:80px;
+  border: 2px solid var(--border-strong);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin: 0 auto 24px;
+  font-family:'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight:500;
+  color: var(--gold-bright);
+  background: var(--bg-secondary);
+  position:relative;
+  z-index:1;
+  transition: all 0.4s ease;
+}
+
+.process-step:hover .process-num {
+  border-color: var(--gold);
+  box-shadow: 0 0 25px rgba(197,165,114,0.2);
+}
+
+.process-step h4 {
+  font-family:'Noto Serif SC', serif;
+  font-size: 18px;
+  font-weight:500;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  letter-spacing:2px;
+}
+
+.process-step p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 0 20px;
+  line-height:1.7;
+}
+
+/* Data */
+.data-section {
+  padding-top: 0;
+}
+
+.data-grid {
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--border);
+}
+
+.data-item {
+  background: var(--bg-primary);
+  padding: 50px 20px;
+  text-align:center;
+}
+
+.data-num {
+  font-family:'Noto Serif SC', serif;
+  font-size: 48px;
+  font-weight:600;
+  color: var(--gold-bright);
+  margin-bottom: 8px;
+}
+
+.data-num .unit {
+  font-size: 20px;
+  color: var(--gold);
+}
+
+.data-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  letter-spacing:2px;
+}
+
+/* Contact */
+.contact {
+  text-align:center;
+  padding: 140px 60px;
+}
+
+.contact h2 {
+  font-family:'Noto Serif SC', serif;
+  font-size: 40px;
+  font-weight:500;
+  color: var(--text-primary);
+  letter-spacing:4px;
+  margin-bottom: 20px;
+}
+
+.contact p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 50px;
+  letter-spacing:1px;
+}
+
+.contact-info {
+  display:flex;
+  justify-content:center;
+  gap: 60px;
+  margin-top: 60px;
+  flex-wrap:wrap;
+}
+
+.contact-item {
+  text-align:center;
+}
+
+.contact-item .label {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing:2px;
+  margin-bottom: 8px;
+}
+
+.contact-item .value {
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.contact-item .value a {
+  color: var(--gold-bright);
+  text-decoration:none;
+}
+
+/* Footer */
+footer {
+  background: var(--bg-secondary);
+  padding: 40px 60px;
+  border-top: 1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+footer .copyright {
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing:1px;
+}
+
+footer .logo {
+  font-family:'Noto Serif SC', serif;
+  font-size: 18px;
+  color: var(--gold);
+  letter-spacing:4px;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity:0; transform: translateY(30px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+@keyframes bob {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-8px); }
+}
+
+.fade-in {
+  opacity:0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+  opacity:1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  nav { padding: 16px 24px; }
+  nav ul { display:none; }
+  .hero h1 { font-size: 42px; letter-spacing:4px; }
+  .hero .slogan { font-size: 16px; }
+  section { padding: 80px 24px; }
+  .section-title { font-size: 28px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .cases-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .data-grid { grid-template-columns: repeat(2, 1fr); }
+  .process-timeline { flex-direction: column; gap: 40px; }
+  .process-timeline::before { display:none; }
+  .contact-info { gap: 30px; }
+  footer { flex-direction:column; gap: 16px; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-pattern"></div>
+<div class="bg-grid"></div>
+
+<!-- Navigation -->
+<nav>
+  <div class="logo">臻略<span>咨询</span></div>
+  <ul>
+    <li><a href="#services">服务介绍</a></li>
+    <li><a href="#clients">客户案例</a></li>
+    <li><a href="#team">顾问团队</a></li>
+    <li><a href="#process">辅导流程</a></li>
+    <li><a href="#contact">联系我们</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-tagline">PREMIUM ENTERPRISE COACHING</div>
+  <h1>臻略<span class="accent">咨询</span></h1>
+  <div class="slogan">以智驭势<span class="dot">·</span>以略致远</div>
+  <div class="hero-cta">
+    <a href="#contact" class="btn">预约咨询</a>
+  </div>
+  <div class="scroll-hint">SCROLL</div>
+</section>
+
+<!-- Services -->
+<section id="services" class="fade-in">
+  <div class="section-header">
+    <div class="section-num">01 / SERVICES</div>
+    <div class="section-title">核心服务</div>
+    <div class="section-subtitle">四大维度，全链路赋能企业成长</div>
+    <div class="divider"></div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">&#9650;</div>
+      <h3>战略规划与顶层设计</h3>
+      <p>从行业研判到商业模式重构，帮助企业看清全局、定准方向。涵盖战略诊断、竞争格局分析、增长路径规划及落地实施方案设计。</p>
+      <div class="service-tags">
+        <span>战略诊断</span><span>商业模式</span><span>增长路径</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">&#9670;</div>
+      <h3>组织效能与人才发展</h3>
+      <p>以组织能力建设为核心，打通战略到执行的关键环节。涵盖组织架构设计、绩效体系优化、核心人才培养及领导力梯队建设。</p>
+      <div class="service-tags">
+        <span>组织架构</span><span>绩效优化</span><span>领导力</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">&#9672;</div>
+      <h3>运营优化与降本增效</h3>
+      <p>深入业务一线，识别流程瓶颈与资源浪费，通过精益化管理与数字化工具，系统性提升运营效率与盈利能力。</p>
+      <div class="service-tags">
+        <span>流程再造</span><span>精益管理</span><span>数字化</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">&#9733;</div>
+      <h3>资本规划与价值放大</h3>
+      <p>对接优质资本资源，助力企业完成从经营管理到资本运营的跨越。涵盖估值提升、融资路径设计、并购重组及上市辅导。</p>
+      <div class="service-tags">
+        <span>估值提升</span><span>融资对接</span><span>上市辅导</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Clients / Cases -->
+<section id="clients" class="clients fade-in">
+  <div class="section-header">
+    <div class="section-num">02 / CASES</div>
+    <div class="section-title">客户案例</div>
+    <div class="section-subtitle">实战沉淀，数据为证</div>
+    <div class="divider"></div>
+  </div>
+  <div class="cases-grid">
+    <div class="case-card">
+      <div class="case-industry">智能制造</div>
+      <h4>某精密制造企业转型</h4>
+      <p>通过组织架构重组与精益化生产导入，在6个月内实现产能提升与成本双降，打通从制造到智造的关键路径。</p>
+      <div class="case-result">
+        <div class="case-result-item">
+          <div class="num">40%</div>
+          <div class="label">产能提升</div>
+        </div>
+        <div class="case-result-item">
+          <div class="num">25%</div>
+          <div class="label">成本下降</div>
+        </div>
+      </div>
+    </div>
+    <div class="case-card">
+      <div class="case-industry">消费品</div>
+      <h4>某新消费品牌增长</h4>
+      <p>从战略定位到渠道重构，帮助品牌在红海赛道中找到差异化增长路径，实现营收与估值的双重跃升。</p>
+      <div class="case-result">
+        <div class="case-result-item">
+          <div class="num">3x</div>
+          <div class="label">营收增长</div>
+        </div>
+        <div class="case-result-item">
+          <div class="num">5亿</div>
+          <div class="label">融资规模</div>
+        </div>
+      </div>
+    </div>
+    <div class="case-card">
+      <div class="case-industry">科技</div>
+      <h4>某科技企业上市辅导</h4>
+      <p>全程辅导企业完成合规治理、估值提升与资本市场对接，从初创期成长为细分领域龙头，成功登陆科创板。</p>
+      <div class="case-result">
+        <div class="case-result-item">
+          <div class="num">IPO</div>
+          <div class="label">科创板上市</div>
+        </div>
+        <div class="case-result-item">
+          <div class="num">80亿</div>
+          <div class="label">发行市值</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="logo-wall">
+    <div class="logo-item">华锐精工</div>
+    <div class="logo-item">启明生物</div>
+    <div class="logo-item">云途科技</div>
+    <div class="logo-item">恒瑞材料</div>
+    <div class="logo-item">星河资本</div>
+    <div class="logo-item">中科智造</div>
+    <div class="logo-item">鼎峰能源</div>
+    <div class="logo-item">澜海传媒</div>
+  </div>
+</section>
+
+<!-- Team -->
+<section id="team" class="fade-in">
+  <div class="section-header">
+    <div class="section-num">03 / TEAM</div>
+    <div class="section-title">顾问团队</div>
+    <div class="section-subtitle">资深实战派，深度陪伴式辅导</div>
+    <div class="divider"></div>
+  </div>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-avatar">陈</div>
+      <h4>陈远鹏</h4>
+      <div class="team-title">首席战略顾问</div>
+      <p class="team-bio">20年管理咨询经验，曾任全球顶尖咨询机构合伙人，主导超过50家企业战略转型项目。</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">林</div>
+      <h4>林熙然</h4>
+      <div class="team-title">组织发展首席顾问</div>
+      <p class="team-bio">深耕组织发展领域15年，曾任职世界500强企业CHO，擅长组织变革与领导力梯队建设。</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">郑</div>
+      <h4>郑昊明</h4>
+      <div class="team-title">运营优化首席顾问</div>
+      <p class="team-bio">精益管理专家，拥有12年制造业与科技行业运营优化经验，累计帮助企业降本超10亿元。</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">沈</div>
+      <h4>沈牧之</h4>
+      <div class="team-title">资本运营首席顾问</div>
+      <p class="team-bio">资深投行背景，曾任职头部券商投行部，主导15家企业成功上市，累计融资规模超200亿。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section id="process" class="process fade-in">
+  <div class="section-header">
+    <div class="section-num">04 / PROCESS</div>
+    <div class="section-title">辅导流程</div>
+    <div class="section-subtitle">五步法，从诊断到落地全程闭环</div>
+    <div class="divider"></div>
+  </div>
+  <div class="process-timeline">
+    <div class="process-step">
+      <div class="process-num">壹</div>
+      <h4>深度诊断</h4>
+      <p>全面摸底企业现状，识别核心瓶颈与增长机会点</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">贰</div>
+      <h4>方案设计</h4>
+      <p>定制化策略方案，明确目标、路径与资源配置</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">叁</div>
+      <h4>落地陪跑</h4>
+      <p>顾问驻场跟进，推动方案在业务一线真实落地</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">肆</div>
+      <h4>复盘优化</h4>
+      <p>阶段性复盘成效，动态调整策略确保目标达成</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">伍</div>
+      <h4>长期赋能</h4>
+      <p>建立内部能力沉淀机制，实现企业持续自我进化</p>
+    </div>
+  </div>
+</section>
+
+<!-- Data -->
+<section class="data-section fade-in">
+  <div class="section-header">
+    <div class="section-num">05 / DATA</div>
+    <div class="section-title">实战成果</div>
+    <div class="section-subtitle">数字背后，是真实的企业蜕变</div>
+    <div class="divider"></div>
+  </div>
+  <div class="data-grid">
+    <div class="data-item">
+      <div class="data-num">200<span class="unit">+</span></div>
+      <div class="data-label">服务企业</div>
+    </div>
+    <div class="data-item">
+      <div class="data-num">15<span class="unit">家</span></div>
+      <div class="data-label">上市辅导</div>
+    </div>
+    <div class="data-item">
+      <div class="data-num">500<span class="unit">亿</span></div>
+      <div class="data-label">累计融资</div>
+    </div>
+    <div class="data-item">
+      <div class="data-num">98<span class="unit">%</span></div>
+      <div class="data-label">客户续约率</div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="contact fade-in">
+  <div class="section-header">
+    <div class="section-num">06 / CONTACT</div>
+  </div>
+  <h2>开启您的企业蜕变之旅</h2>
+  <p>预约一次免费深度诊断，让我们用专业为您拨清前路</p>
+  <a href="mailto:contact@zhenlue.cn" class="btn">立即预约</a>
+  <div class="contact-info">
+    <div class="contact-item">
+      <div class="label">EMAIL</div>
+      <div class="value"><a href="mailto:contact@zhenlue.cn">contact@zhenlue.cn</a></div>
+    </div>
+    <div class="contact-item">
+      <div class="label">PHONE</div>
+      <div class="value">400-888-XXXX</div>
+    </div>
+    <div class="contact-item">
+      <div class="label">ADDRESS</div>
+      <div class="value">上海市浦东新区世纪大道XX号</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="logo">臻略咨询</div>
+  <div class="copyright">© 2026 臻略咨询 ZHENLUE CONSULTING · 沪ICP备XXXXXXXX号</div>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Nav shrink on scroll
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) {
+    nav.style.padding = '12px 60px';
+  } else {
+    nav.style.padding = '20px 60px';
+  }
+});
+</script>
+
+</body>
+</html>
