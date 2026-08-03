@@ -1210,6 +1210,131 @@ footer .logo {
 
 .reveal-stagger { transition-delay: calc(var(--d) * 0.12s); }
 
+/* ===== Promo showcase ===== */
+.promo {
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  padding: 130px 60px 160px;
+  position: relative;
+  overflow: hidden;
+}
+
+.promo::before {
+  content:'';
+  position:absolute;
+  top:0; left:50%;
+  transform:translateX(-50%);
+  width: 900px; height: 500px;
+  background: radial-gradient(ellipse, rgba(197,165,114,0.07) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.promo-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.promo-browser {
+  background: #0d0d0f;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(197,165,114,0.05);
+  transform: perspective(1200px) rotateX(4deg);
+  transition: all 0.8s cubic-bezier(0.16,1,0.3,1);
+  position: relative;
+}
+
+.promo-browser:hover {
+  transform: perspective(1200px) rotateX(0deg) translateY(-8px);
+  box-shadow: 0 50px 120px rgba(0,0,0,0.7), 0 0 60px rgba(197,165,114,0.1);
+}
+
+.promo-browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  background: #1a1a1e;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.promo-dot {
+  width: 11px; height: 11px;
+  border-radius: 50%;
+}
+
+.promo-dot-red { background: #ff5f57; }
+.promo-dot-yellow { background: #febc2e; }
+.promo-dot-green { background: #28c840; }
+
+.promo-url {
+  flex: 1;
+  margin-left: 12px;
+  padding: 5px 14px;
+  background: #2c2c2e;
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.promo-browser img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: none;
+}
+
+.promo-glow {
+  position: absolute;
+  top: 10%; left: 50%;
+  transform: translateX(-50%);
+  width: 120%; height: 60%;
+  background: radial-gradient(ellipse, rgba(197,165,114,0.12) 0%, transparent 60%);
+  filter: blur(30px);
+  pointer-events: none;
+  z-index: -1;
+  animation: promoGlow 5s ease-in-out infinite alternate;
+}
+
+@keyframes promoGlow {
+  0% { opacity:0.5; transform: translateX(-50%) scale(1); }
+  100% { opacity:1; transform: translateX(-50%) scale(1.08); }
+}
+
+.promo-caption {
+  text-align: center;
+  margin-top: 44px;
+}
+
+.promo-caption .promo-tag {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  border: 1px solid var(--border-strong);
+  padding: 6px 22px;
+  border-radius: 20px;
+  margin-bottom: 18px;
+}
+
+.promo-caption h3 {
+  font-family:'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--text-primary);
+}
+
+.promo-caption p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-top: 12px;
+  letter-spacing: 1px;
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
   nav { padding: 16px 24px; }
@@ -1535,6 +1660,26 @@ footer .logo {
     <div class="contact-item">
       <div class="label">ADDRESS</div>
       <div class="value">上海市浦东新区世纪大道XX号</div>
+    </div>
+  </div>
+</section>
+
+<section id="promo" class="promo reveal">
+  <div class="promo-wrap">
+    <div class="promo-glow"></div>
+    <div class="promo-browser">
+      <div class="promo-browser-bar">
+        <span class="promo-dot promo-dot-red"></span>
+        <span class="promo-dot promo-dot-yellow"></span>
+        <span class="promo-dot promo-dot-green"></span>
+        <div class="promo-url">https://jackcats.xyz</div>
+      </div>
+      <img src="product-demo.png" alt="产品体验入口" />
+    </div>
+    <div class="promo-caption">
+      <div class="promo-tag">PRODUCT EXPERIENCE</div>
+      <h3>一站式企业服务管理平台</h3>
+      <p>数字化赋能企业全流程管理，立即体验</p>
     </div>
   </div>
 </section>
