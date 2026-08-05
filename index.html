@@ -993,18 +993,7 @@ GLOSS.forEach((g,i)=>{
 });
 
 /* combo */
-const COMBO=[
- {best:1,cost:'¥0/月',name:'免费全能组合',tools:['DeepSeek','通义千问','即梦','剪映AI'],use:'图文+短视频全够用，先跑通变现再升级'},
- {cost:'≈¥10/月',name:'进阶创作组合',tools:['GPT-5.6 Luna','Gamma','Suno','Fish Audio'],use:'PPT/音乐/配音全覆盖'},
- {cost:'≈¥50/月',name:'国产旗舰组合',tools:['Qwen3.8-Max','通义灵码','通义万相'],use:'中文顶级+编程+绘画'},
- {cost:'本地免费',name:'隐私本地组合',tools:['Ollama','LM Studio','ComfyUI'],use:'断网可用数据不出门'},
-];
-const cg=document.getElementById('combo-grid');
-COMBO.forEach((c,i)=>{
-  const el=document.createElement('div');el.className='combo-card glass'+(c.best?' best':'');el.style.transitionDelay=(i%4)*.06+'s';
-  el.innerHTML=`${c.best?'<span class="best-flag">&#128293; 个人首选·0元</span>':''}<div class="c-cost">${c.cost}</div><h3>${c.name}</h3><div class="c-tools">${c.tools.map(t=>`<span>${t}</span>`).join('')}</div><div class="c-use">${c.use}</div>`;
-  cg.appendChild(el);
-});
+/* (组合已升级为工作流大卡 WF，见首页预览) */
 
 /* copy+detail delegate */
 document.addEventListener('click',e=>{
