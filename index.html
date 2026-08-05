@@ -1057,6 +1057,7 @@ function loadQuotes(){
   const codes=STOCKS.map(s=>s.code).join(',');
   const s=document.createElement('script');
   s.src='https://qt.gtimg.cn/q='+codes+'&t='+Date.now();
+  s.charset='GBK';
   s.onload=()=>{renderStocks();s.remove();};
   s.onerror=()=>{document.getElementById('stock-note').textContent='* 实时行情加载失败（网络限制），请稍后刷新';s.remove();};
   document.head.appendChild(s);
