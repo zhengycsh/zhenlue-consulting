@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>智富AI — 学AI·用AI·赚AI | 二创工坊·知识树·Arena排行·105+工具</title>
+<title>智富AI — 学AI·用AI·赚AI | 知识图谱·二创工坊·方案详情·Arena排行</title>
 <style>
 :root{
   --bg:#eef0f6;--card:rgba(255,255,255,0.42);--card-border:rgba(255,255,255,0.75);
   --tp:#1d1d1f;--ts:#5f6066;--tt:#8e8f96;
-  --accent:#0071e3;--accent2:#af52de;--accent3:#ff9500;--green:#30b14e;--red:#ff3b30;
+  --accent:#0071e3;--accent2:#af52de;--accent3:#ff9500;--green:#30b14e;--red:#ff3b30;--wx:#07c160;
   --shadow:0 4px 30px rgba(31,38,135,0.08);--shadow-hover:0 16px 48px rgba(31,38,135,0.16);
   --radius:20px;--blur:blur(28px) saturate(200%);
 }
@@ -31,12 +31,10 @@ nav.scrolled{background:rgba(255,255,255,0.78);}
 .nav-brand{font-size:17px;font-weight:800;display:flex;align-items:center;gap:9px;white-space:nowrap;}
 .nav-brand .logo-dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 0 14px rgba(0,113,227,.6);}
 .nav-brand em{font-style:normal;font-size:10px;color:var(--tt);letter-spacing:2px;}
-.nav-right{display:flex;align-items:center;gap:10px;}
-.login-btn{display:flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;border:1px solid rgba(0,113,227,.3);background:rgba(255,255,255,.5);color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .3s;}
-.login-btn:hover{background:var(--accent);color:#fff;}
+.login-btn{display:flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;border:1px solid rgba(7,193,96,.4);background:rgba(255,255,255,.5);color:var(--wx);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .3s;}
+.login-btn:hover{background:var(--wx);color:#fff;}
 .login-btn .avatar{width:24px;height:24px;border-radius:50%;object-fit:cover;}
 
-/* light hero */
 .hero{padding:86px 24px 8px;text-align:center;}
 .hero h1{font-size:clamp(30px,4.4vw,46px);font-weight:800;letter-spacing:-1px;animation:fadeUp .8s cubic-bezier(.16,1,.3,1) .1s both;}
 .hero h1 .flow-text{background:linear-gradient(120deg,#0071e3,#af52de,#ff9500,#0071e3);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:flowText 6s linear infinite;}
@@ -51,7 +49,6 @@ nav.scrolled{background:rgba(255,255,255,0.78);}
 .engine-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
 
-/* wide layout */
 .layout{max-width:1680px;margin:0 auto;display:grid;grid-template-columns:236px 1fr;gap:22px;padding:18px 24px 50px;align-items:start;}
 .sidebar{position:sticky;top:64px;max-height:calc(100vh - 76px);overflow-y:auto;padding:14px 10px;scrollbar-width:none;background:rgba(255,255,255,.4);backdrop-filter:var(--blur);border:1px solid rgba(255,255,255,.7);border-radius:var(--radius);}
 .sidebar::-webkit-scrollbar{display:none;}
@@ -62,27 +59,48 @@ nav.scrolled{background:rgba(255,255,255,0.78);}
 .side-item.core{color:#c2410c;}
 .side-divider{height:1px;background:rgba(0,0,0,.06);margin:8px;}
 .side-label{font-size:11px;color:var(--tt);letter-spacing:2px;padding:5px 13px 2px;}
-/* knowledge tree in sidebar */
-.tree-card{margin:4px 6px 10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.5);}
-.tree-card .t-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:800;margin-bottom:6px;}
-.tree-card .lv{font-size:11px;color:var(--accent3);font-weight:800;}
-.tree-card .t-bar{height:6px;border-radius:3px;background:rgba(0,0,0,.07);overflow:hidden;margin-bottom:10px;}
-.tree-card .t-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .6s;}
-.tree-nodes{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;}
-.tnode{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;background:rgba(0,0,0,.06);opacity:.4;transition:all .4s;cursor:default;}
-.tnode.lit{opacity:1;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 0 12px rgba(0,113,227,.5);animation:nodePop .5s;}
-@keyframes nodePop{0%{transform:scale(.5);}60%{transform:scale(1.2);}100%{transform:scale(1);}}
 
 .main{min-width:0;}
-section{margin-bottom:40px;scroll-margin-top:70px;}
-.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+section{margin-bottom:44px;scroll-margin-top:70px;}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
 .sec-title{display:flex;align-items:center;gap:9px;font-size:22px;font-weight:800;}
 .sec-title .emoji{font-size:22px;}
 .sec-title .hot-flag{font-size:11px;font-weight:700;padding:3px 12px;border-radius:100px;background:linear-gradient(135deg,#ff9500,#ff3b30);color:#fff;}
 .sec-sub{font-size:12.5px;color:var(--tt);margin-top:2px;}
 .sec-more{font-size:13px;color:var(--accent);text-decoration:none;}
 
-/* erchuang */
+/* ===== Knowledge Tree (redesigned) ===== */
+.tree-hero{padding:24px;display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin-bottom:18px;}
+.tree-ring{position:relative;width:96px;height:96px;flex-shrink:0;}
+.tree-ring svg{transform:rotate(-90deg);}
+.tree-ring .ring-bg{fill:none;stroke:rgba(0,0,0,.08);stroke-width:8;}
+.tree-ring .ring-fg{fill:none;stroke:url(#ringGrad);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1s cubic-bezier(.16,1,.3,1);}
+.tree-ring .ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.tree-ring .ring-txt b{font-size:20px;font-weight:800;color:var(--accent);}
+.tree-ring .ring-txt span{font-size:10px;color:var(--tt);}
+.tree-meta{flex:1;min-width:200px;}
+.tree-meta .lv-name{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tree-meta .lv-desc{font-size:12.5px;color:var(--ts);margin:4px 0 8px;}
+.tree-badges{display:flex;gap:8px;flex-wrap:wrap;}
+.tree-badges .bdg{font-size:11px;padding:4px 12px;border-radius:100px;background:rgba(0,0,0,.06);color:var(--tt);}
+.tree-badges .bdg.on{background:linear-gradient(135deg,var(--accent3),var(--red));color:#fff;}
+.tree-wrap{position:relative;overflow-x:auto;padding:10px 4px 20px;}
+.tree-flex{display:flex;gap:0;min-width:860px;position:relative;}
+.tree-tier{flex:1;display:flex;flex-direction:column;align-items:center;gap:14px;position:relative;z-index:1;}
+.tree-tier .tier-name{font-size:12px;font-weight:800;color:var(--tt);letter-spacing:2px;margin-bottom:6px;}
+#tree-svg{position:absolute;inset:0;z-index:0;pointer-events:none;}
+.tline{fill:none;stroke:rgba(0,0,0,.12);stroke-width:2;}
+.tline.lit{stroke:url(#lineGrad);stroke-width:2.5;filter:drop-shadow(0 0 4px rgba(0,113,227,.5));}
+.knode{width:86px;padding:12px 6px;border-radius:16px;text-align:center;cursor:pointer;transition:all .4s cubic-bezier(.16,1,.3,1);background:rgba(255,255,255,.5);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);position:relative;}
+.knode .ki{font-size:24px;display:block;margin-bottom:4px;filter:grayscale(1);opacity:.5;transition:all .4s;}
+.knode .kn{font-size:11px;font-weight:700;color:var(--tt);}
+.knode:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);}
+.knode.lit{background:linear-gradient(145deg,rgba(0,113,227,.15),rgba(175,82,222,.15));border-color:rgba(0,113,227,.4);box-shadow:0 0 20px rgba(0,113,227,.25);}
+.knode.lit .ki{filter:none;opacity:1;}
+.knode.lit .kn{color:var(--accent);}
+.knode.lit::after{content:'✓';position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;background:var(--green);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(48,177,78,.5);}
+
+/* cards */
 .ec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
 .ec-card{padding:22px;transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s;opacity:0;transform:translateY(24px);position:relative;}
 .ec-card.visible{opacity:1;transform:translateY(0);}
@@ -91,43 +109,42 @@ section{margin-bottom:40px;scroll-margin-top:70px;}
 .ec-card .e-ava{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;flex-shrink:0;}
 .ec-card h3{font-size:16px;font-weight:800;}
 .ec-card .e-fans{font-size:11.5px;color:var(--accent3);font-weight:700;}
-.ec-card .e-row{font-size:12.5px;color:var(--ts);line-height:1.7;margin-bottom:8px;}
+.ec-card .e-row{font-size:12.5px;color:var(--ts);line-height:1.7;margin-bottom:7px;}
 .ec-card .e-row b{color:var(--accent);}
-.ec-card .e-prompt{font-size:11.5px;background:rgba(255,255,255,.45);border-radius:10px;padding:10px;color:var(--ts);max-height:74px;overflow:hidden;margin-bottom:10px;white-space:pre-wrap;}
-.ec-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.ec-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
 .mini-btn{padding:6px 14px;border-radius:100px;font-size:11.5px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .3s;border:none;font-family:inherit;}
 .mb-case{background:rgba(255,59,48,.1);color:var(--red);}
 .mb-tut{background:rgba(0,113,227,.1);color:var(--accent);}
 .mb-copy{background:rgba(175,82,222,.12);color:var(--accent2);}
+.mb-detail{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;}
 .learn-btn{margin-left:auto;background:rgba(48,177,78,.12);color:var(--green);}
 .learn-btn.done{background:var(--green);color:#fff;}
 
-/* tags */
 .tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
-.tag-chip{padding:7px 18px;border-radius:100px;background:rgba(255,255,255,.5);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.7);font-size:13px;color:var(--ts);cursor:pointer;transition:all .3s;font-family:inherit;}
+.tag-chip{padding:7px 18px;border-radius:100px;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.7);font-size:13px;color:var(--ts);cursor:pointer;font-family:inherit;}
 .tag-chip.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;}
 .tag-panel{padding:22px;display:none;}
 .tag-panel.show{display:block;animation:fadeUp .5s both;}
 .tag-panel h3{font-size:16px;font-weight:800;margin-bottom:8px;}
-.tag-panel p{font-size:13px;color:var(--ts);line-height:1.7;margin-bottom:12px;}
+.tag-panel p{font-size:13px;color:var(--ts);margin-bottom:12px;}
 .tag-panel .tp-links{display:flex;gap:8px;flex-wrap:wrap;}
+.plat{font-size:10px;font-weight:800;padding:1px 8px;border-radius:100px;margin-right:4px;}
+.plat-b{background:rgba(0,161,214,.12);color:#00a1d6;}
+.plat-d{background:rgba(0,0,0,.08);color:#111;}
+.plat-w{background:rgba(7,193,96,.12);color:var(--wx);}
 
-/* recipes */
 .recipe-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
-.recipe-card{padding:22px;transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s;opacity:0;transform:translateY(24px);}
+.recipe-card{padding:22px;transition:transform .5s,box-shadow .5s;opacity:0;transform:translateY(24px);}
 .recipe-card.visible{opacity:1;transform:translateY(0);}
 .recipe-card:hover{box-shadow:var(--shadow-hover);}
 .recipe-card .r-tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 12px;border-radius:100px;background:rgba(0,113,227,.1);color:var(--accent);margin-bottom:10px;}
 .recipe-card h3{font-size:16px;font-weight:800;margin-bottom:6px;}
 .recipe-card .r-combo{font-size:12px;color:var(--accent3);font-weight:700;margin-bottom:8px;}
-.recipe-card .r-prompt{font-size:11.5px;background:rgba(255,255,255,.45);border-radius:10px;padding:12px;color:var(--ts);line-height:1.6;max-height:120px;overflow:auto;margin-bottom:10px;white-space:pre-wrap;}
-.recipe-card .r-actions{display:flex;gap:8px;}
+.recipe-card .r-prompt{font-size:11.5px;background:rgba(255,255,255,.45);border-radius:10px;padding:12px;color:var(--ts);line-height:1.6;max-height:110px;overflow:auto;margin-bottom:10px;white-space:pre-wrap;}
 
-/* generic cards reused */
 .combo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
 .combo-card{padding:20px;text-align:center;transition:transform .5s,box-shadow .5s;opacity:0;transform:translateY(24px);position:relative;}
 .combo-card.visible{opacity:1;transform:translateY(0);}
-.combo-card:hover{box-shadow:var(--shadow-hover);}
 .combo-card.best{border:2px solid var(--accent3);}
 .combo-card .best-flag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);padding:3px 16px;border-radius:100px;background:linear-gradient(135deg,#ff9500,#ff3b30);color:#fff;font-size:11px;font-weight:700;white-space:nowrap;}
 .combo-card .c-cost{font-size:20px;font-weight:800;color:var(--green);}
@@ -151,7 +168,6 @@ tbody tr:nth-child(3) .rank-num{color:#cd7f32;}
 .cell-logo{width:27px;height:27px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;}
 .cell-name .n{font-weight:700;font-size:13px;}
 .cell-name .v{font-size:11px;color:var(--tt);}
-.price-in{font-weight:700;}
 .price-out{font-weight:700;color:var(--accent);}
 .ptag{display:inline-block;font-size:11px;padding:3px 10px;border-radius:100px;font-weight:600;}
 .t-cheap{background:rgba(48,177,78,.13);color:var(--green);}
@@ -166,7 +182,7 @@ tbody tr:nth-child(3) .rank-num{color:#cd7f32;}
 .sub-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
 .sub-tab{padding:6px 16px;border-radius:100px;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.4);font-size:12.5px;color:var(--ts);cursor:pointer;font-family:inherit;}
 .sub-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
-.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
 .tool-card{padding:15px 13px;text-decoration:none;color:inherit;display:block;transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s,opacity .3s;opacity:0;transform:translateY(18px) scale(.97);}
 .tool-card.visible{opacity:1;transform:translateY(0) scale(1);}
 .tool-card:hover{transform:translateY(-5px) scale(1.03);box-shadow:var(--shadow-hover);}
@@ -179,7 +195,10 @@ tbody tr:nth-child(3) .rank-num{color:#cd7f32;}
 .flag-free{color:var(--green);background:rgba(48,177,78,.13);}
 .flag-pick{color:#fff;background:linear-gradient(135deg,#ff9500,#ff3b30);}
 .tool-card h3{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tool-card p{font-size:11px;color:var(--ts);line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.tool-card .t-desc{font-size:11px;color:var(--ts);line-height:1.5;margin-bottom:6px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.tool-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.tool-tags i{font-style:normal;font-size:9.5px;padding:1px 8px;border-radius:100px;background:rgba(0,113,227,.08);color:var(--accent);font-weight:600;}
+.tool-tags i.hot{background:rgba(255,149,0,.12);color:#c77700;}
 
 .duo{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;align-items:start;}
 .news-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
@@ -205,18 +224,39 @@ tbody tr:nth-child(3) .rank-num{color:#cd7f32;}
 footer{padding:36px 24px 50px;text-align:center;color:var(--tt);font-size:13px;}
 footer p{line-height:2;}
 
-.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);z-index:200;display:none;align-items:center;justify-content:center;}
+/* detail modal (本站图文详情页) */
+.detail-mask{position:fixed;inset:0;background:rgba(0,0,0,0.4);backdrop-filter:blur(10px);z-index:300;display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 16px;}
+.detail-mask.show{display:flex;}
+.detail-box{width:min(760px,96vw);background:rgba(255,255,255,.92);backdrop-filter:blur(30px);border-radius:24px;padding:32px;position:relative;animation:fadeUp .4s both;}
+.detail-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;border:none;background:rgba(0,0,0,.06);font-size:16px;cursor:pointer;}
+.detail-box .d-tag{display:inline-block;font-size:11px;font-weight:700;padding:4px 14px;border-radius:100px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;margin-bottom:12px;}
+.detail-box h2{font-size:24px;font-weight:800;margin-bottom:6px;}
+.detail-box .d-intro{font-size:14px;color:var(--ts);margin-bottom:20px;}
+.d-steps{display:flex;flex-direction:column;gap:14px;margin-bottom:20px;}
+.d-step{display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,.6);border-radius:14px;padding:14px;}
+.d-step .sn{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.d-step .st b{font-size:14px;display:block;margin-bottom:2px;}
+.d-step .st span{font-size:12.5px;color:var(--ts);}
+.d-block{background:rgba(255,255,255,.6);border-radius:14px;padding:16px;margin-bottom:14px;}
+.d-block .db-t{font-size:13px;font-weight:800;margin-bottom:8px;}
+.d-block .d-prompt{font-size:12px;color:var(--ts);line-height:1.7;white-space:pre-wrap;background:rgba(0,0,0,.04);border-radius:10px;padding:12px;max-height:160px;overflow:auto;}
+.d-tips li{font-size:12.5px;color:var(--ts);margin-left:18px;margin-bottom:4px;}
+.d-foot{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+
+/* wechat qr modal */
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,0.35);backdrop-filter:blur(8px);z-index:250;display:none;align-items:center;justify-content:center;}
 .modal-mask.show{display:flex;}
-.modal{width:min(380px,90vw);padding:30px;text-align:center;background:rgba(255,255,255,.88);backdrop-filter:blur(30px);}
-.modal h3{font-size:19px;font-weight:800;margin-bottom:6px;}
-.modal .m-sub{font-size:12px;color:var(--tt);margin-bottom:18px;}
-.modal .avatar-preview{width:68px;height:68px;border-radius:50%;margin:0 auto 14px;object-fit:cover;border:2px solid var(--accent);display:none;}
-.modal input{width:100%;padding:11px 16px;border-radius:12px;border:1px solid rgba(0,0,0,.1);background:rgba(255,255,255,.7);font-size:14px;font-family:inherit;outline:none;margin-bottom:12px;}
-.modal .m-actions{display:flex;gap:10px;}
-.modal .m-actions button{flex:1;padding:11px;border-radius:12px;border:none;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;}
-.m-upload{background:rgba(0,113,227,.1);color:var(--accent);}
-.m-save{background:linear-gradient(135deg,#07c160,#06ad56);color:#fff;}
-.m-note{font-size:11px;color:var(--tt);margin-top:12px;line-height:1.6;}
+.wx-modal{width:min(360px,92vw);padding:30px;text-align:center;background:rgba(255,255,255,.94);backdrop-filter:blur(30px);border-radius:20px;}
+.wx-modal .wx-logo{font-size:15px;font-weight:800;color:var(--wx);margin-bottom:4px;}
+.wx-modal .wx-sub{font-size:12px;color:var(--tt);margin-bottom:18px;}
+.wx-qr{width:180px;height:180px;margin:0 auto 14px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:10px;position:relative;}
+.wx-qr img,.wx-qr canvas{width:100%;height:100%;}
+.wx-qr .wx-scan{position:absolute;left:0;right:0;height:2px;background:var(--wx);box-shadow:0 0 8px var(--wx);animation:scan 2s linear infinite;}
+@keyframes scan{0%{top:8%;}50%{top:90%;}100%{top:8%;}}
+.wx-modal .wx-tip{font-size:13px;color:var(--ts);margin-bottom:14px;}
+.wx-modal .wx-tip b{color:var(--wx);}
+.wx-sim{width:100%;padding:12px;border-radius:12px;border:none;background:var(--wx);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
+.wx-note{font-size:10.5px;color:var(--tt);margin-top:12px;line-height:1.6;}
 
 @media (max-width:1200px){.ec-grid,.recipe-grid{grid-template-columns:1fr;}.combo-grid{grid-template-columns:repeat(2,1fr);}.duo{grid-template-columns:1fr;}}
 @media (max-width:1000px){.layout{grid-template-columns:1fr;}.sidebar{display:none;}.news-grid{grid-template-columns:1fr;}}
@@ -224,20 +264,24 @@ footer p{line-height:2;}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute;"><defs>
+<linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0071e3"/><stop offset="1" stop-color="#af52de"/></linearGradient>
+<linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0071e3"/><stop offset="1" stop-color="#af52de"/></linearGradient>
+</defs></svg>
 <div class="ambient"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 <canvas id="particle-canvas"></canvas>
 <div id="mouse-glow"></div>
 
 <nav id="main-nav">
   <div class="nav-brand"><span class="logo-dot"></span>智富AI <em>ZHIFU.AI</em></div>
-  <div class="nav-right"><button class="login-btn" id="login-btn">&#128100; 微信登录</button></div>
+  <button class="login-btn" id="login-btn">&#128172; 微信扫码登录</button>
 </nav>
 
 <header class="hero">
   <h1><span class="flow-text">智富AI</span> · 让AI为你打工</h1>
   <div class="slogan">学AI · 用AI · 赚AI — 站在大佬肩膀上，低成本产出变现内容</div>
   <div class="search-box">
-    <div class="search-bar"><input id="search-input" placeholder="搜索 105+ 工具 / 玩法 / 模型…"/><button class="search-btn" id="search-btn">搜索</button></div>
+    <div class="search-bar"><input id="search-input" placeholder="搜索 110+ 工具 / 玩法 / 模型…"/><button class="search-btn" id="search-btn">搜索</button></div>
     <div class="engine-tabs">
       <button class="engine-tab active" data-e="site">本站</button><button class="engine-tab" data-e="baidu">百度</button><button class="engine-tab" data-e="google">Google</button><button class="engine-tab" data-e="bing">Bing</button>
     </div>
@@ -246,12 +290,8 @@ footer p{line-height:2;}
 
 <div class="layout">
   <aside class="sidebar">
-    <div class="tree-card glass">
-      <div class="t-head">&#127795; 我的AI知识树 <span class="lv" id="tree-lv">Lv.0 小白</span></div>
-      <div class="t-bar"><i id="tree-bar"></i></div>
-      <div class="tree-nodes" id="tree-nodes"></div>
-    </div>
     <div class="side-label">打怪升级</div>
+    <a class="side-item core" href="#tree"><span class="si">&#127795;</span>AI知识图谱</a>
     <a class="side-item core" href="#erchuang"><span class="si">&#128293;</span>爆款二创工坊</a>
     <a class="side-item core" href="#tags"><span class="si">&#127991;&#65039;</span>标签学习</a>
     <a class="side-item core" href="#recipes"><span class="si">&#128218;</span>图文方案库</a>
@@ -278,17 +318,39 @@ footer p{line-height:2;}
 
   <main class="main">
 
+    <!-- 知识图谱 -->
+    <section id="tree">
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127795;</span>AI 知识图谱 · 打怪升级 <span class="hot-flag">核心</span></div>
+      <div class="sec-sub">点节点看图文详情→学完"标为已学习"→点亮技能树升级</div></div></div>
+      <div class="tree-hero glass">
+        <div class="tree-ring">
+          <svg width="96" height="96"><circle class="ring-bg" cx="48" cy="48" r="40"/><circle class="ring-fg" id="ring-fg" cx="48" cy="48" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"/></svg>
+          <div class="ring-txt"><b id="ring-num">0</b><span>已点亮</span></div>
+        </div>
+        <div class="tree-meta">
+          <div class="lv-name" id="lv-name">Lv.0 AI小白</div>
+          <div class="lv-desc" id="lv-desc">点亮技能节点，从入门到变现大师。点击任意节点查看学习详情。</div>
+          <div class="tree-badges" id="tree-badges"></div>
+        </div>
+      </div>
+      <div class="tree-wrap glass">
+        <div class="tree-flex" id="tree-flex">
+          <svg id="tree-svg"></svg>
+        </div>
+      </div>
+    </section>
+
     <!-- 二创工坊 -->
     <section id="erchuang">
-      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128293;</span>爆款二创工坊 <span class="hot-flag">核心</span></div>
-      <div class="sec-sub">拆解爆款博主→给你二创方向+工具+文案，直接模仿低成本产出</div></div></div>
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128293;</span>爆款二创工坊</div>
+      <div class="sec-sub">拆解爆款→二创方向+工具+文案，直接模仿低成本产出</div></div></div>
       <div class="ec-grid" id="ec-grid"></div>
     </section>
 
     <!-- 标签学习 -->
     <section id="tags">
       <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127991;&#65039;</span>标签学习</div>
-      <div class="sec-sub">点标签→给出具体学习内容+爆款链接，学完点亮知识树</div></div></div>
+      <div class="sec-sub">点标签→高质量内容(抖音/B站/微信)+本站方案详情</div></div></div>
       <div class="tag-row" id="tag-row"></div>
       <div class="tag-panel glass" id="tag-panel"></div>
     </section>
@@ -296,14 +358,13 @@ footer p{line-height:2;}
     <!-- 图文方案库 -->
     <section id="recipes">
       <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128218;</span>图文方案库 <span class="hot-flag">抄作业</span></div>
-      <div class="sec-sub">最成熟性价比最高的变现方案：工具组合+现成提示词，直接复制</div></div></div>
+      <div class="sec-sub">最成熟性价比方案：工具组合+现成提示词，点开看图文详情</div></div></div>
       <div class="recipe-grid" id="recipe-grid"></div>
     </section>
 
     <!-- 变现玩法 -->
     <section id="play">
-      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128176;</span>变现玩法库</div>
-      <div class="sec-sub">6条跑通的赚钱路径，带步骤+教程链接</div></div></div>
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128176;</span>变现玩法库</div></div></div>
       <div class="ec-grid" id="play-grid"></div>
     </section>
 
@@ -311,52 +372,46 @@ footer p{line-height:2;}
     <section id="combo">
       <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128178;</span>个人高性价比组合</div></div></div>
       <div class="combo-grid">
-        <div class="combo-card glass best"><span class="best-flag">&#128293; 个人首选·0元</span><div class="c-cost">¥0/月</div><h3>免费全能组合</h3><div class="c-tools"><span>DeepSeek</span><span>通义千问</span><span>即梦</span><span>剪映AI</span></div><div class="c-use">图文+短视频全够用，先跑通变现再升级</div></div>
+        <div class="combo-card glass best"><span class="best-flag">&#128293; 个人首选·0元</span><div class="c-cost">¥0/月</div><h3>免费全能组合</h3><div class="c-tools"><span>DeepSeek</span><span>通义千问</span><span>即梦</span><span>剪映AI</span></div><div class="c-use">图文+短视频全够用</div></div>
         <div class="combo-card glass"><div class="c-cost">≈¥10/月</div><h3>进阶创作组合</h3><div class="c-tools"><span>GPT-5.6 Luna</span><span>Gamma</span><span>Suno</span><span>Fish Audio</span></div><div class="c-use">PPT/音乐/配音全覆盖</div></div>
         <div class="combo-card glass"><div class="c-cost">≈¥50/月</div><h3>国产旗舰组合</h3><div class="c-tools"><span>Qwen3.8-Max</span><span>通义灵码</span><span>通义万相</span></div><div class="c-use">中文顶级+编程+绘画</div></div>
-        <div class="combo-card glass"><div class="c-cost">本地免费</div><h3>隐私本地组合</h3><div class="c-tools"><span>Ollama</span><span>LM Studio</span><span>ComfyUI</span></div><div class="c-use">断网可用，数据不出门</div></div>
+        <div class="combo-card glass"><div class="c-cost">本地免费</div><h3>隐私本地组合</h3><div class="c-tools"><span>Ollama</span><span>LM Studio</span><span>ComfyUI</span></div><div class="c-use">断网可用数据不出门</div></div>
       </div>
     </section>
 
     <!-- 模型排行 -->
     <section id="models">
-      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127942;</span>大模型排行榜</div>
-      <div class="sec-sub">Arena AI 实时Elo分 + API价格</div></div>
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127942;</span>大模型排行榜</div></div>
       <a class="sec-more" href="https://arena.ai/leaderboard/code" target="_blank">Arena实时榜 →</a></div>
       <div class="table-wrap glass"><table>
-        <thead><tr><th>#</th><th>模型</th><th>Arena分</th><th>输入价</th><th>输出价</th><th>档位</th><th>推荐</th><th>亮点</th></tr></thead>
+        <thead><tr><th>#</th><th>模型</th><th>Arena分</th><th>输出价</th><th>档位</th><th>推荐</th><th>亮点</th></tr></thead>
         <tbody>
-          <tr><td class="rank-num">1</td><td><div class="cell-name"><span class="cell-logo" style="background:#d97757;">Cl</span><div><div class="n">Claude Opus 5 (Max)</div><div class="v">Anthropic</div></div></div></td><td class="arena-score">1705</td><td class="price-in">$5</td><td class="price-out">$25</td><td><span class="ptag t-flag">旗舰</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">代码天花板</td></tr>
-          <tr><td class="rank-num">2</td><td><div class="cell-name"><span class="cell-logo" style="background:#0f172a;">Ki</span><div><div class="n">Kimi K3 (Max)</div><div class="v">月之暗面</div></div></div></td><td class="arena-score">1676</td><td class="price-in">$3</td><td class="price-out">$15</td><td><span class="ptag t-mid">均衡</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">国产代码第一</td></tr>
-          <tr><td class="rank-num">3</td><td><div class="cell-name"><span class="cell-logo" style="background:#d97757;">Cl</span><div><div class="n">Claude Opus 5 (High)</div><div class="v">Anthropic</div></div></div></td><td class="arena-score">1669</td><td class="price-in">$5</td><td class="price-out">$25</td><td><span class="ptag t-flag">旗舰</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">推理强</td></tr>
-          <tr><td class="rank-num">4</td><td><div class="cell-name"><span class="cell-logo" style="background:#ff6a00;">Qw</span><div><div class="n">Qwen3.8-Max</div><div class="v">阿里</div></div></div></td><td class="arena-score">1668</td><td class="price-in">¥6</td><td class="price-out">¥18</td><td><span class="ptag t-mid">均衡</span></td><td><span class="rec-tag rec-strong">强力推荐</span></td><td class="note-cell">国产开源旗舰，性价比极高</td></tr>
-          <tr><td class="rank-num">5</td><td><div class="cell-name"><span class="cell-logo" style="background:#000;">GPT</span><div><div class="n">GPT-5.6 Sol (xHigh)</div><div class="v">OpenAI</div></div></div></td><td class="arena-score">1620</td><td class="price-in">$5</td><td class="price-out">$30</td><td><span class="ptag t-flag">旗舰</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">综合天花板</td></tr>
-          <tr><td class="rank-num">6</td><td><div class="cell-name"><span class="cell-logo" style="background:#6d28d9;">GLM</span><div><div class="n">GLM-5.2 (Max)</div><div class="v">智谱</div></div></div></td><td class="arena-score">1586</td><td class="price-in">$1.4</td><td class="price-out">$4.4</td><td><span class="ptag t-mid">均衡</span></td><td><span class="rec-tag rec-strong">强力推荐</span></td><td class="note-cell">国产性价比</td></tr>
-          <tr><td class="rank-num">7</td><td><div class="cell-name"><span class="cell-logo" style="background:#4d6bfe;">DS</span><div><div class="n">DeepSeek-V4 Flash</div><div class="v">深度求索</div></div></div></td><td class="arena-score">1577</td><td class="price-in">$0.14</td><td class="price-out">$0.28</td><td><span class="ptag t-cheap">极致低价</span></td><td><span class="rec-tag rec-strong">强力推荐</span></td><td class="note-cell">性价比之王，练手首选</td></tr>
-          <tr><td class="rank-num">8</td><td><div class="cell-name"><span class="cell-logo" style="background:#1d1d1f;">Gx</span><div><div class="n">Grok-4.5</div><div class="v">xAI</div></div></div></td><td class="arena-score">1549</td><td class="price-in">$2</td><td class="price-out">$6</td><td><span class="ptag t-mid">均衡</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">视频理解领先</td></tr>
+          <tr><td class="rank-num">1</td><td><div class="cell-name"><span class="cell-logo" style="background:#d97757;">Cl</span><div><div class="n">Claude Opus 5 (Max)</div><div class="v">Anthropic</div></div></div></td><td class="arena-score">1705</td><td class="price-out">$25</td><td><span class="ptag t-flag">旗舰</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">代码天花板</td></tr>
+          <tr><td class="rank-num">2</td><td><div class="cell-name"><span class="cell-logo" style="background:#0f172a;">Ki</span><div><div class="n">Kimi K3 (Max)</div><div class="v">月之暗面</div></div></div></td><td class="arena-score">1676</td><td class="price-out">$15</td><td><span class="ptag t-mid">均衡</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">国产代码第一</td></tr>
+          <tr><td class="rank-num">3</td><td><div class="cell-name"><span class="cell-logo" style="background:#ff6a00;">Qw</span><div><div class="n">Qwen3.8-Max</div><div class="v">阿里</div></div></div></td><td class="arena-score">1668</td><td class="price-out">¥18</td><td><span class="ptag t-mid">均衡</span></td><td><span class="rec-tag rec-strong">强力推荐</span></td><td class="note-cell">国产开源旗舰性价比极高</td></tr>
+          <tr><td class="rank-num">4</td><td><div class="cell-name"><span class="cell-logo" style="background:#000;">GPT</span><div><div class="n">GPT-5.6 Sol</div><div class="v">OpenAI</div></div></div></td><td class="arena-score">1620</td><td class="price-out">$30</td><td><span class="ptag t-flag">旗舰</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">综合天花板</td></tr>
+          <tr><td class="rank-num">5</td><td><div class="cell-name"><span class="cell-logo" style="background:#6d28d9;">GLM</span><div><div class="n">GLM-5.2</div><div class="v">智谱</div></div></div></td><td class="arena-score">1586</td><td class="price-out">$4.4</td><td><span class="ptag t-mid">均衡</span></td><td><span class="rec-tag rec-strong">强力推荐</span></td><td class="note-cell">国产性价比</td></tr>
+          <tr><td class="rank-num">6</td><td><div class="cell-name"><span class="cell-logo" style="background:#4d6bfe;">DS</span><div><div class="n">DeepSeek-V4 Flash</div><div class="v">深度求索</div></div></div></td><td class="arena-score">1577</td><td class="price-out">$0.28</td><td><span class="ptag t-cheap">极致低价</span></td><td><span class="rec-tag rec-strong">强力推荐</span></td><td class="note-cell">性价比之王练手首选</td></tr>
         </tbody>
       </table></div>
-      <div class="table-note">* Arena分来源 arena.ai/leaderboard/code（2026-08实时）· 学习练手认准"强力推荐"</div>
+      <div class="table-note">* Arena分来源 arena.ai/leaderboard/code（2026-08实时）</div>
     </section>
 
     <!-- GPU -->
     <section id="gpu">
-      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#9889;</span>GPU算力价格对比</div></div>
-      <a class="sec-more" href="https://www.computeunion.net/zh/gpu" target="_blank">实时报价 →</a></div>
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#9889;</span>GPU算力价格对比</div></div></div>
       <div class="table-wrap glass"><table>
-        <thead><tr><th>型号</th><th>显存</th><th>最低小时价</th><th>平台</th><th>适用</th><th>性价比</th></tr></thead>
+        <thead><tr><th>型号</th><th>显存</th><th>最低小时价</th><th>适用</th><th>性价比</th></tr></thead>
         <tbody>
-          <tr><td><div class="cell-name"><span class="cell-logo" style="background:#76b900;">NV</span><div class="n">RTX 4090</div></div></td><td>24GB</td><td class="price-out">¥0.97/时</td><td>vast.ai</td><td class="note-cell">推理/生图/轻调</td><td><span class="ptag t-cheap">极高</span></td></tr>
-          <tr><td><div class="cell-name"><span class="cell-logo" style="background:#76b900;">NV</span><div class="n">A100</div></div></td><td>80GB</td><td class="price-out">¥1.91/时</td><td>vast.ai</td><td class="note-cell">微调/训练</td><td><span class="ptag t-cheap">高</span></td></tr>
-          <tr><td><div class="cell-name"><span class="cell-logo" style="background:#76b900;">NV</span><div class="n">H100 SXM5</div></div></td><td>80GB</td><td class="price-out">¥9.68/时</td><td>vast.ai</td><td class="note-cell">大规模训练</td><td><span class="ptag t-mid">中</span></td></tr>
+          <tr><td><div class="cell-name"><span class="cell-logo" style="background:#76b900;">NV</span><div class="n">RTX 4090</div></div></td><td>24GB</td><td class="price-out">¥0.97/时</td><td class="note-cell">推理/生图/轻调</td><td><span class="ptag t-cheap">极高</span></td></tr>
+          <tr><td><div class="cell-name"><span class="cell-logo" style="background:#76b900;">NV</span><div class="n">A100</div></div></td><td>80GB</td><td class="price-out">¥1.91/时</td><td class="note-cell">微调/训练</td><td><span class="ptag t-cheap">高</span></td></tr>
+          <tr><td><div class="cell-name"><span class="cell-logo" style="background:#76b900;">NV</span><div class="n">H100</div></div></td><td>80GB</td><td class="price-out">¥9.68/时</td><td class="note-cell">大规模训练</td><td><span class="ptag t-mid">中</span></td></tr>
         </tbody>
       </table></div>
     </section>
 
-    <!-- 工具区 -->
     <div id="tool-sections"></div>
 
-    <!-- 资讯 duo -->
     <section id="news">
       <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128240;</span>今日AI头条 + GitHub热榜</div></div></div>
       <div class="duo">
@@ -370,19 +425,24 @@ footer p{line-height:2;}
 
 <footer>
   <p>智富AI · 学AI · 用AI · 赚AI · 站在大佬肩膀上变现</p>
-  <p>数据来源：Arena AI · devtk.ai · computeunion · 36氪 · GitHub Trending</p>
+  <p>学习内容来源：抖音 · B站 · 微信（高质量爆款）+ 本站自建方案详情</p>
   <p>© 2026 智富AI ZHIFU.AI · jackcats.xyz</p>
 </footer>
 
+<!-- 本站图文详情页 -->
+<div class="detail-mask" id="detail-mask">
+  <div class="detail-box" id="detail-box"></div>
+</div>
+
+<!-- 微信扫码登录 -->
 <div class="modal-mask" id="login-modal">
-  <div class="modal glass">
-    <h3>登录 智富AI</h3>
-    <div class="m-sub">设置头像昵称，点亮你的AI知识树</div>
-    <img class="avatar-preview" id="avatar-preview">
-    <input type="text" id="nick-input" placeholder="输入昵称"/>
-    <div class="m-actions"><button class="m-upload" id="avatar-upload">&#128247; 上传头像</button><button class="m-save" id="login-save">&#9989; 登录</button></div>
-    <input type="file" id="avatar-file" accept="image/*" style="display:none;">
-    <div class="m-note">本地登录体验（存本设备）。真实微信登录需开放平台企业认证+后端。</div>
+  <div class="wx-modal">
+    <div class="wx-logo">&#128172; 微信登录</div>
+    <div class="wx-sub">智富AI · 扫码后点亮你的知识树</div>
+    <div class="wx-qr"><div id="qr-box"></div><div class="wx-scan"></div></div>
+    <div class="wx-tip">打开 <b>微信</b>，扫一扫登录</div>
+    <button class="wx-sim" id="wx-sim">&#9989; 模拟扫码成功（演示）</button>
+    <div class="wx-note">演示站无后端，真实微信扫码登录需微信开放平台企业认证+服务端。此处模拟扫码完成登录并保存头像。</div>
   </div>
 </div>
 
@@ -391,228 +451,293 @@ footer p{line-height:2;}
 const cv=document.getElementById('particle-canvas'),cx=cv.getContext('2d');let pts=[];
 function rs(){cv.width=innerWidth;cv.height=innerHeight;}
 function mk(){pts=[];const n=Math.min(60,Math.floor(innerWidth/20));for(let i=0;i<n;i++)pts.push({x:Math.random()*cv.width,y:Math.random()*cv.height,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,s:Math.random()*1.5+.5,o:Math.random()*.22+.07,t:Math.random()*6.28});}
-function draw(){cx.clearRect(0,0,cv.width,cv.height);pts.forEach((p,i)=>{p.x+=p.vx;p.y+=p.vy;p.t+=.02;if(p.x<0)p.x=cv.width;if(p.x>cv.width)p.x=0;if(p.y<0)p.y=cv.height;if(p.y>cv.height)p.y=0;cx.beginPath();cx.arc(p.x,p.y,p.s,0,6.28);cx.fillStyle=`rgba(0,113,227,${p.o*(0.7+0.3*Math.sin(p.t))})`;cx.fill();});requestAnimationFrame(draw);}
-rs();mk();draw();addEventListener('resize',()=>{rs();mk();});
+function draw(){cx.clearRect(0,0,cv.width,cv.height);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.t+=.02;if(p.x<0)p.x=cv.width;if(p.x>cv.width)p.x=0;if(p.y<0)p.y=cv.height;if(p.y>cv.height)p.y=0;cx.beginPath();cx.arc(p.x,p.y,p.s,0,6.28);cx.fillStyle=`rgba(0,113,227,${p.o*(0.7+0.3*Math.sin(p.t))})`;cx.fill();});requestAnimationFrame(draw);}
+rs();mk();draw();addEventListener('resize',()=>{rs();mk();drawTreeLines();});
 const glow=document.getElementById('mouse-glow');
 document.addEventListener('mousemove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px';});
 
-/* ===== knowledge tree ===== */
-const NODES=[['video','&#127909;'],['image','&#127912;'],['prompt','&#128172;'],['ppt','&#128202;'],['writing','&#9997;&#65039;'],['audio','&#127911;'],['code','&#128187;'],['music','&#127925;'],['avatar','&#127912;'],['matrix','&#128241;'],['agent','&#129302;'],['money','&#128176;']];
+/* platform links (high quality only) */
+const B=q=>'https://search.bilibili.com/all?keyword='+encodeURIComponent(q);
+const D=q=>'https://www.douyin.com/search/'+encodeURIComponent(q);
+const W=q=>'https://weixin.sogou.com/weixin?type=2&query='+encodeURIComponent(q);
+
+/* ===== knowledge tree data ===== */
+const TIERS=[
+ {name:'基础层',nodes:[{id:'prompt',i:'&#128172;',n:'提示词'},{id:'agent',i:'&#129302;',n:'工具选择'}]},
+ {name:'技能层',nodes:[{id:'image',i:'&#127912;',n:'AI绘画'},{id:'video',i:'&#127909;',n:'AI视频'},{id:'writing',i:'&#9997;&#65039;',n:'AI写作'},{id:'audio',i:'&#127911;',n:'AI配音'}]},
+ {name:'进阶层',nodes:[{id:'avatar',i:'&#127912;',n:'头像定制'},{id:'matrix',i:'&#128241;',n:'矩阵运营'},{id:'ppt',i:'&#128202;',n:'AI PPT'},{id:'code',i:'&#128187;',n:'AI编程'},{id:'music',i:'&#127925;',n:'AI音乐'}]},
+ {name:'变现层',nodes:[{id:'money',i:'&#128176;',n:'接单变现'}]},
+];
+const EDGES=[['prompt','image'],['prompt','video'],['prompt','writing'],['prompt','audio'],['agent','code'],['agent','ppt'],['image','avatar'],['video','matrix'],['audio','music'],['writing','ppt'],['avatar','money'],['matrix','money'],['ppt','money'],['code','money'],['music','money']];
 let learned=new Set(JSON.parse(localStorage.getItem('zhifu_learned')||'[]'));
-function lvName(n){return n>=9?'Lv.3 变现大师':n>=6?'Lv.2 进阶':n>=3?'Lv.1 入门':'Lv.0 小白';}
+
+/* ===== 本站图文详情 (DETAIL) ===== */
+const DETAIL={
+ prompt:{t:'提示词工程',intro:'所有AI变现技能的地基。学会结构化提示词，输出质量提升一个量级。',steps:[['理解Token','中文1字≈1-2 Token，看懂价格表控成本'],['角色扮演','开头加"你是10年经验的XX专家"'],['结构化','背景+任务+格式+示例四段式'],['迭代优化','追问"还能更好吗"连续打磨']],tools:['DeepSeek','Kimi','ChatGPT'],prompt:'你是【领域】专家。背景：【…】。任务：【…】。输出格式：【分点/表格】。示例：【…】。',tips:['角色越具体输出越专业','给示例比给描述有效','一次只改一个变量'],income:'地基技能，放大所有变现效率',links:[['B站','提示词工程 教程'],['抖音','AI提示词 技巧'],['微信','提示词工程 指南']]},
+ agent:{t:'工具选择',intro:'选对工具省一半钱。个人首选免费国产组合。',steps:[['对话','DeepSeek/通义千问(免费)'],['绘画','即梦/通义万相(免费)'],['视频','可灵/剪映AI'],['编程','Cursor+Ollama']],tools:['DeepSeek','即梦','可灵','Cursor'],prompt:'（无）先按"性价比组合"区配置工具栈。',tips:['先用免费组合跑通变现','再按需升级付费模型'],income:'省下的就是赚的',links:[['B站','AI工具 推荐'],['微信','AI工具 性价比']]},
+ image:{t:'AI绘画',intro:'用Qwen-Image/Midjourney做商业图、头像、壁纸变现。',steps:[['选赛道','商业信息图/头像/壁纸'],['写提示词','用方案库现成提示词'],['批量出图','筛选最佳'],['交付/接单']],tools:['Qwen-Image','通义万相','Midjourney'],prompt:'商业PPT信息图表，科技研报插画，主题【…】，米黄做旧纸张背景，简约矢量，低饱和橙黑配色，高清2K，无乱码，扁平化。',tips:['信息图客单价最高','头像走量5-30元/张'],income:'月入¥1k-8k',links:[['B站','AI绘画 变现'],['抖音','AI绘画 教程'],['微信','AI绘画 接单']]},
+ video:{t:'AI视频解说',intro:'最火变现赛道：Kimi写稿+可灵画面+Fish配音+剪映合成。',steps:[['Kimi写45秒口播','前3秒钩子+3信息点+结尾引导'],['可灵/即梦生画面','按脚本分镜'],['Fish Audio配音','选沉稳男声'],['剪映合成+字幕','发抖音/B站赚分成']],tools:['Kimi','可灵','Fish Audio','剪映'],prompt:'你是百万粉解说编剧。为【主题】写45秒口播：前3秒悬念钩子，中间3个信息点，结尾引导关注，口语化。',tips:['日更3条起号快','冷门题材差异化'],income:'月入¥3k-15k',links:[['B站','AI视频解说 教程'],['抖音','AI解说 爆款'],['微信','AI视频 变现']]},
+ writing:{t:'AI写作',intro:'金句/文案/公文量产，接软文单或做语录号。',steps:['选人群(职场/考研)','Kimi批量金句','配氛围图','分发变现'],tools:['Kimi','讯飞绘文','笔灵AI'],prompt:'你是情感爆款写手。为【人群】写5条扎心金句：短句+对比+留白。',tips:['语录号起号快','公文单客单高'],income:'月入¥1k-6k',links:[['B站','AI写作 变现'],['微信','AI写作 接单']]},
+ audio:{t:'AI配音',intro:'Fish Audio/ElevenLabs克隆声音，做解说配音外包。',steps:['克隆/选音色','接配音单','批量交付'],tools:['Fish Audio','ElevenLabs','CosyVoice'],prompt:'（配音）用【沉稳男声】朗读以下文案，语速中等，带情绪停顿：【文案】',tips:['声音克隆需授权'],income:'月入¥1k-5k',links:[['B站','AI配音 教程'],['抖音','AI配音 接单']]},
+ avatar:{t:'头像定制',intro:'Midjourney/Qwen-Image出图，社交平台接单。',steps:['建风格模板','挂服务接单','5-30元/张交付'],tools:['Midjourney','Qwen-Image'],prompt:'高级感职业头像，柔和棚拍光，浅灰背景，自信微笑，85mm镜头，浅景深，电影级调色。',tips:['做系列风格提高复购'],income:'月入¥1k-8k',links:[['B站','AI头像 教程'],['抖音','AI头像 接单']]},
+ matrix:{t:'矩阵运营',intro:'多账号分发图文，广告+带货变现。',steps:['选垂直赛道','即梦批量出图','Kimi标题','多号分发'],tools:['即梦','Kimi','小红书'],prompt:'为【赛道】写10个爆款标题：带emoji+数字+悬念。',tips:['一机一号防限流'],income:'月入¥2k-12k',links:[['B站','AI矩阵 运营'],['抖音','AI图文 矩阵'],['微信','AI矩阵 变现']]},
+ ppt:{t:'AI PPT',intro:'Gamma一键生成+人工微调，闲鱼接单50-300元/单。',steps:['闲鱼挂服务','Gamma生成','微调交付','好评涨价'],tools:['Gamma','ChatGPT','Kimi PPT'],prompt:'为【主题】生成10页PPT大纲：标题+3要点+建议图表。结构：背景-问题-方案-案例-总结。',tips:['答辩季是旺季'],income:'月入¥2k-10k',links:[['B站','Gamma PPT 教程'],['抖音','AI PPT 接单']]},
+ code:{t:'AI编程',intro:'Cursor+Copilot接爬虫/脚本/小程序单，效率x3。',steps:['接外包小单','Cursor辅助编码','交付收款','涨单价'],tools:['Cursor','Copilot','Ollama'],prompt:'你是资深工程师。用Python写【需求】，含注释+异常处理+示例。',tips:['从爬虫/脚本切入'],income:'月入¥5k-30k',links:[['B站','Cursor 接单'],['抖音','AI编程 变现']]},
+ music:{t:'AI音乐',intro:'Suno批量做歌上传音乐平台赚版权分成。',steps:['Suno生成','筛选精品','上传网易/QQ','赚分成'],tools:['Suno','Udio'],prompt:'一首【治愈系】纯音乐，钢琴+弦乐，BPM80，适合学习/睡眠场景。',tips:['批量+长尾收益'],income:'月入¥1k-10k',links:[['B站','Suno 教程'],['抖音','AI音乐 变现']]},
+ money:{t:'接单变现',intro:'终极目标：把前面技能组合起来跑通第一笔收入。',steps:['选1个技能深耕','做3个样品','挂闲鱼/小红书','跑通首单复盘'],tools:['闲鱼','小红书'],prompt:'（行动）本周内完成：选技能→做样品→上架→首单。',tips:['先完成再完美','首单不为钱为案例'],income:'跑通后复利增长',links:[['B站','AI副业 实战'],['抖音','AI变现 案例'],['微信','AI副业 指南']]},
+};
+
+/* ===== render tree ===== */
+const treeFlex=document.getElementById('tree-flex');
 function renderTree(){
-  const box=document.getElementById('tree-nodes');box.innerHTML='';
-  NODES.forEach(([id,ic])=>{const d=document.createElement('div');d.className='tnode'+(learned.has(id)?' lit':'');d.innerHTML=ic;d.title=id;box.appendChild(d);});
-  document.getElementById('tree-bar').style.width=(learned.size/NODES.length*100)+'%';
-  document.getElementById('tree-lv').textContent=lvName(learned.size)+` ${learned.size}/${NODES.length}`;
+  treeFlex.querySelectorAll('.tree-tier').forEach(e=>e.remove());
+  TIERS.forEach(tier=>{
+    const col=document.createElement('div');col.className='tree-tier';
+    col.innerHTML=`<div class="tier-name">${tier.name}</div>`;
+    tier.nodes.forEach(nd=>{
+      const k=document.createElement('div');
+      k.className='knode'+(learned.has(nd.id)?' lit':'');
+      k.dataset.nodeId=nd.id;
+      k.innerHTML=`<span class="ki">${nd.i}</span><span class="kn">${nd.n}</span>`;
+      k.onclick=()=>openDetail(nd.id);
+      col.appendChild(k);
+    });
+    treeFlex.appendChild(col);
+  });
+  requestAnimationFrame(drawTreeLines);
+  updateTreeMeta();
+}
+function drawTreeLines(){
+  const svg=document.getElementById('tree-svg');
+  const r=treeFlex.getBoundingClientRect();
+  svg.setAttribute('width',r.width);svg.setAttribute('height',r.height);
+  svg.innerHTML='';
+  EDGES.forEach(([a,b])=>{
+    const ea=treeFlex.querySelector(`[data-node-id="${a}"]`),eb=treeFlex.querySelector(`[data-node-id="${b}"]`);
+    if(!ea||!eb)return;
+    const ra=ea.getBoundingClientRect(),rb=eb.getBoundingClientRect();
+    const x1=ra.left-r.left+ra.width/2,y1=ra.top-r.top+ra.height,x2=rb.left-r.left+rb.width/2,y2=rb.top-r.top;
+    const my=(y1+y2)/2;
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',`M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`);
+    p.setAttribute('class','tline'+(learned.has(b)?' lit':''));
+    svg.appendChild(p);
+  });
+}
+function lvInfo(n){
+  if(n>=12)return['Lv.MAX AI变现大师','全部点亮！你已具备完整AI变现能力。'];
+  if(n>=9)return['Lv.3 变现高手','距离大师只差3个节点，冲！'];
+  if(n>=6)return['Lv.2 进阶者','技能层已成型，开始向变现层进发。'];
+  if(n>=3)return['Lv.1 入门者','地基打牢，继续点亮技能层。'];
+  return['Lv.0 AI小白','点击任意节点，开始你的打怪升级之旅。'];
+}
+function updateTreeMeta(){
+  const n=learned.size;
+  document.getElementById('ring-num').textContent=n;
+  document.getElementById('ring-fg').style.strokeDashoffset=251.2*(1-n/15);
+  const [ln,ld]=lvInfo(n);
+  document.getElementById('lv-name').textContent=ln;
+  document.getElementById('lv-desc').textContent=ld;
+  const tiers=[['基础',TIERS[0]],['技能',TIERS[1]],['进阶',TIERS[2]],['变现',TIERS[3]]];
+  document.getElementById('tree-badges').innerHTML=tiers.map(([nm,t])=>{
+    const on=t.nodes.every(x=>learned.has(x.id));
+    return `<span class="bdg ${on?'on':''}">${nm}层 ${on?'✓ mastered':''}</span>`;
+  }).join('');
   document.querySelectorAll('.learn-btn').forEach(b=>{const on=learned.has(b.dataset.node);b.classList.toggle('done',on);b.textContent=on?'已学习 ✓':'标为已学习';});
 }
-function markLearned(node){
-  if(learned.has(node))return;
-  learned.add(node);localStorage.setItem('zhifu_learned',JSON.stringify([...learned]));renderTree();
-}
-document.addEventListener('click',e=>{
-  const b=e.target.closest('.learn-btn');if(!b)return;markLearned(b.dataset.node);
-});
+function markLearned(node){if(learned.has(node))return;learned.add(node);localStorage.setItem('zhifu_learned',JSON.stringify([...learned]));renderTree();}
+document.addEventListener('click',e=>{const b=e.target.closest('.learn-btn');if(!b)return;e.stopPropagation();markLearned(b.dataset.node);});
 
-/* ===== 二创工坊 data ===== */
+/* ===== detail modal ===== */
+function openDetail(id){
+  const d=DETAIL[id];if(!d)return;
+  const box=document.getElementById('detail-box');
+  box.innerHTML=`<button class="detail-close" onclick="document.getElementById('detail-mask').classList.remove('show')">&#10005;</button>
+  <span class="d-tag">本站方案详情</span><h2>${d.t}</h2><div class="d-intro">${d.intro}</div>
+  <div class="d-steps">${d.steps.map((s,i)=>`<div class="d-step"><div class="sn">${i+1}</div><div class="st"><b>${s[0]}</b><span>${s[1]}</span></div></div>`).join('')}</div>
+  <div class="d-block"><div class="db-t">&#128295; 工具组合</div><div class="tool-tags">${d.tools.map(t=>`<i>${t}</i>`).join('')}</div></div>
+  <div class="d-block"><div class="db-t">&#128172; 现成提示词（直接复制）</div><div class="d-prompt">${d.prompt}</div></div>
+  <div class="d-block"><div class="db-t">&#128161; 老手经验</div><ul class="d-tips">${d.tips.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+  <div class="d-block"><div class="db-t">&#128176; 收益预期：${d.income}</div></div>
+  <div class="d-foot">
+    ${d.links.map(l=>`<a class="mini-btn ${l[0]==='B站'?'mb-tut':l[0]==='抖音'?'mb-case':'mb-copy'}" target="_blank" href="${l[0]==='B站'?B(l[1]):l[0]==='抖音'?D(l[1]):W(l[1])}"><span class="plat ${l[0]==='B站'?'plat-b':l[0]==='抖音'?'plat-d':'plat-w'}">${l[0]}</span>${l[1]}</a>`).join('')}
+    <button class="mini-btn learn-btn" data-node="${id}">标为已学习</button>
+  </div>`;
+  document.getElementById('detail-mask').classList.add('show');
+  updateTreeMeta();
+}
+document.getElementById('detail-mask').addEventListener('click',e=>{if(e.target.id==='detail-mask')e.target.classList.remove('show');});
+
+/* ===== 二创工坊 ===== */
 const EC=[
- {ava:'&#128081;',bg:'#ff9500',name:'AI历史解说号',fans:'头部·百万粉级',
-  an:'悬念开头3秒+快节奏剪辑+情绪BGM，讲"教科书熟悉题材"引发共鸣。',
-  dir:'换冷门历史/企业兴衰/本地故事，垂直差异化，避免同质化。',
-  tools:'Kimi写稿 + 可灵画面 + Fish配音 + 剪映',
-  prompt:'你是百万粉历史解说编剧。为【题材】写45秒口播：前3秒悬念钩子"你敢信吗…"，中间3个反转信息点，结尾引导关注，口语化有情绪。',
-  node:'video',case:'https://m.sohu.com/a/1054919102_122066679/',tut:'https://search.bilibili.com/all?keyword=AI%E5%8E%86%E5%8F%B2%E8%A7%A3%E8%AF%B4'},
- {ava:'&#128049;',bg:'#0284c7',name:'AI宠物拟人号',fans:'3月10万粉案例',
-  an:'宠物+拟人剧情+反差萌，完播率高，广告+带货变现清晰。',
-  dir:'选细分宠种(柯基/布偶)，做连续剧式人设，提高追更。',
-  tools:'即梦出图 + Kimi剧情 + 剪映成片',
-  prompt:'你是宠物爆款编剧。为【宠种】写3条拟人短剧情：反差萌+神转折+暖心结尾，每条配1句爆款标题。',
-  node:'matrix',case:'https://m.36kr.com/p/3788978905029635',tut:'https://search.bilibili.com/all?keyword=AI%E5%AE%A0%E7%89%A9%E5%8F%B7'},
- {ava:'&#128200;',bg:'#7c3aed',name:'AI科技研报插画',fans:'商单·高客单',
-  an:'把硬核科技做成"米色做旧矢量信息图"，B端商单客单价高。',
-  dir:'聚焦热门赛道(CPO/算力/储能)，做系列图接投研/公众号商单。',
-  tools:'Qwen-Image-3-Pro + 信息图提示词',
-  prompt:'商业PPT信息图表，科技研报插画，主题【CPO光模块架构对比】，上下两套硬件剖视示意图，橙色箭头数据流，右侧柱状增长图，米黄做旧纸张背景，简约矢量，低饱和橙黑配色，带英文标签，高清2K，无乱码，商业投研风格，扁平化。',
-  node:'image',case:'https://ai.zol.com.cn/1226/12268657.html',tut:'https://search.bilibili.com/all?keyword=AI%E4%BF%A1%E6%81%AF%E5%9B%BE'},
- {ava:'&#127908;',bg:'#e11d48',name:'AI情感语录号',fans:'起号快·易变现',
-  an:'金句+氛围画面+治愈配音，制作成本极低，靠流量分成+收徒。',
-  dir:'细分人群(职场/中年/考研)，金句+场景化画面提高转发。',
-  tools:'Kimi金句 + 即梦氛围图 + Fish配音',
-  prompt:'你是情感爆款写手。为【人群】写5条扎心金句：短句+对比+留白，适合配氛围图做语录视频。',
-  node:'writing',case:'https://m.36kr.com/p/3788978905029635',tut:'https://search.bilibili.com/all?keyword=AI%E8%AF%AD%E5%BD%95%E5%8F%B7'},
+ {ava:'&#128081;',bg:'#ff9500',name:'AI历史解说号',fans:'头部·百万粉级',an:'悬念开头3秒+快节奏+情绪BGM，讲熟悉题材引共鸣。',dir:'换冷门历史/企业兴衰，垂直差异化。',tools:'Kimi+可灵+Fish+剪映',node:'video',prompt:'你是百万粉历史解说编剧。为【题材】写45秒口播：前3秒悬念"你敢信吗…"，3个反转，结尾引导关注。'},
+ {ava:'&#128049;',bg:'#0284c7',name:'AI宠物拟人号',fans:'3月10万粉案例',an:'宠物+拟人剧情+反差萌，完播率高。',dir:'细分宠种做连续剧人设，提高追更。',tools:'即梦+Kimi+剪映',node:'matrix',prompt:'你是宠物爆款编剧。为【宠种】写3条拟人短剧情：反差萌+神转折+暖心结尾。'},
+ {ava:'&#128200;',bg:'#7c3aed',name:'AI科技研报插画',fans:'商单·高客单',an:'硬核科技做"米色做旧矢量信息图"，B端客单高。',dir:'聚焦CPO/算力/储能做系列接商单。',tools:'Qwen-Image-3-Pro',node:'image',prompt:'商业PPT信息图表，主题【CPO光模块对比】，上下硬件剖视，橙色箭头数据流，米黄做旧纸张，简约矢量，低饱和橙黑，高清2K，无乱码，扁平化。'},
+ {ava:'&#127908;',bg:'#e11d48',name:'AI情感语录号',fans:'起号快·易变现',an:'金句+氛围图+治愈配音，成本极低。',dir:'细分人群(职场/考研)场景化提高转发。',tools:'Kimi+即梦+Fish',node:'writing',prompt:'你是情感爆款写手。为【人群】写5条扎心金句：短句+对比+留白。'},
 ];
 const ecGrid=document.getElementById('ec-grid');
 EC.forEach((e,i)=>{
   const c=document.createElement('div');c.className='ec-card glass';c.style.transitionDelay=(i%2)*.08+'s';
   c.innerHTML=`<div class="e-top"><span class="e-ava" style="background:${e.bg};">${e.ava}</span><div><h3>${e.name}</h3><div class="e-fans">${e.fans}</div></div></div>
-  <div class="e-row"><b>学习分析：</b>${e.an}</div>
-  <div class="e-row"><b>二创方向：</b>${e.dir}</div>
-  <div class="e-row"><b>二创工具：</b>${e.tools}</div>
-  <div class="e-prompt">${e.prompt}</div>
-  <div class="ec-actions">
-    <a class="mini-btn mb-case" target="_blank" href="${e.case}">看爆款</a>
-    <a class="mini-btn mb-tut" target="_blank" href="${e.tut}">看教程</a>
-    <button class="mini-btn mb-copy" data-copy="${e.prompt.replace(/"/g,'&quot;')}">复制文案</button>
-    <button class="mini-btn learn-btn" data-node="${e.node}">标为已学习</button>
-  </div>`;
+  <div class="e-row"><b>学习分析：</b>${e.an}</div><div class="e-row"><b>二创方向：</b>${e.dir}</div><div class="e-row"><b>二创工具：</b>${e.tools}</div>
+  <div class="ec-actions"><button class="mini-btn mb-detail" data-detail="${e.node}">本站图文详情</button><button class="mini-btn mb-copy" data-copy="${e.prompt.replace(/"/g,'&quot;')}">复制文案</button><button class="mini-btn learn-btn" data-node="${e.node}">标为已学习</button></div>`;
   ecGrid.appendChild(c);
 });
 
 /* ===== 标签学习 ===== */
 const TAGS=[
- {t:'#AI视频解说',node:'video',txt:'从写稿→生画面→配音→剪辑全流程。先看爆款拆解，再跟做一条。',links:[['入门教程','https://search.bilibili.com/all?keyword=AI%E8%A7%86%E9%A2%91%E8%A7%A3%E8%AF%B4%20%E6%95%99%E7%A8%8B'],['爆款案例','https://m.sohu.com/a/1054919102_122066679/']]},
- {t:'#商业信息图',node:'image',txt:'用Qwen-Image-3-Pro+信息图提示词做投研风插画，接B端商单。',links:[['提示词指南','https://www.promptingguide.ai/zh'],['案例','https://ai.zol.com.cn/1226/12268657.html']]},
- {t:'#PPT定制',node:'ppt',txt:'Gamma一键生成+人工微调，闲鱼接单50-300元/单。',links:[['Gamma教程','https://search.bilibili.com/all?keyword=Gamma%20PPT']]},
- {t:'#提示词工程',node:'prompt',txt:'学会角色扮演+结构化提示词，是所有变现技能的地基。',links:[['Prompt圣经','https://www.promptingguide.ai/zh'],['神级库','https://github.com/f/awesome-chatgpt-prompts']]},
- {t:'#AI写作',node:'writing',txt:'金句/文案/公文，用AI量产接软文单。',links:[['写作教程','https://search.bilibili.com/all?keyword=AI%E5%86%99%E4%BD%9C']]},
- {t:'#AI配音',node:'audio',txt:'Fish Audio/ElevenLabs克隆声音，做解说配音外包。',links:[['配音教程','https://search.bilibili.com/all?keyword=AI%E9%85%8D%E9%9F%B3']]},
- {t:'#编程接单',node:'code',txt:'Cursor+Copilot接爬虫/脚本单，效率x3。',links:[['接单教程','https://search.bilibili.com/all?keyword=Cursor%20%E6%8E%A5%E5%8D%95']]},
- {t:'#AI音乐',node:'music',txt:'Suno批量做歌上传音乐平台赚版权分成。',links:[['Suno教程','https://search.bilibili.com/all?keyword=Suno%20%E6%95%99%E7%A8%8B']]},
- {t:'#矩阵运营',node:'matrix',txt:'多账号分发图文，广告+带货变现。',links:[['矩阵教程','https://search.bilibili.com/all?keyword=AI%20%E7%9F%A9%E9%98%B5']]},
- {t:'#知识付费',node:'money',txt:'整理提示词/教程做社群年费变现。',links:[['案例','https://m.36kr.com/p/3788978905029635']]},
+ {t:'#AI视频解说',node:'video',txt:'写稿→生画面→配音→剪辑全流程，只看抖音/B站/微信高质量爆款。'},
+ {t:'#商业信息图',node:'image',txt:'Qwen-Image-3-Pro+信息图提示词做投研风插画接B端商单。'},
+ {t:'#PPT定制',node:'ppt',txt:'Gamma一键生成+微调，闲鱼接单50-300元/单。'},
+ {t:'#提示词工程',node:'prompt',txt:'所有变现技能的地基，必学。'},
+ {t:'#AI写作',node:'writing',txt:'金句/文案/公文量产接软文单。'},
+ {t:'#AI配音',node:'audio',txt:'声音克隆做解说配音外包。'},
+ {t:'#编程接单',node:'code',txt:'Cursor接爬虫/脚本单效率x3。'},
+ {t:'#AI音乐',node:'music',txt:'Suno批量做歌赚版权分成。'},
+ {t:'#矩阵运营',node:'matrix',txt:'多账号分发广告+带货。'},
+ {t:'#接单变现',node:'money',txt:'把技能组合跑通第一笔收入。'},
 ];
 const tagRow=document.getElementById('tag-row'),tagPanel=document.getElementById('tag-panel');
-TAGS.forEach((g,i)=>{
+TAGS.forEach(g=>{
   const b=document.createElement('button');b.className='tag-chip';b.textContent=g.t;
   b.onclick=()=>{
     document.querySelectorAll('.tag-chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');
     tagPanel.classList.add('show');
+    const d=DETAIL[g.node];
     tagPanel.innerHTML=`<h3>${g.t} 学习路径</h3><p>${g.txt}</p>
-      <div class="tp-links">${g.links.map(l=>`<a class="mini-btn mb-tut" target="_blank" href="${l[1]}">${l[0]}</a>`).join('')}
-      <button class="mini-btn learn-btn" data-node="${g.node}">标为已学习</button></div>`;
-    renderTree();
+    <div class="tp-links">
+      <a class="mini-btn mb-tut" target="_blank" href="${B(g.t.slice(1))}"><span class="plat plat-b">B站</span>爆款视频</a>
+      <a class="mini-btn mb-case" target="_blank" href="${D(g.t.slice(1))}"><span class="plat plat-d">抖音</span>爆款视频</a>
+      <a class="mini-btn mb-copy" target="_blank" href="${W(g.t.slice(1))}"><span class="plat plat-w">微信</span>深度文章</a>
+      <button class="mini-btn mb-detail" data-detail="${g.node}">本站图文详情</button>
+      <button class="mini-btn learn-btn" data-node="${g.node}">标为已学习</button>
+    </div>`;
+    updateTreeMeta();
   };
   tagRow.appendChild(b);
 });
 
 /* ===== 方案库 ===== */
 const RECIPES=[
- {tag:'商业绘图',name:'高质量商业信息图',combo:'Qwen-Image-3-Pro + 信息图提示词',
-  prompt:'商业PPT信息图表，科技研报插画，主题 CPO 光模块架构对比，上下两套硬件剖视示意图，上方传统 GPU + 传统光模块长路径走线，下方 CPO 架构 GPU 和 Optical Engine 芯片短路径直连，橙色箭头代表数据流，右侧柱状增长图表，标注 40Billion、8Billion，米黄色做旧纸张背景，简约矢量插画，干净线条，低饱和度橙黑配色，带英文标签注释，图表边框，高清 2K，适合 PPT 演示，无多余文字乱码，线条工整，商业投研风格，扁平化，不要写实照片',node:'image'},
- {tag:'视频解说',name:'AI解说视频一条龙',combo:'Kimi写稿 + 可灵画面 + Fish配音 + 剪映',
-  prompt:'你是百万粉解说编剧。为【主题】写45秒口播脚本：前3秒黄金钩子，中间3个信息点，结尾引导关注，口语化。',node:'video'},
- {tag:'头像定制',name:'高端头像定制',combo:'Midjourney/Qwen-Image + 人像提示词',
-  prompt:'高级感职业头像，柔和棚拍光，浅灰背景，人物自信微笑，商务休闲着装，85mm镜头，浅景深，电影级调色，高清细节',node:'avatar'},
- {tag:'爆款标题',name:'小红书爆款标题',combo:'Kimi + 爆款标题提示词',
-  prompt:'你是小红书爆款标题专家。为【主题】写10个标题：带emoji+数字+悬念，前8字抓眼球，引发点击。',node:'writing'},
+ {tag:'商业绘图',name:'高质量商业信息图',combo:'Qwen-Image-3-Pro + 信息图提示词',node:'image',prompt:'商业PPT信息图表，科技研报插画，主题 CPO 光模块架构对比，上下两套硬件剖视示意图，上方传统 GPU + 传统光模块长路径走线，下方 CPO 架构 GPU 和 Optical Engine 芯片短路径直连，橙色箭头代表数据流，右侧柱状增长图表，标注 40Billion、8Billion，米黄色做旧纸张背景，简约矢量插画，干净线条，低饱和度橙黑配色，带英文标签注释，图表边框，高清 2K，适合 PPT 演示，无多余文字乱码，线条工整，商业投研风格，扁平化，不要写实照片'},
+ {tag:'视频解说',name:'AI解说视频一条龙',combo:'Kimi + 可灵 + Fish + 剪映',node:'video',prompt:'你是百万粉解说编剧。为【主题】写45秒口播：前3秒黄金钩子，中间3个信息点，结尾引导关注，口语化。'},
+ {tag:'头像定制',name:'高端头像定制',combo:'Midjourney/Qwen-Image + 人像提示词',node:'avatar',prompt:'高级感职业头像，柔和棚拍光，浅灰背景，自信微笑，85mm镜头，浅景深，电影级调色。'},
+ {tag:'爆款标题',name:'小红书爆款标题',combo:'Kimi + 爆款标题提示词',node:'writing',prompt:'你是小红书爆款标题专家。为【主题】写10个标题：带emoji+数字+悬念，前8字抓眼球。'},
 ];
 const recGrid=document.getElementById('recipe-grid');
 RECIPES.forEach((r,i)=>{
   const c=document.createElement('div');c.className='recipe-card glass';c.style.transitionDelay=(i%2)*.08+'s';
   c.innerHTML=`<span class="r-tag">${r.tag}</span><h3>${r.name}</h3><div class="r-combo">工具组合：${r.combo}</div>
   <div class="r-prompt">${r.prompt}</div>
-  <div class="r-actions"><button class="mini-btn mb-copy" data-copy="${r.prompt.replace(/"/g,'&quot;')}">复制提示词</button><button class="mini-btn learn-btn" data-node="${r.node}">标为已学习</button></div>`;
+  <div class="ec-actions"><button class="mini-btn mb-detail" data-detail="${r.node}">本站图文详情</button><button class="mini-btn mb-copy" data-copy="${r.prompt.replace(/"/g,'&quot;')}">复制提示词</button><button class="mini-btn learn-btn" data-node="${r.node}">标为已学习</button></div>`;
   recGrid.appendChild(c);
 });
-
-/* copy delegate */
 document.addEventListener('click',e=>{
+  const d=e.target.closest('[data-detail]');if(d){openDetail(d.dataset.detail);return;}
   const b=e.target.closest('[data-copy]');if(!b)return;
   navigator.clipboard.writeText(b.dataset.copy).then(()=>{const t=b.textContent;b.textContent='已复制✓';setTimeout(()=>b.textContent=t,1400);});
 });
 
 /* ===== 玩法库 ===== */
 const PLAY=[
- {ava:'&#127909;',bg:'#0284c7',name:'AI视频解说号',inc:'月入¥3k-15k',steps:'Kimi写稿→可灵生画面→Fish配音→剪映合成→发抖音/B站',tools:'Kimi+可灵+Fish+剪映',node:'video',tut:'https://search.bilibili.com/all?keyword=AI%E8%A7%86%E9%A2%91%E8%A7%A3%E8%AF%B4'},
- {ava:'&#128241;',bg:'#7c3aed',name:'AI图文矩阵号',inc:'月入¥2k-12k',steps:'选赛道→即梦批量出图→Kimi标题→多号分发→广告带货',tools:'即梦+Kimi+小红书',node:'matrix',tut:'https://search.bilibili.com/all?keyword=AI%E5%B0%8F%E7%BA%A2%E4%B9%A6'},
- {ava:'&#128202;',bg:'#15803d',name:'AI PPT定制',inc:'月入¥2k-10k',steps:'闲鱼挂服务→Gamma生成→微调交付',tools:'Gamma+ChatGPT',node:'ppt',tut:'https://search.bilibili.com/all?keyword=Gamma%20PPT'},
- {ava:'&#128187;',bg:'#374151',name:'AI编程接单',inc:'月入¥5k-30k',steps:'接爬虫/脚本单→Cursor辅助→交付收款',tools:'Cursor+Copilot+Ollama',node:'code',tut:'https://search.bilibili.com/all?keyword=Cursor%20%E6%8E%A5%E5%8D%95'},
+ {ava:'&#127909;',bg:'#0284c7',name:'AI视频解说号',inc:'月入¥3k-15k',node:'video'},
+ {ava:'&#128241;',bg:'#7c3aed',name:'AI图文矩阵号',inc:'月入¥2k-12k',node:'matrix'},
+ {ava:'&#128202;',bg:'#15803d',name:'AI PPT定制',inc:'月入¥2k-10k',node:'ppt'},
+ {ava:'&#128187;',bg:'#374151',name:'AI编程接单',inc:'月入¥5k-30k',node:'code'},
 ];
 const playGrid=document.getElementById('play-grid');
 PLAY.forEach((p,i)=>{
   const c=document.createElement('div');c.className='ec-card glass';c.style.transitionDelay=(i%2)*.08+'s';
   c.innerHTML=`<div class="e-top"><span class="e-ava" style="background:${p.bg};">${p.ava}</span><div><h3>${p.name}</h3><div class="e-fans">${p.inc}</div></div></div>
-  <div class="e-row"><b>步骤：</b>${p.steps}</div>
-  <div class="e-row"><b>工具：</b>${p.tools}</div>
-  <div class="ec-actions"><a class="mini-btn mb-tut" target="_blank" href="${p.tut}">看教程</a><button class="mini-btn learn-btn" data-node="${p.node}">标为已学习</button></div>`;
+  <div class="ec-actions"><button class="mini-btn mb-detail" data-detail="${p.node}">本站图文详情</button><button class="mini-btn learn-btn" data-node="${p.node}">标为已学习</button></div>`;
   playGrid.appendChild(c);
 });
 
-/* ===== tools ===== */
+/* ===== tools (with rich tags) ===== */
 const SECTIONS=[
  {id:'dialog',icon:'🤖',name:'AI 智能对话',subs:['全部','通用','国产','搜索'],tools:[
-  {n:'ChatGPT',d:'5亿人的AI初恋',u:'https://chatgpt.com',a:'GPT',c:'#10a37f',s:'通用',hot:1},
-  {n:'Claude',d:'长文推理天花板',u:'https://claude.ai',a:'Cl',c:'#d97757',s:'通用',hot:1},
-  {n:'Gemini',d:'谷歌多模态全家桶',u:'https://gemini.google.com',a:'GE',c:'#4285f4',s:'通用',hot:1},
-  {n:'DeepSeek',d:'国产开源之光',u:'https://chat.deepseek.com',a:'DS',c:'#4d6bfe',s:'国产',hot:1,free:1,pick:1},
-  {n:'通义千问',d:'阿里办公编程全能',u:'https://tongyi.aliyun.com',a:'通',c:'#ff6a00',s:'国产',hot:1,free:1,pick:1},
-  {n:'豆包',d:'国民AI助手',u:'https://www.doubao.com',a:'豆',c:'#325ab4',s:'国产',free:1},
-  {n:'Kimi',d:'长文本之神',u:'https://kimi.moonshot.cn',a:'Ki',c:'#0f172a',s:'国产',free:1,pick:1},
-  {n:'智谱清言',d:'清华GLM全能',u:'https://chatglm.cn',a:'GLM',c:'#6d28d9',s:'国产',free:1},
-  {n:'Grok',d:'马斯克实时嘴替',u:'https://grok.com',a:'Gx',c:'#1d1d1f',s:'通用'},
-  {n:'Perplexity',d:'AI搜索带引用',u:'https://www.perplexity.ai',a:'Pe',c:'#20808d',s:'搜索',free:1},
-  {n:'文心一言',d:'百度先行者',u:'https://yiyan.baidu.com',a:'文',c:'#2932e1',s:'国产',free:1},
-  {n:'元宝',d:'腾讯微信生态',u:'https://yuanbao.tencent.com',a:'元',c:'#0d9488',s:'国产',free:1},
+  {n:'ChatGPT',d:'5亿人的AI初恋，生态最全，插件/GPTs丰富',u:'https://chatgpt.com',a:'GPT',c:'#10a37f',s:'通用',hot:1,tg:['全球第一','生态全']},
+  {n:'Claude',d:'长文推理天花板，写作代码双强，安全对齐好',u:'https://claude.ai',a:'Cl',c:'#d97757',s:'通用',hot:1,tg:['Arena#1','长文强']},
+  {n:'Gemini',d:'谷歌多模态全家桶，长上下文+谷歌生态打通',u:'https://gemini.google.com',a:'GE',c:'#4285f4',s:'通用',hot:1,tg:['多模态','免费额度']},
+  {n:'DeepSeek',d:'国产开源之光，推理成本极低，API性价比王',u:'https://chat.deepseek.com',a:'DS',c:'#4d6bfe',s:'国产',hot:1,free:1,pick:1,tg:['免费','性价比王','开源']},
+  {n:'通义千问',d:'阿里旗舰，中文+办公+编程全能，Qwen3.8开源',u:'https://tongyi.aliyun.com',a:'通',c:'#ff6a00',s:'国产',hot:1,free:1,pick:1,tg:['Arena#3','开源','中文强']},
+  {n:'豆包',d:'字节国民AI助手，接地气免费，抖音生态',u:'https://www.doubao.com',a:'豆',c:'#325ab4',s:'国产',free:1,tg:['免费','易上手']},
+  {n:'Kimi',d:'长文本之神，200万字一口气读完，PPT/解析强',u:'https://kimi.moonshot.cn',a:'Ki',c:'#0f172a',s:'国产',free:1,pick:1,tg:['免费','长文本','Arena#2']},
+  {n:'元宝',d:'腾讯AI助手，微信生态直通，hy3模型加持',u:'https://yuanbao.tencent.com',a:'元',c:'#0d9488',s:'国产',free:1,tg:['hy3免费到8月底','微信生态'],hot:1},
+  {n:'智谱清言',d:'清华GLM，国产均衡，Agent能力强',u:'https://chatglm.cn',a:'GLM',c:'#6d28d9',s:'国产',free:1,tg:['免费','Agent']},
+  {n:'Grok',d:'马斯克实时嘴替，X数据+视频理解领先',u:'https://grok.com',a:'Gx',c:'#1d1d1f',s:'通用',tg:['实时','视频理解']},
+  {n:'Perplexity',d:'AI搜索带引用，做研究查资料神器',u:'https://www.perplexity.ai',a:'Pe',c:'#20808d',s:'搜索',free:1,tg:['搜索','带引用']},
+  {n:'文心一言',d:'百度先行者，中文知识+百科生态',u:'https://yiyan.baidu.com',a:'文',c:'#2932e1',s:'国产',free:1,tg:['免费','中文']},
  ]},
  {id:'image',icon:'🎨',name:'AI 绘画生成',subs:['全部','通用','国产','开源'],tools:[
-  {n:'Qwen-Image',d:'阿里新图王中文稳',u:'https://tongyi.aliyun.com/qianwen',a:'QI',c:'#ff3d00',s:'国产',hot:1,pick:1},
-  {n:'通义万相',d:'免费电商图神器',u:'https://tongyi.aliyun.com/wanxiang',a:'万',c:'#e07b00',s:'国产',free:1,pick:1},
-  {n:'Midjourney',d:'艺术天花板',u:'https://www.midjourney.com',a:'MJ',c:'#2b2b2b',s:'通用',hot:1},
-  {n:'Stable Diffusion',d:'开源生图鼻祖',u:'https://stability.ai',a:'SD',c:'#7c3aed',s:'开源',free:1},
-  {n:'FLUX',d:'开源速度怪兽',u:'https://blackforestlabs.ai',a:'Fl',c:'#0d9488',s:'开源',free:1},
-  {n:'Ideogram',d:'文字渲染天花板',u:'https://ideogram.ai',a:'Id',c:'#6366f1',s:'通用',free:1},
-  {n:'即梦 AI',d:'字节图视频通吃',u:'https://jimeng.jianying.com',a:'即',c:'#7c3aed',s:'国产',free:1,pick:1},
-  {n:'Leonardo',d:'游戏美术量产',u:'https://leonardo.ai',a:'Le',c:'#64748b',s:'通用',free:1},
-  {n:'Krea',d:'实时边画边出',u:'https://www.krea.ai',a:'Kr',c:'#0ea5e9',s:'通用',free:1},
-  {n:'LibLibAI',d:'国产模型社区',u:'https://www.liblib.art',a:'Lb',c:'#f43f5e',s:'国产',free:1},
+  {n:'Qwen-Image',d:'阿里新图王，中文渲染稳，信息图/插画强',u:'https://tongyi.aliyun.com/qianwen',a:'QI',c:'#ff3d00',s:'国产',hot:1,pick:1,tg:['中文稳','信息图强']},
+  {n:'通义万相',d:'免费电商图神器，批量出图适合带货',u:'https://tongyi.aliyun.com/wanxiang',a:'万',c:'#e07b00',s:'国产',free:1,pick:1,tg:['免费','电商图']},
+  {n:'Midjourney',d:'艺术天花板，审美在线，头像/海报首选',u:'https://www.midjourney.com',a:'MJ',c:'#2b2b2b',s:'通用',hot:1,tg:['艺术天花板']},
+  {n:'Stable Diffusion',d:'开源生图鼻祖，本地部署想怎么玩都行',u:'https://stability.ai',a:'SD',c:'#7c3aed',s:'开源',free:1,tg:['开源','可本地']},
+  {n:'FLUX',d:'开源速度怪兽，画质硬刚MJ',u:'https://blackforestlabs.ai',a:'Fl',c:'#0d9488',s:'开源',free:1,tg:['开源','快']},
+  {n:'Ideogram',d:'文字渲染天花板，logo/海报救星',u:'https://ideogram.ai',a:'Id',c:'#6366f1',s:'通用',free:1,tg:['文字渲染']},
+  {n:'即梦 AI',d:'字节图视频通吃，免费额度大方',u:'https://jimeng.jianying.com',a:'即',c:'#7c3aed',s:'国产',free:1,pick:1,tg:['免费','图视频通吃']},
+  {n:'Leonardo',d:'游戏美术量产机，素材库海量',u:'https://leonardo.ai',a:'Le',c:'#64748b',s:'通用',free:1,tg:['游戏美术']},
+  {n:'Krea',d:'实时边画边出图，创意迭代快',u:'https://www.krea.ai',a:'Kr',c:'#0ea5e9',s:'通用',free:1,tg:['实时']},
+  {n:'LibLibAI',d:'国产模型社区，万款风格免费用',u:'https://www.liblib.art',a:'Lb',c:'#f43f5e',s:'国产',free:1,tg:['免费','模型多']},
  ]},
  {id:'video',icon:'🎬',name:'AI 视频创作',subs:['全部','文生视频','数字人'],tools:[
-  {n:'可灵 AI',d:'国产视频之光',u:'https://klingai.com',a:'可',c:'#0284c7',s:'文生视频',hot:1,pick:1},
-  {n:'Runway',d:'好莱坞级老炮',u:'https://runwayml.com',a:'RW',c:'#0d0d0d',s:'文生视频',hot:1},
-  {n:'Luma',d:'一键大片运镜',u:'https://lumalabs.ai',a:'Lu',c:'#4f46e5',s:'文生视频'},
-  {n:'Pika',d:'特效游乐场',u:'https://pika.art',a:'Pi',c:'#ec4899',s:'文生视频',free:1},
-  {n:'HeyGen',d:'数字人对口型',u:'https://www.heygen.com',a:'Hy',c:'#1d4ed8',s:'数字人',hot:1},
-  {n:'剪映 AI',d:'国民一键成片',u:'https://www.capcut.cn',a:'剪',c:'#111',s:'文生视频',free:1,pick:1},
-  {n:'海螺AI',d:'MiniMax丝滑',u:'https://hailuoai.com',a:'海',c:'#0891b2',s:'文生视频',free:1},
-  {n:'Pixmax',d:'AI短剧流水线',u:'https://pixmax.cn',a:'Px',c:'#b91c1c',s:'文生视频'},
+  {n:'可灵 AI',d:'国产视频之光，物理理解惊艳，长视频强',u:'https://klingai.com',a:'可',c:'#0284c7',s:'文生视频',hot:1,pick:1,tg:['国产第一','长视频']},
+  {n:'Runway',d:'好莱坞级老炮，视频生成鼻祖',u:'https://runwayml.com',a:'RW',c:'#0d0d0d',s:'文生视频',hot:1,tg:['专业级']},
+  {n:'Luma',d:'一键大片，运镜专业级',u:'https://lumalabs.ai',a:'Lu',c:'#4f46e5',s:'文生视频',tg:['运镜']},
+  {n:'Pika',d:'特效游乐场，脑洞秒变现实',u:'https://pika.art',a:'Pi',c:'#ec4899',s:'文生视频',free:1,tg:['免费','特效']},
+  {n:'HeyGen',d:'数字人天花板，口播翻译对口型',u:'https://www.heygen.com',a:'Hy',c:'#1d4ed8',s:'数字人',hot:1,tg:['对口型']},
+  {n:'剪映 AI',d:'国民剪辑神器，AI一键成片',u:'https://www.capcut.cn',a:'剪',c:'#111',s:'文生视频',free:1,pick:1,tg:['免费','一键成片']},
+  {n:'海螺AI',d:'MiniMax视频模型，动作丝滑',u:'https://hailuoai.com',a:'海',c:'#0891b2',s:'文生视频',free:1,tg:['免费','丝滑']},
+  {n:'Pixmax',d:'AI短剧流水线，一人即剧组',u:'https://pixmax.cn',a:'Px',c:'#b91c1c',s:'文生视频',tg:['短剧']},
  ]},
  {id:'audio',icon:'🎧',name:'AI 音频处理',subs:['全部','音乐','语音'],tools:[
-  {n:'Suno',d:'哼两句就出歌',u:'https://suno.com',a:'Su',c:'#6d28d9',s:'音乐',hot:1,pick:1},
-  {n:'Udio',d:'发烧级AI音乐',u:'https://www.udio.com',a:'Ud',c:'#a21caf',s:'音乐'},
-  {n:'ElevenLabs',d:'3秒声音克隆',u:'https://elevenlabs.io',a:'El',c:'#0d1117',s:'语音',hot:1},
-  {n:'Fish Audio',d:'开源语音克隆',u:'https://fish.audio',a:'Fi',c:'#0891b2',s:'语音',free:1,pick:1},
-  {n:'CosyVoice',d:'阿里开源TTS',u:'https://github.com/FunAudioLLM/CosyVoice',a:'Co',c:'#ff6a00',s:'语音',free:1},
-  {n:'讯飞听见',d:'转写会议纪要',u:'https://www.iflyrec.com',a:'听',c:'#0b6cb3',s:'语音'},
+  {n:'Suno',d:'哼两句就出歌，人人都是周杰伦',u:'https://suno.com',a:'Su',c:'#6d28d9',s:'音乐',hot:1,pick:1,tg:['音乐第一']},
+  {n:'Udio',d:'发烧级AI音乐，质感惊艳',u:'https://www.udio.com',a:'Ud',c:'#a21caf',s:'音乐',tg:['高质感']},
+  {n:'ElevenLabs',d:'3秒声音克隆，多语种配音天花板',u:'https://elevenlabs.io',a:'El',c:'#0d1117',s:'语音',hot:1,tg:['声音克隆']},
+  {n:'Fish Audio',d:'开源语音克隆，免费大方',u:'https://fish.audio',a:'Fi',c:'#0891b2',s:'语音',free:1,pick:1,tg:['免费','开源']},
+  {n:'CosyVoice',d:'阿里开源TTS，多方言支持',u:'https://github.com/FunAudioLLM/CosyVoice',a:'Co',c:'#ff6a00',s:'语音',free:1,tg:['开源','方言']},
+  {n:'讯飞听见',d:'转写老牌子，会议纪要救星',u:'https://www.iflyrec.com',a:'听',c:'#0b6cb3',s:'语音',tg:['转写准']},
  ]},
  {id:'office',icon:'💼',name:'AI 办公效率',subs:['全部','PPT','文档'],tools:[
-  {n:'Gamma',d:'PPT颜值天花板',u:'https://gamma.app',a:'Ga',c:'#7c3aed',s:'PPT',hot:1,free:1,pick:1},
-  {n:'Kimi PPT',d:'长文秒变PPT',u:'https://kimi.moonshot.cn',a:'Ki',c:'#0f172a',s:'PPT',free:1,pick:1},
-  {n:'Notion AI',d:'第二大脑',u:'https://www.notion.so',a:'N',c:'#000',s:'文档',hot:1},
-  {n:'WPS AI',d:'国民办公全家桶',u:'https://ai.wps.cn',a:'W',c:'#b33621',s:'文档'},
-  {n:'ChatPDF',d:'百页PDF秒读',u:'https://www.chatpdf.com',a:'CP',c:'#dc2626',s:'文档',free:1},
-  {n:'ChatExcel',d:'对话搞定表格',u:'https://chatexcel.com',a:'Cx',c:'#15803d',s:'文档',free:1},
+  {n:'WorkBuddy',d:'腾讯AI办公助手，文档/表格/会议全能',u:'https://workbuddy.qq.com',a:'WB',c:'#0052d9',s:'文档',hot:1,tg:['可能国产最强办公AI','腾讯']},
+  {n:'Gamma',d:'PPT颜值天花板，3分钟交付',u:'https://gamma.app',a:'Ga',c:'#7c3aed',s:'PPT',hot:1,free:1,pick:1,tg:['PPT第一','免费']},
+  {n:'Kimi PPT',d:'长文秒变PPT，答辩救星',u:'https://kimi.moonshot.cn',a:'Ki',c:'#0f172a',s:'PPT',free:1,pick:1,tg:['免费','长文转PPT']},
+  {n:'Notion AI',d:'第二大脑，知识管理天花板',u:'https://www.notion.so',a:'N',c:'#000',s:'文档',hot:1,tg:['知识管理']},
+  {n:'WPS AI',d:'国民办公全家桶，中文场景贴合',u:'https://ai.wps.cn',a:'W',c:'#b33621',s:'文档',tg:['国产','全场景']},
+  {n:'ChatPDF',d:'百页PDF秒读完，随便问',u:'https://www.chatpdf.com',a:'CP',c:'#dc2626',s:'文档',free:1,tg:['免费','读PDF']},
+  {n:'ChatExcel',d:'对话搞定表格，告别公式',u:'https://chatexcel.com',a:'Cx',c:'#15803d',s:'文档',free:1,tg:['免费','表格']},
  ]},
  {id:'writing',icon:'✍️',name:'AI 写作平台',subs:['全部','营销','学术'],tools:[
-  {n:'Jasper',d:'营销文案天花板',u:'https://www.jasper.ai',a:'Ja',c:'#dc2626',s:'营销',hot:1},
-  {n:'Copy.ai',d:'电商文案流水线',u:'https://www.copy.ai',a:'Cp',c:'#0d1117',s:'营销'},
-  {n:'Wordvice',d:'学术润色SCI',u:'https://wordvice.ai',a:'Wo',c:'#1d4ed8',s:'学术'},
-  {n:'秘塔写作猫',d:'中文校对免费',u:'https://xiezuocat.com',a:'秘',c:'#0d9488',s:'学术',free:1},
-  {n:'笔灵AI',d:'公文体制内最爱',u:'https://ibiling.cn',a:'笔',c:'#16a34a',s:'学术',free:1},
+  {n:'Jasper',d:'营销文案天花板，500强都在用',u:'https://www.jasper.ai',a:'Ja',c:'#dc2626',s:'营销',hot:1,tg:['营销第一']},
+  {n:'Copy.ai',d:'电商文案流水线，转化率拉满',u:'https://www.copy.ai',a:'Cp',c:'#0d1117',s:'营销',tg:['电商']},
+  {n:'Wordvice',d:'学术润色SCI好伴侣',u:'https://wordvice.ai',a:'Wo',c:'#1d4ed8',s:'学术',tg:['学术润色']},
+  {n:'秘塔写作猫',d:'中文校对免费，论文错别字杀手',u:'https://xiezuocat.com',a:'秘',c:'#0d9488',s:'学术',free:1,tg:['免费','校对']},
+  {n:'笔灵AI',d:'公文写作神器，体制内最爱',u:'https://ibiling.cn',a:'笔',c:'#16a34a',s:'学术',free:1,tg:['免费','公文']},
  ]},
  {id:'dev',icon:'💻',name:'AI 开发平台',subs:['全部','编码','框架','本地'],tools:[
-  {n:'Cursor',d:'效率翻10倍',u:'https://cursor.com',a:'Cu',c:'#374151',s:'编码',hot:1,pick:1},
-  {n:'GitHub',d:'全球最大代码库',u:'https://github.com',a:'GH',c:'#111',s:'框架',hot:1,free:1},
-  {n:'Hugging Face',d:'开源模型淘宝',u:'https://huggingface.co',a:'HF',c:'#f59e0b',s:'框架',hot:1,free:1},
-  {n:'通义灵码',d:'阿里编程助手',u:'https://tongyi.aliyun.com/lingma',a:'灵',c:'#ff8f00',s:'编码',free:1,pick:1},
-  {n:'Ollama',d:'本地跑大模型',u:'https://ollama.com',a:'Ol',c:'#1e40af',s:'本地',free:1,pick:1},
-  {n:'Dify',d:'10分钟搭AI应用',u:'https://dify.ai',a:'Di',c:'#0d1117',s:'框架',free:1},
-  {n:'Coze',d:'字节智能体平台',u:'https://www.coze.com',a:'Co',c:'#1d4ed8',s:'框架',free:1},
-  {n:'ComfyUI',d:'节点式生图',u:'https://github.com/comfyanonymous/ComfyUI',a:'Cf',c:'#6d28d9',s:'本地',free:1},
+  {n:'Cursor',d:'AI编辑器，效率翻10倍的秘密',u:'https://cursor.com',a:'Cu',c:'#374151',s:'编码',hot:1,pick:1,tg:['编程第一']},
+  {n:'GitHub',d:'全球最大代码库，程序员老家',u:'https://github.com',a:'GH',c:'#111',s:'框架',hot:1,free:1,tg:['免费','开源']},
+  {n:'Hugging Face',d:'开源模型淘宝，百万模型免费',u:'https://huggingface.co',a:'HF',c:'#f59e0b',s:'框架',hot:1,free:1,tg:['免费','模型多']},
+  {n:'通义灵码',d:'阿里编程助手，免费大方',u:'https://tongyi.aliyun.com/lingma',a:'灵',c:'#ff8f00',s:'编码',free:1,pick:1,tg:['免费','国产']},
+  {n:'Ollama',d:'本地跑大模型，一键安装隐私免费',u:'https://ollama.com',a:'Ol',c:'#1e40af',s:'本地',free:1,pick:1,tg:['免费','本地']},
+  {n:'Dify',d:'10分钟搭AI应用，低代码神器',u:'https://dify.ai',a:'Di',c:'#0d1117',s:'框架',free:1,tg:['低代码']},
+  {n:'Coze',d:'字节智能体平台，不写代码造Bot',u:'https://www.coze.com',a:'Co',c:'#1d4ed8',s:'框架',free:1,tg:['免费','造Bot']},
+  {n:'ComfyUI',d:'节点式生图工作流，折腾党天堂',u:'https://github.com/comfyanonymous/ComfyUI',a:'Cf',c:'#6d28d9',s:'本地',free:1,tg:['开源','节点']},
  ]},
  {id:'learn',icon:'🎓',name:'AI 学习资源',subs:['全部','课程','社区'],tools:[
-  {n:'AI-For-Beginners',d:'微软12周入门',u:'https://github.com/microsoft/AI-For-Beginners',a:'MS',c:'#2563eb',s:'课程',free:1},
-  {n:'DeepLearning.AI',d:'吴恩达亲授',u:'https://www.deeplearning.ai',a:'DL',c:'#c2410c',s:'课程',free:1},
-  {n:'Prompt Guide',d:'提示词圣经',u:'https://www.promptingguide.ai/zh',a:'Pr',c:'#0d9488',s:'课程',free:1},
-  {n:'李宏毅 ML',d:'最有趣ML课',u:'https://speech.ee.ntu.edu.tw/~hylee/ml/2024-spring.html',a:'李',c:'#7c3aed',s:'课程',free:1},
-  {n:'B站AI教程',d:'免费实战合集',u:'https://www.bilibili.com/v/tech',a:'B',c:'#fb7299',s:'课程',free:1},
+  {n:'AI-For-Beginners',d:'微软12周入门，从零到一',u:'https://github.com/microsoft/AI-For-Beginners',a:'MS',c:'#2563eb',s:'课程',free:1,tg:['免费','系统']},
+  {n:'DeepLearning.AI',d:'吴恩达亲授，AI启蒙导师',u:'https://www.deeplearning.ai',a:'DL',c:'#c2410c',s:'课程',free:1,tg:['免费','名师']},
+  {n:'Prompt Guide',d:'提示词工程圣经，中文免费',u:'https://www.promptingguide.ai/zh',a:'Pr',c:'#0d9488',s:'课程',free:1,tg:['免费','中文']},
+  {n:'李宏毅 ML',d:'最有趣机器学习课，中文友好',u:'https://speech.ee.ntu.edu.tw/~hylee/ml/2024-spring.html',a:'李',c:'#7c3aed',s:'课程',free:1,tg:['免费','有趣']},
+  {n:'B站AI教程',d:'免费实战视频合集，高质量',u:'https://www.bilibili.com/v/tech',a:'B',c:'#fb7299',s:'课程',free:1,tg:['免费','视频']},
  ]},
 ];
 function favHost(u){try{return new URL(u).hostname;}catch(e){return '';}}
 const wrapEl=document.getElementById('tool-sections');
 SECTIONS.forEach(sec=>{
   const el=document.createElement('section');el.id='sec-'+sec.id;
-  el.innerHTML=`<div class="sec-head"><div><div class="sec-title"><span class="emoji">${sec.icon}</span>${sec.name}</div><div class="sec-sub">${sec.tools.length}款 · 橙标=个人神器</div></div></div>
+  el.innerHTML=`<div class="sec-head"><div><div class="sec-title"><span class="emoji">${sec.icon}</span>${sec.name}</div><div class="sec-sub">${sec.tools.length}款 · 橙标=个人神器 · 标签=实时福利</div></div></div>
   <div class="sub-tabs">${sec.subs.map((s,i)=>`<button class="sub-tab ${i===0?'active':''}" data-sub="${s}">${s}</button>`).join('')}</div>
   <div class="tool-grid" data-grid="${sec.id}"></div>`;
   wrapEl.appendChild(el);
@@ -626,17 +751,18 @@ function renderTools(sec,sub){
   list.forEach((t,i)=>{
     const host=favHost(t.u);
     const flag=t.pick?'<span class="tool-flag flag-pick">神器</span>':(t.hot?'<span class="tool-flag flag-hot">HOT</span>':(t.free?'<span class="tool-flag flag-free">免费</span>':''));
+    const tags=(t.tg||[]).map((g,j)=>`<i class="${j===0&&t.tg&&t.tg[0].includes('免费')?'':'hot'}">${g}</i>`).join('');
     const c=document.createElement('a');c.className='tool-card glass';c.href=t.u;c.target='_blank';c.style.transitionDelay=(i%6)*.03+'s';
-    c.innerHTML=`<div class="tool-head"><span class="tool-icon" style="background:${t.c};"><span class="fb">${t.a}</span><img loading="lazy" src="https://api.iowen.cn/favicon/${host}.png" onerror="this.remove()"></span>${flag}</div><h3>${t.n}</h3><p>${t.d}</p>`;
+    c.innerHTML=`<div class="tool-head"><span class="tool-icon" style="background:${t.c};"><span class="fb">${t.a}</span><img loading="lazy" src="https://api.iowen.cn/favicon/${host}.png" onerror="this.remove()"></span>${flag}</div><h3>${t.n}</h3><div class="t-desc">${t.d}</div><div class="tool-tags">${tags}</div>`;
     grid.appendChild(c);
   });
   requestAnimationFrame(()=>grid.querySelectorAll('.tool-card').forEach(x=>x.classList.add('visible')));
 }
 
-/* news + github */
+/* news+github */
 const NEWS=[
- ['阿里·重磅','Qwen3.8-Max发布：2.4万亿参数开源，成本1/8','Arena代码榜国产第一#4。','https://ai.zol.com.cn/1226/12268657.html'],
- ['马斯克','Grok 4.5视频理解全面开放','视频鉴定类副业新机会。','https://ai.zol.com.cn/1226/12263499.html'],
+ ['阿里','Qwen3.8-Max发布：2.4万亿参数开源，成本1/8','Arena代码榜国产第一。','https://ai.zol.com.cn/1226/12268657.html'],
+ ['马斯克','Grok 4.5视频理解全面开放','视频鉴定副业新机会。','https://ai.zol.com.cn/1226/12263499.html'],
  ['监管','白宫召集头部AI公司开安全会','AI安全评估或成新职业。','https://www.toutiao.com/w/1872557113626688/'],
  ['B站','B站成WAIC官方AI视频平台','月均1.9亿用户消费AI内容。','https://finance.sina.cn/2026-07-18/detail-iniiewei8307826.d.html'],
 ];
@@ -666,14 +792,28 @@ document.querySelectorAll('.ec-card,.recipe-card,.combo-card,.news-card,.gh-item
 const spy=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){document.querySelectorAll('.side-item').forEach(s=>s.classList.toggle('active',s.getAttribute('href')==='#'+en.target.id));}});},{rootMargin:'-40% 0px -55% 0px'});
 document.querySelectorAll('main section').forEach(s=>spy.observe(s));
 
-/* login */
-const loginBtn=document.getElementById('login-btn'),modal=document.getElementById('login-modal'),nickInput=document.getElementById('nick-input'),avatarPreview=document.getElementById('avatar-preview'),avatarFile=document.getElementById('avatar-file');let avatarData='';
-function renderLogin(){const u=JSON.parse(localStorage.getItem('zhifu_user')||'null');loginBtn.innerHTML=u?`<img class="avatar" src="${u.avatar}">${u.nick}`:'&#128100; 微信登录';}
-loginBtn.addEventListener('click',()=>{const u=JSON.parse(localStorage.getItem('zhifu_user')||'null');if(u){if(confirm('退出登录？')){localStorage.removeItem('zhifu_user');renderLogin();}return;}modal.classList.add('show');});
-modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show');});
-document.getElementById('avatar-upload').addEventListener('click',()=>avatarFile.click());
-avatarFile.addEventListener('change',()=>{const f=avatarFile.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{avatarData=r.result;avatarPreview.src=avatarData;avatarPreview.style.display='block';};r.readAsDataURL(f);});
-document.getElementById('login-save').addEventListener('click',()=>{const nick=nickInput.value.trim()||'微信用户';const av=avatarData||`data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" rx="32" fill="%230071e3"/><text x="32" y="40" font-size="28" text-anchor="middle" fill="white">${nick[0]}</text></svg>`;localStorage.setItem('zhifu_user',JSON.stringify({nick,avatar:av}));modal.classList.remove('show');renderLogin();});
+/* ===== WeChat QR login ===== */
+const loginBtn=document.getElementById('login-btn'),loginModal=document.getElementById('login-modal');
+function renderLogin(){const u=JSON.parse(localStorage.getItem('zhifu_user')||'null');loginBtn.innerHTML=u?`<img class="avatar" src="${u.avatar}">${u.nick}`:'&#128172; 微信扫码登录';}
+function genQR(){
+  const box=document.getElementById('qr-box');box.innerHTML='';
+  const img=new Image();
+  img.src='https://api.qrserver.com/v1/create-qr-code/?size=160x160&data='+encodeURIComponent('https://jackcats.xyz/wechat-login');
+  img.onerror=()=>{ // canvas fallback pattern
+    const c=document.createElement('canvas');c.width=160;c.height=160;const x=c.getContext('2d');
+    x.fillStyle='#fff';x.fillRect(0,0,160,160);x.fillStyle='#000';
+    let s=7;for(let i=0;i<23;i++)for(let j=0;j<23;j++){if((i*j+i+j)%3===0||((i<7&&j<7)||(i>15&&j<7)||(i<7&&j>15)))x.fillRect(i*s,j*s,s-1,s-1);}
+    box.appendChild(c);
+  };
+  box.appendChild(img);
+}
+loginBtn.addEventListener('click',()=>{const u=JSON.parse(localStorage.getItem('zhifu_user')||'null');if(u){if(confirm('退出登录？')){localStorage.removeItem('zhifu_user');renderLogin();}return;}loginModal.classList.add('show');genQR();});
+loginModal.addEventListener('click',e=>{if(e.target===loginModal)loginModal.classList.remove('show');});
+document.getElementById('wx-sim').addEventListener('click',()=>{
+  const av='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" rx="32" fill="%2307c160"/><text x="32" y="42" font-size="26" text-anchor="middle" fill="white">微</text></svg>';
+  localStorage.setItem('zhifu_user',JSON.stringify({nick:'微信用户',avatar:av}));
+  loginModal.classList.remove('show');renderLogin();
+});
 renderLogin();
 renderTree();
 </script>
