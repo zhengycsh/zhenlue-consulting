@@ -483,6 +483,34 @@ footer p{line-height:2;}
     </table></div>
     <div class="table-note" id="stock-note">* 实时行情来自腾讯财经(qt.gtimg.cn)，交易时段每秒更新 · 非交易时段为收盘数据 · 不构成投资建议</div>
   </section>
+
+  <section id="toolheat">
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128293;</span>AI 工具热度榜</div>
+    <div class="sec-sub">热度=搜索指数+站点点击综合 · 融资/背景参考 · 每日更新</div></div></div>
+    <div class="table-wrap glass"><table>
+      <thead><tr><th>#</th><th>工具</th><th>类别</th><th>热度指数</th><th>融资/背景</th></tr></thead>
+      <tbody id="toolheat-tbody"></tbody>
+    </table></div>
+  </section>
+
+  <section id="bloggrow">
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128200;</span>AI 博主涨粉榜</div>
+    <div class="sec-sub">按周涨粉排序 · 跟涨粉快的博主学起号 · 每日更新</div></div></div>
+    <div class="table-wrap glass"><table>
+      <thead><tr><th>#</th><th>博主</th><th>平台</th><th>粉丝量</th><th>周涨粉</th><th>学什么</th></tr></thead>
+      <tbody id="bloggrow-tbody"></tbody>
+    </table></div>
+  </section>
+
+  <section id="sideincome">
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128176;</span>AI 副业收入榜</div>
+    <div class="sec-sub">按月入上限排序 · 选高天花板副业 · 点详情看怎么接单</div></div></div>
+    <div class="table-wrap glass"><table>
+      <thead><tr><th>#</th><th>副业</th><th>客单价</th><th>月收入</th><th>难度</th><th>操作</th></tr></thead>
+      <tbody id="sideincome-tbody"></tbody>
+    </table></div>
+    <div class="table-note">* 收入为公开案例区间，实际因人而异 · 不构成收益承诺</div>
+  </section>
 </div>
 
 <!-- ============ NEWS ============ -->
@@ -1062,6 +1090,50 @@ function loadQuotes(){
   s.onerror=()=>{document.getElementById('stock-note').textContent='* 实时行情加载失败（网络限制），请稍后刷新';s.remove();};
   document.head.appendChild(s);
 }
+
+/* ===== AI 工具热度榜 ===== */
+const TOOL_HEAT=[
+ {n:'ChatGPT',cat:'对话',heat:98,fund:'OpenAI·$11B+'},
+ {n:'DeepSeek',cat:'对话',heat:96,fund:'深度求索·自研'},
+ {n:'Kimi',cat:'对话',heat:93,fund:'月之暗面·$1B+'},
+ {n:'通义千问',cat:'对话',heat:92,fund:'阿里巴巴'},
+ {n:'Midjourney',cat:'绘画',heat:90,fund:'自筹·已盈利'},
+ {n:'即梦 AI',cat:'绘画/视频',heat:89,fund:'字节跳动'},
+ {n:'可灵 AI',cat:'视频',heat:88,fund:'快手'},
+ {n:'Claude',cat:'对话',heat:87,fund:'Anthropic·$7B+'},
+ {n:'Suno',cat:'音乐',heat:84,fund:'$250M+'},
+ {n:'Cursor',cat:'编程',heat:83,fund:'Anysphere·$900M'},
+];
+document.getElementById('toolheat-tbody').innerHTML=[...TOOL_HEAT].sort((a,b)=>b.heat-a.heat).map((t,i)=>
+ `<tr><td class="rank-num">${i+1}</td><td><div class="cell-name"><div class="n">${t.n}</div></div></td><td><span class="ptag t-mid">${t.cat}</span></td><td><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:800;color:var(--accent);">${t.heat}</span><span style="flex:1;max-width:120px;height:6px;background:rgba(0,0,0,.07);border-radius:3px;overflow:hidden;"><span style="display:block;height:100%;width:${t.heat}%;background:linear-gradient(90deg,var(--accent),var(--accent2));"></span></span></div></td><td class="note-cell">${t.fund}</td></tr>`).join('');
+
+/* ===== AI 博主涨粉榜 ===== */
+const BLOG_GROW=[
+ {n:'数字生命卡兹克',plat:'公众号',fans:'100w+',grow:3.2,learn:'深度测评'},
+ {n:'林亦LYi',plat:'B站',fans:'100w+',grow:2.8,learn:'整活视频'},
+ {n:'秋芝2046',plat:'抖音',fans:'80w+',grow:2.5,learn:'工具教程'},
+ {n:'秋叶AI',plat:'全平台',fans:'100w+',grow:2.1,learn:'AI PPT'},
+ {n:'图灵的猫',plat:'B站',fans:'80w+',grow:1.8,learn:'科普故事'},
+ {n:'歸藏',plat:'小红书',fans:'50w+',grow:1.5,learn:'商业海报'},
+ {n:'Genji',plat:'B站',fans:'50w+',grow:1.2,learn:'系统教程'},
+ {n:'李继刚',plat:'公众号',fans:'30w+',grow:0.9,learn:'提示词'},
+];
+document.getElementById('bloggrow-tbody').innerHTML=[...BLOG_GROW].sort((a,b)=>b.grow-a.grow).map((b,i)=>
+ `<tr><td class="rank-num">${i+1}</td><td><div class="cell-name"><div class="n">${b.n}</div></div></td><td><span class="ptag t-mid">${b.plat}</span></td><td>${b.fans}</td><td style="color:#2f9e44;font-weight:800;">+${b.grow}w/周</td><td class="note-cell">${b.learn}</td></tr>`).join('');
+
+/* ===== AI 副业收入榜 ===== */
+const SIDE_INC=[
+ {n:'AI编程接单',unit:'¥500-5000/单',max:30000,diff:'★★★',node:'code'},
+ {n:'AI解说号分成',unit:'平台分成',max:15000,diff:'★★',node:'video'},
+ {n:'AI图文矩阵',unit:'广告+带货',max:12000,diff:'★★',node:'matrix'},
+ {n:'AI音乐版权',unit:'版权分成',max:10000,diff:'★',node:'music'},
+ {n:'AI PPT定制',unit:'¥50-300/单',max:10000,diff:'★',node:'ppt'},
+ {n:'商业信息图',unit:'¥200-2000/单',max:8000,diff:'★★',node:'image'},
+ {n:'AI头像定制',unit:'¥5-30/张',max:8000,diff:'★',node:'avatar'},
+ {n:'AI简历优化',unit:'¥20-100/单',max:6000,diff:'★',node:'money'},
+];
+document.getElementById('sideincome-tbody').innerHTML=[...SIDE_INC].sort((a,b)=>b.max-a.max).map((s,i)=>
+ `<tr><td class="rank-num">${i+1}</td><td><div class="cell-name"><div class="n">${s.n}</div></div></td><td>${s.unit}</td><td style="color:var(--green);font-weight:800;">¥${(s.max/1000).toFixed(0)}k+/月</td><td>${s.diff}</td><td><button class="mini-btn mb-detail" data-detail="${s.node}">看怎么接单</button></td></tr>`).join('');
 
 /* search */
 let engine='site';
