@@ -3,23 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI 精品导航 — 大模型排行 · GPU 算力 · 提示词库 · 80+ 工具 · 每日更新</title>
+<title>智富AI — 每天学点AI · 每天用AI赚点</title>
 <style>
 :root {
-  --bg: #f5f5f7;
-  --card: rgba(255,255,255,0.6);
-  --card-border: rgba(255,255,255,0.85);
+  --bg: #eef0f6;
+  --card: rgba(255,255,255,0.42);
+  --card-strong: rgba(255,255,255,0.58);
+  --card-border: rgba(255,255,255,0.75);
   --text-primary: #1d1d1f;
-  --text-secondary: #6e6e73;
-  --text-tertiary: #86868b;
+  --text-secondary: #5f6066;
+  --text-tertiary: #8e8f96;
   --accent: #0071e3;
   --accent-2: #af52de;
   --accent-3: #ff9500;
-  --green: #34c759;
+  --green: #30b14e;
   --red: #ff3b30;
-  --shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
-  --shadow-hover: 0 12px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
-  --radius: 18px;
+  --shadow: 0 4px 30px rgba(31,38,135,0.08);
+  --shadow-hover: 0 16px 48px rgba(31,38,135,0.16);
+  --radius: 20px;
+  --blur: blur(28px) saturate(200%);
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -34,296 +36,348 @@ body {
   overflow-x: hidden;
 }
 
-/* ===== Ambient ===== */
-.ambient { position: fixed; inset:0; z-index:-2; overflow:hidden; background: var(--bg); }
-.ambient .blob { position:absolute; border-radius:50%; filter:blur(100px); opacity:.5; animation: blobFloat 22s ease-in-out infinite alternate; }
-.ambient .b1 { width:520px; height:520px; background:#a8d8ff; top:-120px; left:-80px; }
-.ambient .b2 { width:460px; height:460px; background:#d8c7ff; top:28%; right:-100px; animation-delay:-6s; }
-.ambient .b3 { width:420px; height:420px; background:#ffe4b8; bottom:-100px; left:25%; animation-delay:-12s; }
-.ambient .b4 { width:380px; height:380px; background:#c9f2e0; top:55%; left:-120px; animation-delay:-3s; }
-@keyframes blobFloat { 0%{transform:translate(0,0) scale(1);} 100%{transform:translate(40px,30px) scale(1.15);} }
+/* ===== 背景：极光渐变 + 粒子 ===== */
+.ambient {
+  position: fixed; inset:0; z-index:-3;
+  background: linear-gradient(160deg, #dfe7ff 0%, #eef0f6 35%, #f6ecff 70%, #eafaf0 100%);
+  background-size: 200% 200%;
+  animation: gradientShift 18s ease-in-out infinite alternate;
+}
+@keyframes gradientShift { 0%{background-position:0% 0%;} 100%{background-position:100% 100%;} }
 
-/* ===== Top nav ===== */
-nav {
-  position:fixed; top:0; left:0; width:100%; z-index:100;
-  padding: 12px 32px;
-  display:flex; justify-content:space-between; align-items:center; gap:20px;
-  background: rgba(245,245,247,0.72);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-bottom: 1px solid rgba(0,0,0,0.04);
-  transition: all .4s cubic-bezier(.16,1,.3,1);
-}
-nav.scrolled { padding: 8px 32px; background: rgba(245,245,247,0.92); }
-.nav-brand { font-size:17px; font-weight:700; display:flex; align-items:center; gap:10px; white-space:nowrap; }
-.nav-brand .logo-dot { width:10px; height:10px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent-2)); box-shadow:0 0 12px rgba(0,113,227,.5); }
-nav ul { display:flex; list-style:none; gap:22px; white-space:nowrap; }
-nav ul a { text-decoration:none; color:var(--text-secondary); font-size:14px; transition:color .3s; }
-nav ul a:hover { color:var(--accent); }
-.nav-right { display:flex; gap:16px; font-size:13px; color:var(--text-tertiary); white-space:nowrap; }
-.nav-right a { color:var(--text-tertiary); text-decoration:none; transition:color .3s; }
-.nav-right a:hover { color:var(--accent); }
+.ambient .blob { position:absolute; border-radius:50%; filter:blur(90px); opacity:.45; animation: blobFloat 24s ease-in-out infinite alternate; }
+.ambient .b1 { width:560px; height:560px; background:#8ec5ff; top:-140px; left:-100px; }
+.ambient .b2 { width:480px; height:480px; background:#d5b8ff; top:26%; right:-120px; animation-delay:-8s; }
+.ambient .b3 { width:440px; height:440px; background:#ffd9a8; bottom:-120px; left:22%; animation-delay:-14s; }
+.ambient .b4 { width:400px; height:400px; background:#a8ecd0; top:58%; left:-140px; animation-delay:-4s; }
+@keyframes blobFloat { 0%{transform:translate(0,0) scale(1);} 100%{transform:translate(50px,40px) scale(1.18);} }
 
-/* ===== Hero + search ===== */
-.hero { padding: 120px 24px 40px; text-align:center; position:relative; }
-.hero h1 {
-  font-size: clamp(34px,5vw,52px); font-weight:700; letter-spacing:-1px;
-  background: linear-gradient(135deg,#1d1d1f 30%,#0071e3 70%,#af52de 100%);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  margin-bottom: 10px;
-  animation: fadeUp .9s cubic-bezier(.16,1,.3,1) .1s both;
-}
-.hero .sub { color:var(--text-secondary); font-size:15px; margin-bottom:32px; animation: fadeUp .9s cubic-bezier(.16,1,.3,1) .25s both; }
-
-.search-box {
-  max-width: 640px; margin: 0 auto;
-  animation: fadeUp .9s cubic-bezier(.16,1,.3,1) .4s both;
-}
-.search-bar {
-  display:flex; align-items:center; gap:10px;
-  padding: 14px 14px 14px 24px;
-  border-radius: 100px;
-  background: rgba(255,255,255,0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255,255,255,0.9);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-  transition: box-shadow .4s, transform .4s;
-}
-.search-bar:focus-within { box-shadow: 0 12px 40px rgba(0,113,227,0.15); transform: translateY(-2px); }
-.search-bar input { flex:1; border:none; outline:none; background:transparent; font-size:15px; font-family:inherit; color:var(--text-primary); }
-.search-bar input::placeholder { color:var(--text-tertiary); }
-.search-btn {
-  width:44px; height:44px; border-radius:50%; border:none; cursor:pointer;
-  background: linear-gradient(135deg,var(--accent),var(--accent-2));
-  color:#fff; font-size:16px; display:flex; align-items:center; justify-content:center;
-  transition: transform .3s;
-}
-.search-btn:hover { transform: scale(1.08); }
-
-.engine-tabs { display:flex; justify-content:center; gap:8px; margin-top:18px; flex-wrap:wrap; }
-.engine-tab {
-  padding: 6px 18px; border-radius:100px; border:1px solid transparent;
-  background: rgba(255,255,255,0.4); font-size:13px; color:var(--text-secondary);
-  cursor:pointer; transition: all .3s; font-family:inherit;
-}
-.engine-tab:hover { color:var(--accent); }
-.engine-tab.active { background:var(--accent); color:#fff; box-shadow:0 4px 14px rgba(0,113,227,.3); }
-
-/* ===== Layout ===== */
-.layout {
-  max-width: 1360px; margin: 0 auto;
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 24px;
-  padding: 20px 24px 60px;
-  align-items: start;
+#particle-canvas { position:fixed; inset:0; z-index:-2; pointer-events:none; }
+#mouse-glow {
+  position:fixed; width:560px; height:560px; border-radius:50%;
+  background: radial-gradient(circle, rgba(0,113,227,0.07) 0%, transparent 60%);
+  z-index:-1; pointer-events:none; transform:translate(-50%,-50%);
 }
 
-/* Sidebar */
-.sidebar {
-  position: sticky; top: 76px;
-  max-height: calc(100vh - 96px);
-  overflow-y: auto;
-  padding: 14px 10px;
-  scrollbar-width: none;
-}
-.sidebar::-webkit-scrollbar { display:none; }
-.side-item {
-  display:flex; align-items:center; gap:10px;
-  padding: 10px 14px; border-radius: 12px;
-  font-size: 13.5px; color: var(--text-secondary);
-  text-decoration:none; margin-bottom: 2px;
-  transition: all .3s cubic-bezier(.16,1,.3,1);
-}
-.side-item .si { width:20px; text-align:center; }
-.side-item:hover { color:var(--accent); background:rgba(0,113,227,0.06); transform:translateX(3px); }
-.side-item.active { color:var(--accent); background:rgba(0,113,227,0.1); font-weight:600; }
-.side-divider { height:1px; background:rgba(0,0,0,0.05); margin:10px 8px; }
-
-/* Main */
-.main { min-width:0; }
-
-section { margin-bottom: 48px; scroll-margin-top: 80px; }
-
-.sec-head {
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  margin-bottom: 18px; flex-wrap:wrap;
-}
-.sec-title { display:flex; align-items:center; gap:10px; font-size:22px; font-weight:700; }
-.sec-title .emoji { font-size:22px; }
-.sec-more { font-size:13px; color:var(--accent); text-decoration:none; }
-.sec-more:hover { text-decoration:underline; }
-
-/* Glass */
+/* ===== 毛玻璃通用 ===== */
 .glass {
   background: var(--card);
-  backdrop-filter: blur(22px) saturate(180%);
-  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
 
-/* Sub tabs */
-.sub-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
-.sub-tab {
-  padding: 6px 16px; border-radius:100px; border:1px solid rgba(0,0,0,0.05);
-  background: rgba(255,255,255,0.5); font-size:12.5px; color:var(--text-secondary);
-  cursor:pointer; transition:all .3s; font-family:inherit;
+/* ===== 顶栏 ===== */
+nav {
+  position:fixed; top:0; left:0; width:100%; z-index:100;
+  padding: 12px 36px;
+  display:flex; justify-content:space-between; align-items:center; gap:20px;
+  background: rgba(255,255,255,0.4);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border-bottom: 1px solid rgba(255,255,255,0.6);
+  transition: all .4s cubic-bezier(.16,1,.3,1);
 }
-.sub-tab:hover { color:var(--accent); }
-.sub-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
-
-/* Tool grid */
-.tool-grid { display:grid; grid-template-columns: repeat(6,1fr); gap:12px; }
-.tool-card {
-  padding: 16px 14px; text-decoration:none; color:inherit; display:block;
-  transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s, opacity .3s;
-  opacity:0; transform: translateY(20px) scale(.97);
+nav.scrolled { padding: 8px 36px; background: rgba(255,255,255,0.7); }
+.nav-brand { font-size:18px; font-weight:800; display:flex; align-items:center; gap:10px; white-space:nowrap; letter-spacing:.5px; }
+.nav-brand .logo-dot {
+  width:12px; height:12px; border-radius:50%;
+  background: linear-gradient(135deg,var(--accent),var(--accent-2));
+  box-shadow:0 0 14px rgba(0,113,227,.6);
+  animation: logoPulse 2.6s ease-in-out infinite;
 }
-.tool-card.visible { opacity:1; transform:translateY(0) scale(1); }
-.tool-card:hover { transform:translateY(-4px) scale(1.02); box-shadow:var(--shadow-hover); }
-.tool-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
-.tool-icon { width:38px; height:38px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; color:#fff; box-shadow:0 4px 10px rgba(0,0,0,.15); }
-.tool-flag { font-size:9.5px; font-weight:600; padding:2px 7px; border-radius:100px; }
-.flag-hot { color:var(--red); background:rgba(255,59,48,.1); }
-.flag-free { color:#248a3d; background:rgba(52,199,89,.12); }
-.tool-card h3 { font-size:13.5px; font-weight:600; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.tool-card p { font-size:11px; color:var(--text-secondary); line-height:1.45; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+@keyframes logoPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.25);} }
+.nav-brand em { font-style:normal; font-size:11px; font-weight:600; color:var(--text-tertiary); letter-spacing:2px; }
+nav ul { display:flex; list-style:none; gap:22px; white-space:nowrap; }
+nav ul a { text-decoration:none; color:var(--text-secondary); font-size:14px; transition:color .3s; }
+nav ul a:hover { color:var(--accent); }
+.nav-cta {
+  padding: 8px 22px; border-radius:100px; border:none; cursor:pointer;
+  background: linear-gradient(135deg,var(--accent),var(--accent-2));
+  color:#fff; font-size:13px; font-weight:600; font-family:inherit;
+  box-shadow: 0 4px 16px rgba(0,113,227,.35);
+  transition: transform .3s, box-shadow .3s;
+}
+.nav-cta:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,113,227,.45); }
 
-/* Tables */
+/* ===== Hero ===== */
+.hero { padding: 130px 24px 46px; text-align:center; position:relative; }
+.hero-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:8px 22px; border-radius:100px;
+  background:rgba(255,255,255,.5); backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.8); box-shadow:var(--shadow);
+  font-size:13px; color:var(--text-secondary); margin-bottom:22px;
+  animation:fadeUp .9s cubic-bezier(.16,1,.3,1) .1s both;
+}
+.hero-badge .pulse-dot { width:8px; height:8px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(48,177,78,.5);} 50%{box-shadow:0 0 0 7px rgba(48,177,78,0);} }
+
+.hero h1 {
+  font-size: clamp(40px,6vw,64px); font-weight:800; letter-spacing:-1.5px; line-height:1.15;
+  margin-bottom:14px;
+  animation:fadeUp .9s cubic-bezier(.16,1,.3,1) .25s both;
+}
+.hero h1 .flow-text {
+  background: linear-gradient(120deg,#0071e3,#af52de,#ff9500,#0071e3);
+  background-size:300% 100%;
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  animation: flowText 6s linear infinite;
+}
+@keyframes flowText { 0%{background-position:0% 50%;} 100%{background-position:300% 50%;} }
+
+.hero .slogan { font-size:18px; color:var(--text-secondary); letter-spacing:2px; margin-bottom:30px; animation:fadeUp .9s cubic-bezier(.16,1,.3,1) .4s both; }
+
+.search-box { max-width:640px; margin:0 auto; animation:fadeUp .9s cubic-bezier(.16,1,.3,1) .55s both; }
+.search-bar {
+  display:flex; align-items:center; gap:10px;
+  padding:8px 8px 8px 26px; border-radius:100px;
+  background:rgba(255,255,255,.55); backdrop-filter:var(--blur);
+  border:1px solid rgba(255,255,255,.9); box-shadow:0 10px 40px rgba(31,38,135,.12);
+  transition:box-shadow .4s, transform .4s;
+}
+.search-bar:focus-within { box-shadow:0 14px 48px rgba(0,113,227,.2); transform:translateY(-2px); }
+.search-bar input { flex:1; border:none; outline:none; background:transparent; font-size:15px; font-family:inherit; color:var(--text-primary); }
+.search-btn {
+  height:46px; padding:0 26px; border-radius:100px; border:none; cursor:pointer;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  color:#fff; font-size:14px; font-weight:600; font-family:inherit;
+  transition:transform .3s;
+}
+.search-btn:hover { transform:scale(1.05); }
+.engine-tabs { display:flex; justify-content:center; gap:8px; margin-top:16px; flex-wrap:wrap; }
+.engine-tab {
+  padding:6px 18px; border-radius:100px; border:1px solid rgba(255,255,255,.7);
+  background:rgba(255,255,255,.4); backdrop-filter:blur(12px);
+  font-size:13px; color:var(--text-secondary); cursor:pointer; transition:all .3s; font-family:inherit;
+}
+.engine-tab:hover { color:var(--accent); }
+.engine-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 4px 14px rgba(0,113,227,.35); }
+
+.hero-stats { display:flex; justify-content:center; gap:48px; margin-top:38px; animation:fadeUp .9s cubic-bezier(.16,1,.3,1) .7s both; flex-wrap:wrap; }
+.hs-item { text-align:center; }
+.hs-num { font-size:30px; font-weight:800; color:var(--accent); font-variant-numeric:tabular-nums; }
+.hs-label { font-size:12px; color:var(--text-tertiary); letter-spacing:1px; }
+
+@keyframes fadeUp { from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
+
+/* ===== 布局 ===== */
+.layout { max-width:1380px; margin:0 auto; display:grid; grid-template-columns:224px 1fr; gap:24px; padding:16px 24px 60px; align-items:start; }
+
+.sidebar {
+  position:sticky; top:76px; max-height:calc(100vh - 96px); overflow-y:auto;
+  padding:14px 10px; scrollbar-width:none;
+  background:rgba(255,255,255,.4); backdrop-filter:var(--blur);
+  border:1px solid rgba(255,255,255,.7); border-radius:var(--radius);
+}
+.sidebar::-webkit-scrollbar { display:none; }
+.side-item { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; font-size:13.5px; color:var(--text-secondary); text-decoration:none; margin-bottom:2px; transition:all .3s cubic-bezier(.16,1,.3,1); }
+.side-item .si { width:20px; text-align:center; }
+.side-item:hover { color:var(--accent); background:rgba(0,113,227,.07); transform:translateX(3px); }
+.side-item.active { color:var(--accent); background:rgba(0,113,227,.12); font-weight:700; }
+.side-item.core { color:#c2410c; }
+.side-item.core.active { background:rgba(255,149,0,.15); color:#c2410c; }
+.side-divider { height:1px; background:rgba(0,0,0,.06); margin:10px 8px; }
+
+.main { min-width:0; }
+section { margin-bottom:52px; scroll-margin-top:84px; }
+
+.sec-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
+.sec-title { display:flex; align-items:center; gap:10px; font-size:24px; font-weight:800; letter-spacing:-.3px; }
+.sec-title .emoji { font-size:24px; }
+.sec-title .hot-flag { font-size:11px; font-weight:700; padding:3px 12px; border-radius:100px; background:linear-gradient(135deg,#ff9500,#ff3b30); color:#fff; letter-spacing:1px; }
+.sec-sub { font-size:13px; color:var(--text-tertiary); margin-top:2px; }
+.sec-more { font-size:13px; color:var(--accent); text-decoration:none; }
+.sec-more:hover { text-decoration:underline; }
+
+/* ===== 每日一课 ===== */
+.lesson-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.lesson-card { padding:24px; position:relative; overflow:hidden; transition:transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s; opacity:0; transform:translateY(26px); }
+.lesson-card.visible { opacity:1; transform:translateY(0); }
+.lesson-card:hover { box-shadow:var(--shadow-hover); }
+.lesson-card .l-tag { display:inline-block; font-size:11px; font-weight:700; padding:4px 14px; border-radius:100px; margin-bottom:14px; letter-spacing:1px; }
+.lesson-card h3 { font-size:18px; font-weight:700; margin-bottom:8px; }
+.lesson-card .l-body { font-size:13.5px; color:var(--text-secondary); line-height:1.7; }
+.lesson-card .l-tip { margin-top:14px; padding-top:12px; border-top:1px dashed rgba(0,0,0,.1); font-size:12px; color:var(--accent); }
+.tag-term { background:rgba(0,113,227,.12); color:var(--accent); }
+.tag-prompt { background:rgba(175,82,222,.12); color:var(--accent-2); }
+.tag-money { background:rgba(48,177,78,.12); color:var(--green); }
+
+.checkin-bar {
+  margin-top:16px; padding:14px 24px;
+  display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  font-size:13.5px; color:var(--text-secondary);
+}
+.checkin-bar .days { font-weight:800; color:var(--accent-3); font-size:16px; }
+.checkin-btn {
+  padding:8px 26px; border-radius:100px; border:none; cursor:pointer;
+  background:linear-gradient(135deg,var(--accent-3),var(--red));
+  color:#fff; font-weight:700; font-size:13px; font-family:inherit;
+  box-shadow:0 4px 16px rgba(255,59,48,.3); transition:transform .3s;
+}
+.checkin-btn:hover { transform:scale(1.06); }
+
+/* ===== 变现案例 ===== */
+.money-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.money-card { padding:24px; transition:transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s; opacity:0; transform:translateY(26px); position:relative; overflow:hidden; }
+.money-card.visible { opacity:1; transform:translateY(0); }
+.money-card:hover { box-shadow:var(--shadow-hover); }
+.money-card .m-emoji { font-size:30px; margin-bottom:12px; }
+.money-card h3 { font-size:16.5px; font-weight:700; margin-bottom:6px; }
+.money-card .m-desc { font-size:12.5px; color:var(--text-secondary); line-height:1.65; margin-bottom:14px; }
+.money-meta { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.money-meta span { font-size:11px; padding:3px 11px; border-radius:100px; background:rgba(0,113,227,.09); color:var(--accent); font-weight:600; }
+.money-meta .income { background:rgba(48,177,78,.13); color:var(--green); }
+.money-tools { font-size:11.5px; color:var(--text-tertiary); }
+.money-card .case-flag { position:absolute; top:16px; right:16px; font-size:10px; font-weight:700; padding:3px 10px; border-radius:100px; background:linear-gradient(135deg,#ff9500,#ff3b30); color:#fff; }
+
+/* ===== 学习路线 ===== */
+.roadmap { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; position:relative; }
+.road-step { padding:24px 20px; text-align:center; transition:transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s; opacity:0; transform:translateY(26px); position:relative; }
+.road-step.visible { opacity:1; transform:translateY(0); }
+.road-step:hover { transform:translateY(-6px); box-shadow:var(--shadow-hover); }
+.road-step .step-num {
+  width:52px; height:52px; margin:0 auto 14px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; font-weight:800; color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  box-shadow:0 6px 20px rgba(0,113,227,.35);
+}
+.road-step:nth-child(2) .step-num { background:linear-gradient(135deg,#af52de,#ff2d92); }
+.road-step:nth-child(3) .step-num { background:linear-gradient(135deg,#ff9500,#ff3b30); }
+.road-step:nth-child(4) .step-num { background:linear-gradient(135deg,#30b14e,#00c7be); }
+.road-step h3 { font-size:16px; font-weight:700; margin-bottom:4px; }
+.road-step .step-time { font-size:11px; color:var(--text-tertiary); margin-bottom:10px; }
+.road-step p { font-size:12.5px; color:var(--text-secondary); line-height:1.6; margin-bottom:12px; }
+.road-step .step-tools { font-size:11px; color:var(--accent); }
+
+/* ===== 表格 ===== */
 .table-wrap { border-radius:var(--radius); overflow:hidden; overflow-x:auto; }
-table { width:100%; border-collapse:collapse; min-width:820px; }
-thead th {
-  background:rgba(0,0,0,0.03); font-size:12px; font-weight:600; color:var(--text-tertiary);
-  letter-spacing:1px; padding:13px 16px; text-align:left; border-bottom:1px solid rgba(0,0,0,0.06); white-space:nowrap;
-}
-tbody td { padding:14px 16px; border-bottom:1px solid rgba(0,0,0,0.04); font-size:13.5px; vertical-align:middle; white-space:nowrap; }
+table { width:100%; border-collapse:collapse; min-width:880px; }
+thead th { background:rgba(255,255,255,.35); font-size:12px; font-weight:700; color:var(--text-tertiary); letter-spacing:1px; padding:13px 16px; text-align:left; border-bottom:1px solid rgba(0,0,0,.06); white-space:nowrap; }
+tbody td { padding:14px 16px; border-bottom:1px solid rgba(0,0,0,.04); font-size:13.5px; vertical-align:middle; white-space:nowrap; }
 tbody tr { transition:background .3s; }
-tbody tr:hover { background:rgba(0,113,227,0.04); }
+tbody tr:hover { background:rgba(0,113,227,.05); }
 tbody tr:last-child td { border-bottom:none; }
-.rank-num { font-size:15px; font-weight:700; color:var(--text-tertiary); width:36px; }
+.rank-num { font-size:15px; font-weight:800; color:var(--text-tertiary); width:36px; }
 tbody tr:nth-child(1) .rank-num { color:var(--accent-3); }
-tbody tr:nth-child(2) .rank-num { color:#b0b0b6; }
+tbody tr:nth-child(2) .rank-num { color:#a8a8ad; }
 tbody tr:nth-child(3) .rank-num { color:#cd7f32; }
 .cell-name { display:flex; align-items:center; gap:10px; }
 .cell-logo { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff; flex-shrink:0; }
-.cell-name .n { font-weight:600; font-size:13.5px; }
+.cell-name .n { font-weight:700; font-size:13.5px; }
 .cell-name .v { font-size:11.5px; color:var(--text-tertiary); }
-.price-in { font-weight:600; }
-.price-out { font-weight:600; color:var(--accent); }
-.ptag { display:inline-block; font-size:11px; padding:3px 10px; border-radius:100px; font-weight:500; }
-.t-cheap { background:rgba(52,199,89,.12); color:#248a3d; }
+.price-in { font-weight:700; }
+.price-out { font-weight:700; color:var(--accent); }
+.ptag { display:inline-block; font-size:11px; padding:3px 10px; border-radius:100px; font-weight:600; }
+.t-cheap { background:rgba(48,177,78,.13); color:var(--green); }
 .t-mid { background:rgba(0,113,227,.1); color:var(--accent); }
-.t-flag { background:rgba(255,149,0,.12); color:#c77700; }
-.note-cell { color:var(--text-secondary); font-size:12.5px; max-width:220px; white-space:normal; }
+.t-flag { background:rgba(255,149,0,.13); color:#c77700; }
+.rec-tag { display:inline-block; font-size:10.5px; font-weight:800; padding:3px 10px; border-radius:100px; margin-left:6px; letter-spacing:.5px; }
+.rec-strong { background:linear-gradient(135deg,#ff9500,#ff3b30); color:#fff; box-shadow:0 2px 10px rgba(255,59,48,.35); animation:recPulse 2s infinite; }
+@keyframes recPulse { 0%,100%{box-shadow:0 2px 10px rgba(255,59,48,.35);} 50%{box-shadow:0 2px 16px rgba(255,59,48,.6);} }
+.rec-yes { background:rgba(0,113,227,.12); color:var(--accent); }
+.note-cell { color:var(--text-secondary); font-size:12.5px; max-width:230px; white-space:normal; }
 .table-note { margin-top:12px; font-size:12px; color:var(--text-tertiary); text-align:right; }
 
-/* Prompts */
-.prompt-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
-.prompt-card { padding:20px; transition:transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s; opacity:0; transform:translateY(24px); }
+/* ===== 提示词 ===== */
+.prompt-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.prompt-card { padding:22px; transition:transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s; opacity:0; transform:translateY(26px); }
 .prompt-card.visible { opacity:1; transform:translateY(0); }
-.prompt-card:hover { transform:translateY(-5px); box-shadow:var(--shadow-hover); }
-.prompt-card .p-tag { font-size:11px; color:var(--accent); font-weight:600; margin-bottom:8px; }
-.prompt-card h3 { font-size:15px; font-weight:600; margin-bottom:8px; }
-.prompt-card pre {
-  font-size:12px; color:var(--text-secondary); line-height:1.6; white-space:pre-wrap;
-  background:rgba(0,0,0,0.03); border-radius:10px; padding:12px; margin-bottom:12px;
-  max-height:110px; overflow:hidden; font-family:inherit;
-}
-.copy-btn {
-  padding:7px 18px; border-radius:100px; border:1px solid var(--accent);
-  background:transparent; color:var(--accent); font-size:12.5px; cursor:pointer;
-  transition:all .3s; font-family:inherit;
-}
+.prompt-card:hover { box-shadow:var(--shadow-hover); }
+.prompt-card .p-tag { font-size:11px; color:var(--accent); font-weight:700; margin-bottom:8px; }
+.prompt-card h3 { font-size:15px; font-weight:700; margin-bottom:8px; }
+.prompt-card pre { font-size:12px; color:var(--text-secondary); line-height:1.6; white-space:pre-wrap; background:rgba(255,255,255,.4); border-radius:12px; padding:12px; margin-bottom:12px; max-height:104px; overflow:hidden; font-family:inherit; }
+.copy-btn { padding:7px 20px; border-radius:100px; border:1px solid var(--accent); background:transparent; color:var(--accent); font-size:12.5px; font-weight:600; cursor:pointer; transition:all .3s; font-family:inherit; }
 .copy-btn:hover { background:var(--accent); color:#fff; }
 .copy-btn.copied { background:var(--green); border-color:var(--green); color:#fff; }
 
-/* Money */
-.money-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
-.money-card { padding:22px; transition:transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s; opacity:0; transform:translateY(24px); }
-.money-card.visible { opacity:1; transform:translateY(0); }
-.money-card:hover { transform:translateY(-5px); box-shadow:var(--shadow-hover); }
-.money-card .m-emoji { font-size:28px; margin-bottom:12px; }
-.money-card h3 { font-size:16px; font-weight:600; margin-bottom:6px; }
-.money-card .m-desc { font-size:12.5px; color:var(--text-secondary); line-height:1.6; margin-bottom:14px; }
-.money-meta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
-.money-meta span { font-size:11px; padding:3px 10px; border-radius:100px; background:rgba(0,113,227,.08); color:var(--accent); }
-.money-meta .income { background:rgba(52,199,89,.12); color:#248a3d; }
-.money-tools { font-size:11.5px; color:var(--text-tertiary); }
+/* ===== 工具区 ===== */
+.sub-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+.sub-tab { padding:6px 16px; border-radius:100px; border:1px solid rgba(255,255,255,.7); background:rgba(255,255,255,.4); font-size:12.5px; color:var(--text-secondary); cursor:pointer; transition:all .3s; font-family:inherit; }
+.sub-tab:hover { color:var(--accent); }
+.sub-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+.tool-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:12px; }
+.tool-card { padding:16px 14px; text-decoration:none; color:inherit; display:block; transition:transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s, opacity .3s; opacity:0; transform:translateY(20px) scale(.97); }
+.tool-card.visible { opacity:1; transform:translateY(0) scale(1); }
+.tool-card:hover { transform:translateY(-5px) scale(1.03); box-shadow:var(--shadow-hover); }
+.tool-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.tool-icon { width:38px; height:38px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; color:#fff; box-shadow:0 4px 12px rgba(0,0,0,.18); }
+.tool-flag { font-size:9.5px; font-weight:700; padding:2px 8px; border-radius:100px; }
+.flag-hot { color:var(--red); background:rgba(255,59,48,.12); }
+.flag-free { color:var(--green); background:rgba(48,177,78,.13); }
+.tool-card h3 { font-size:13.5px; font-weight:700; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.tool-card p { font-size:11px; color:var(--text-secondary); line-height:1.5; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
 
-/* News / video / github (compact) */
-.news-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
-.news-card { padding:22px; cursor:pointer; display:flex; flex-direction:column; gap:10px; transition:transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s; opacity:0; transform:translateY(24px); }
+/* ===== 资讯/GitHub ===== */
+.news-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.news-card { padding:22px; cursor:pointer; display:flex; flex-direction:column; gap:10px; transition:transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s; opacity:0; transform:translateY(26px); }
 .news-card.visible { opacity:1; transform:translateY(0); }
 .news-card:hover { transform:translateY(-5px); box-shadow:var(--shadow-hover); }
-.news-source { font-size:11.5px; font-weight:600; color:var(--accent); display:flex; align-items:center; gap:7px; }
+.news-source { font-size:11.5px; font-weight:700; color:var(--accent); display:flex; align-items:center; gap:7px; }
 .news-source::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--accent); }
-.news-card h3 { font-size:15px; font-weight:600; line-height:1.45; }
+.news-card h3 { font-size:15px; font-weight:700; line-height:1.45; }
 .news-card p { font-size:12.5px; color:var(--text-secondary); line-height:1.6; flex:1; }
 
 .gh-list { display:flex; flex-direction:column; gap:10px; }
 .gh-item { display:flex; align-items:center; gap:16px; padding:16px 20px; transition:transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s; opacity:0; transform:translateX(-24px); }
 .gh-item.visible { opacity:1; transform:translateX(0); }
 .gh-item:hover { transform:translateX(5px); box-shadow:var(--shadow-hover); }
-.gh-rank { font-size:20px; font-weight:700; width:38px; text-align:center; color:var(--text-tertiary); flex-shrink:0; }
+.gh-rank { font-size:20px; font-weight:800; width:38px; text-align:center; color:var(--text-tertiary); flex-shrink:0; }
 .gh-item:nth-child(1) .gh-rank { color:var(--accent-3); }
 .gh-item:nth-child(2) .gh-rank { color:var(--accent); }
 .gh-item:nth-child(3) .gh-rank { color:var(--accent-2); }
 .gh-info { flex:1; min-width:0; }
-.gh-name { font-size:14px; font-weight:600; font-family:"SF Mono","Menlo","Consolas",monospace; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.gh-name { font-size:14px; font-weight:700; font-family:"SF Mono","Menlo","Consolas",monospace; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
 .gh-badge { font-size:10.5px; padding:2px 9px; border-radius:100px; background:rgba(0,113,227,.1); color:var(--accent); font-family:-apple-system,"PingFang SC",sans-serif; }
 .gh-desc { font-size:12px; color:var(--text-secondary); margin-top:2px; }
 
-footer { padding:40px 24px 60px; text-align:center; color:var(--text-tertiary); font-size:13px; }
-footer .update-time { display:inline-flex; align-items:center; gap:8px; padding:8px 20px; border-radius:100px; background:rgba(255,255,255,.6); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.8); margin-bottom:18px; font-size:12px; }
-footer .pulse-dot { width:7px; height:7px; border-radius:50%; background:#34c759; animation:pulse 2s ease-in-out infinite; }
-@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(52,199,89,.5);} 50%{box-shadow:0 0 0 6px rgba(52,199,89,0);} }
+footer { padding:44px 24px 60px; text-align:center; color:var(--text-tertiary); font-size:13px; }
+footer .update-time { display:inline-flex; align-items:center; gap:8px; padding:8px 22px; border-radius:100px; background:rgba(255,255,255,.5); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.8); margin-bottom:18px; font-size:12px; }
 footer p { line-height:2; }
 
-@keyframes fadeUp { from{opacity:0; transform:translateY(28px);} to{opacity:1; transform:translateY(0);} }
-
-/* Responsive */
-@media (max-width:1200px){ .tool-grid{grid-template-columns:repeat(4,1fr);} }
+@media (max-width:1200px){ .tool-grid{grid-template-columns:repeat(4,1fr);} .roadmap{grid-template-columns:repeat(2,1fr);} }
 @media (max-width:1000px){
   .layout{grid-template-columns:1fr;}
   .sidebar{display:none;}
   .tool-grid{grid-template-columns:repeat(3,1fr);}
-  .prompt-grid,.money-grid,.news-grid{grid-template-columns:repeat(2,1fr);}
+  .prompt-grid,.money-grid,.news-grid,.lesson-grid{grid-template-columns:repeat(2,1fr);}
   nav ul{display:none;}
 }
 @media (max-width:640px){
   .tool-grid{grid-template-columns:repeat(2,1fr);}
-  .prompt-grid,.money-grid,.news-grid{grid-template-columns:1fr;}
-  .nav-right{display:none;}
+  .prompt-grid,.money-grid,.news-grid,.lesson-grid,.roadmap{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 
 <div class="ambient"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div></div>
+<canvas id="particle-canvas"></canvas>
+<div id="mouse-glow"></div>
 
 <nav id="main-nav">
-  <div class="nav-brand"><span class="logo-dot"></span>AI 精品导航</div>
+  <div class="nav-brand"><span class="logo-dot"></span>智富AI <em>ZHIFU.AI</em></div>
   <ul>
+    <li><a href="#daily">每日一课</a></li>
+    <li><a href="#money">变现案例</a></li>
+    <li><a href="#roadmap">学习路线</a></li>
     <li><a href="#models">模型排行</a></li>
-    <li><a href="#gpu">算力价格</a></li>
-    <li><a href="#prompts">提示词库</a></li>
-    <li><a href="#money">副业指南</a></li>
     <li><a href="#tools">工具库</a></li>
   </ul>
-  <div class="nav-right">
-    <a href="#news">资讯</a><a href="#github">GitHub</a><a href="https://github.com/trending" target="_blank">热榜</a>
-  </div>
+  <button class="nav-cta" onclick="location.href='#daily'">开始学习</button>
 </nav>
 
 <header class="hero">
-  <h1>AI 精品导航 <span id="date-chip" style="font-size:.4em; -webkit-text-fill-color:var(--text-secondary); font-weight:500;"></span></h1>
-  <div class="sub">大模型价格 · GPU 算力 · 提示词库 · 80+ 精品工具 · 每日 18:00 更新</div>
+  <div class="hero-badge"><span class="pulse-dot"></span>每日 18:00 更新 · 学AI · 用AI · 赚AI</div>
+  <h1><span class="flow-text">智富AI</span> · 让AI为你打工</h1>
+  <div class="slogan">每天学点AI · 每天用AI赚点 · 从入门到变现一站搞定</div>
   <div class="search-box">
     <div class="search-bar">
-      <input id="search-input" type="text" placeholder="搜索 AI 工具 / 模型 / 提示词…" />
-      <button class="search-btn" id="search-btn">&#128269;</button>
+      <input id="search-input" type="text" placeholder="搜索 105+ AI 工具 / 模型 / 变现方法…" />
+      <button class="search-btn" id="search-btn">搜索</button>
     </div>
     <div class="engine-tabs" id="engine-tabs">
       <button class="engine-tab active" data-e="site">本站</button>
@@ -333,16 +387,24 @@ footer p { line-height:2; }
       <button class="engine-tab" data-e="sogou">搜狗</button>
     </div>
   </div>
+  <div class="hero-stats">
+    <div class="hs-item"><div class="hs-num" data-count="105">0</div><div class="hs-label">精品工具</div></div>
+    <div class="hs-item"><div class="hs-num" data-count="4">0</div><div class="hs-label">变现阶段</div></div>
+    <div class="hs-item"><div class="hs-num" data-count="6">0</div><div class="hs-label">真实案例</div></div>
+    <div class="hs-item"><div class="hs-num" data-count="365">0</div><div class="hs-label">每日课程</div></div>
+  </div>
 </header>
 
 <div class="layout">
 
-  <!-- Sidebar -->
-  <aside class="sidebar glass" id="sidebar">
+  <aside class="sidebar" id="sidebar">
+    <a class="side-item core" href="#daily"><span class="si">&#127793;</span>每日一课</a>
+    <a class="side-item core" href="#money"><span class="si">&#128176;</span>变现案例</a>
+    <a class="side-item core" href="#roadmap"><span class="si">&#128506;&#65039;</span>学习路线图</a>
+    <div class="side-divider"></div>
     <a class="side-item" href="#models"><span class="si">&#127942;</span>大模型排行榜</a>
     <a class="side-item" href="#gpu"><span class="si">&#9889;</span>GPU 算力对比</a>
     <a class="side-item" href="#prompts"><span class="si">&#128172;</span>提示词库</a>
-    <a class="side-item" href="#money"><span class="si">&#128176;</span>AI 副业指南</a>
     <div class="side-divider"></div>
     <a class="side-item" href="#sec-dialog"><span class="si">&#129302;</span>AI 智能对话</a>
     <a class="side-item" href="#sec-image"><span class="si">&#127912;</span>AI 绘画生成</a>
@@ -357,96 +419,218 @@ footer p { line-height:2; }
     <a class="side-item" href="#github"><span class="si">&#128293;</span>GitHub 热榜</a>
   </aside>
 
-  <!-- Main -->
   <main class="main">
 
-    <!-- Models -->
+    <!-- 每日一课 -->
+    <section id="daily">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title"><span class="emoji">&#127793;</span>每日一课 <span class="hot-flag">核心</span></div>
+          <div class="sec-sub">每天 3 分钟，AI 认知领先一步 · 今日已更新</div>
+        </div>
+      </div>
+      <div class="lesson-grid">
+        <div class="lesson-card glass tilt">
+          <span class="l-tag tag-term">今日概念</span>
+          <h3>Token（词元）</h3>
+          <div class="l-body">大模型计费的最小单位。中文 1 字约 1-2 个 Token。理解 Token 才能看懂所有模型价格表，也是控制 AI 成本的第一步。</div>
+          <div class="l-tip">记忆点：价格表里的 /M 就是每百万 Token</div>
+        </div>
+        <div class="lesson-card glass tilt">
+          <span class="l-tag tag-prompt">今日提示词技巧</span>
+          <h3>角色扮演法</h3>
+          <div class="l-body">开头加一句"你是一位【10年经验的XX专家】"，AI 回答质量立刻提升一个档次。角色越具体，输出越专业。</div>
+          <div class="l-tip">练习：让 AI 扮演面试官问你 3 个问题</div>
+        </div>
+        <div class="lesson-card glass tilt">
+          <span class="l-tag tag-money">今日变现点子</span>
+          <h3>AI 简历优化服务</h3>
+          <div class="l-body">用 ChatGPT/Kimi 帮求职者优化简历，闲鱼/小红书接单，每单 20-100 元，熟练后 30 分钟交付一单。</div>
+          <div class="l-tip">启动成本：0 元 · 工具：Kimi + ChatGPT</div>
+        </div>
+      </div>
+      <div class="checkin-bar glass">
+        <div>&#128293; 坚持学习第 <span class="days">1</span> 天 · 累计打卡 128 人 · 今天也要用AI赚回来！</div>
+        <button class="checkin-btn" onclick="this.textContent='已打卡 ✓';this.style.background='#30b14e'">今日打卡</button>
+      </div>
+    </section>
+
+    <!-- 变现案例 -->
+    <section id="money">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title"><span class="emoji">&#128176;</span>真实变现案例 <span class="hot-flag">核心</span></div>
+          <div class="sec-sub">别人已经跑通的 AI 赚钱路径，照着做就行</div>
+        </div>
+      </div>
+      <div class="money-grid">
+        <div class="money-card glass tilt"><span class="case-flag">真实案例</span>
+          <div class="m-emoji">&#128202;</div><h3>大学生 AI PPT 定制</h3>
+          <div class="m-desc">用 Gamma 生成 + 人工微调，接答辩/述职 PPT 单，客单价 50-300 元，课余时间月入 8k。</div>
+          <div class="money-meta"><span>难度 ★</span><span class="income">月入 ¥8k</span></div>
+          <div class="money-tools">工具：Gamma + ChatGPT</div>
+        </div>
+        <div class="money-card glass tilt"><span class="case-flag">真实案例</span>
+          <div class="m-emoji">&#128062;</div><h3>AI 宠物知识号矩阵</h3>
+          <div class="m-desc">即梦出图 + 剪映成片，3 个月做到 10 万粉，接广告 + 带货月入过万。</div>
+          <div class="money-meta"><span>难度 ★★</span><span class="income">月入 ¥12k</span></div>
+          <div class="money-tools">工具：即梦 + 剪映 + Kimi</div>
+        </div>
+        <div class="money-card glass tilt"><span class="case-flag">真实案例</span>
+          <div class="m-emoji">&#128187;</div><h3>AI 编程接外包</h3>
+          <div class="m-desc">Cursor 辅助写爬虫/小程序/自动化脚本，效率翻 3 倍，兼职月入 2 万。</div>
+          <div class="money-meta"><span>难度 ★★★</span><span class="income">月入 ¥20k</span></div>
+          <div class="money-tools">工具：Cursor + Copilot</div>
+        </div>
+        <div class="money-card glass tilt"><span class="case-flag">真实案例</span>
+          <div class="m-emoji">&#127912;</div><h3>AI 头像/壁纸定制</h3>
+          <div class="m-desc">Midjourney 出图，社交平台 5-30 元/张接单，每天 1 小时月入 5k。</div>
+          <div class="money-meta"><span>难度 ★</span><span class="income">月入 ¥5k</span></div>
+          <div class="money-tools">工具：Midjourney + Qwen-Image</div>
+        </div>
+        <div class="money-card glass tilt"><span class="case-flag">真实案例</span>
+          <div class="m-emoji">&#127916;</div><h3>AI 短剧解说号</h3>
+          <div class="m-desc">可灵生成画面 + AI 配音做解说，无真人出镜，平台分成月入 1.2 万。</div>
+          <div class="money-meta"><span>难度 ★★</span><span class="income">月入 ¥12k</span></div>
+          <div class="money-tools">工具：可灵 + 剪映 + ElevenLabs</div>
+        </div>
+        <div class="money-card glass tilt"><span class="case-flag">真实案例</span>
+          <div class="m-emoji">&#129504;</div><h3>提示词社群知识付费</h3>
+          <div class="m-desc">整理行业提示词模板做付费社群，年费 199 元，300 会员年入 6 万。</div>
+          <div class="money-meta"><span>难度 ★★</span><span class="income">年入 ¥60k</span></div>
+          <div class="money-tools">工具：ChatGPT + 知识星球</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 学习路线 -->
+    <section id="roadmap">
+      <div class="sec-head">
+        <div>
+          <div class="sec-title"><span class="emoji">&#128506;&#65039;</span>AI 学习变现路线图 <span class="hot-flag">核心</span></div>
+          <div class="sec-sub">4 个阶段，90 天从零基础到第一笔 AI 收入</div>
+        </div>
+      </div>
+      <div class="roadmap">
+        <div class="road-step glass">
+          <div class="step-num">1</div><h3>入门 · 会用</h3><div class="step-time">第 1-2 周</div>
+          <p>每天和 AI 对话 10 次，学会提问。掌握 1-2 个对话模型 + 1 个生图工具。</p>
+          <div class="step-tools">ChatGPT / Kimi / 即梦</div>
+        </div>
+        <div class="road-step glass">
+          <div class="step-num">2</div><h3>熟练 · 提效</h3><div class="step-time">第 3-4 周</div>
+          <p>学习提示词工程，把 AI 用进工作/学习：写文案、做 PPT、读论文、剪视频。</p>
+          <div class="step-tools">提示词库 / Gamma / 剪映AI</div>
+        </div>
+        <div class="road-step glass">
+          <div class="step-num">3</div><h3>进阶 · 自动化</h3><div class="step-time">第 2 个月</div>
+          <p>搭建 AI 工作流：智能体、知识库、批量内容生产，效率拉开差距。</p>
+          <div class="step-tools">Coze / Dify / Cursor</div>
+        </div>
+        <div class="road-step glass">
+          <div class="step-num">4</div><h3>变现 · 接单</h3><div class="step-time">第 3 个月起</div>
+          <p>选一个变现方向深耕：接单 / 做账号 / 知识付费，跑通第一笔收入。</p>
+          <div class="step-tools">见变现案例区 ↓</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 模型排行 -->
     <section id="models">
-      <div class="sec-head"><div class="sec-title"><span class="emoji">&#127942;</span>大模型排行榜</div><a class="sec-more" href="https://devtk.ai/zh/blog/ai-api-pricing-comparison-2026/" target="_blank">价格来源 →</a></div>
+      <div class="sec-head">
+        <div><div class="sec-title"><span class="emoji">&#127942;</span>大模型排行榜</div><div class="sec-sub">带价格 + 推荐指数，选模型不纠结</div></div>
+        <a class="sec-more" href="https://devtk.ai/zh/blog/ai-api-pricing-comparison-2026/" target="_blank">价格来源 →</a>
+      </div>
       <div class="table-wrap glass">
         <table>
-          <thead><tr><th>#</th><th>模型</th><th>上下文</th><th>输入价</th><th>输出价</th><th>档位</th><th>亮点</th></tr></thead>
+          <thead><tr><th>#</th><th>模型</th><th>上下文</th><th>输入价</th><th>输出价</th><th>档位</th><th>推荐</th><th>亮点</th></tr></thead>
           <tbody>
-            <tr><td class="rank-num">1</td><td><div class="cell-name"><span class="cell-logo" style="background:#000;">GPT</span><div><div class="n">GPT-5.6 Sol</div><div class="v">OpenAI</div></div></div></td><td>105万</td><td class="price-in">$5.00</td><td class="price-out">$30.00</td><td><span class="ptag t-flag">旗舰</span></td><td class="note-cell">综合能力天花板</td></tr>
-            <tr><td class="rank-num">2</td><td><div class="cell-name"><span class="cell-logo" style="background:#d97757;">Cl</span><div><div class="n">Claude Opus 5</div><div class="v">Anthropic</div></div></div></td><td>100万</td><td class="price-in">$5.00</td><td class="price-out">$25.00</td><td><span class="ptag t-flag">旗舰</span></td><td class="note-cell">深度推理长文标杆</td></tr>
-            <tr><td class="rank-num">3</td><td><div class="cell-name"><span class="cell-logo" style="background:#4285f4;">Ge</span><div><div class="n">Gemini 3.1 Pro</div><div class="v">Google</div></div></div></td><td>105万</td><td class="price-in">$2.00</td><td class="price-out">$12.00</td><td><span class="ptag t-mid">均衡</span></td><td class="note-cell">多模态生态强</td></tr>
-            <tr><td class="rank-num">4</td><td><div class="cell-name"><span class="cell-logo" style="background:#1d1d1f;">Gx</span><div><div class="n">Grok 4.5</div><div class="v">xAI</div></div></div></td><td>50万</td><td class="price-in">$2.00</td><td class="price-out">$6.00</td><td><span class="ptag t-mid">均衡</span></td><td class="note-cell">视频理解领先</td></tr>
-            <tr><td class="rank-num">5</td><td><div class="cell-name"><span class="cell-logo" style="background:#6d28d9;">GLM</span><div><div class="n">GLM-5.2</div><div class="v">智谱</div></div></div></td><td>100万</td><td class="price-in">$1.40</td><td class="price-out">$4.40</td><td><span class="ptag t-mid">均衡</span></td><td class="note-cell">国产性价比突出</td></tr>
-            <tr><td class="rank-num">6</td><td><div class="cell-name"><span class="cell-logo" style="background:#ff6a00;">Qw</span><div><div class="n">Qwen3.7 Max</div><div class="v">阿里</div></div></div></td><td>100万</td><td class="price-in">¥6.00</td><td class="price-out">¥18.00</td><td><span class="ptag t-mid">均衡</span></td><td class="note-cell">旗舰首次开源(3.8)</td></tr>
-            <tr><td class="rank-num">7</td><td><div class="cell-name"><span class="cell-logo" style="background:#4d6bfe;">DS</span><div><div class="n">DeepSeek V4 Flash</div><div class="v">深度求索</div></div></div></td><td>100万</td><td class="price-in">$0.14</td><td class="price-out">$0.28</td><td><span class="ptag t-cheap">极致低价</span></td><td class="note-cell">成本之王</td></tr>
-            <tr><td class="rank-num">8</td><td><div class="cell-name"><span class="cell-logo" style="background:#0f172a;">Ki</span><div><div class="n">Kimi K3</div><div class="v">月之暗面</div></div></div></td><td>105万</td><td class="price-in">$3.00</td><td class="price-out">$15.00</td><td><span class="ptag t-mid">均衡</span></td><td class="note-cell">长文本代码均衡</td></tr>
-            <tr><td class="rank-num">9</td><td><div class="cell-name"><span class="cell-logo" style="background:#e11d48;">MM</span><div><div class="n">MiniMax M3</div><div class="v">MiniMax</div></div></div></td><td>100万</td><td class="price-in">$0.30</td><td class="price-out">$1.20</td><td><span class="ptag t-cheap">低价</span></td><td class="note-cell">低价全能选手</td></tr>
-            <tr><td class="rank-num">10</td><td><div class="cell-name"><span class="cell-logo" style="background:#f59e0b;">Mi</span><div><div class="n">小米 MiMo-V2.5</div><div class="v">小米</div></div></div></td><td>100万</td><td class="price-in">$0.14</td><td class="price-out">$0.28</td><td><span class="ptag t-cheap">极致低价</span></td><td class="note-cell">硬件厂商入场</td></tr>
-            <tr><td class="rank-num">11</td><td><div class="cell-name"><span class="cell-logo" style="background:#1e40af;">Lu</span><div><div class="n">GPT-5.6 Luna</div><div class="v">OpenAI</div></div></div></td><td>105万</td><td class="price-in">$0.20</td><td class="price-out">$1.20</td><td><span class="ptag t-cheap">低价</span></td><td class="note-cell">降价80%入门首选</td></tr>
-            <tr><td class="rank-num">12</td><td><div class="cell-name"><span class="cell-logo" style="background:#325ab4;">豆</span><div><div class="n">Doubao Pro</div><div class="v">字节</div></div></div></td><td>128万</td><td class="price-in">¥0.80</td><td class="price-out">¥2.00</td><td><span class="ptag t-cheap">低价</span></td><td class="note-cell">字节生态性价比高</td></tr>
+            <tr><td class="rank-num">1</td><td><div class="cell-name"><span class="cell-logo" style="background:#4d6bfe;">DS</span><div><div class="n">DeepSeek V4 Flash</div><div class="v">深度求索</div></div></div></td><td>100万</td><td class="price-in">$0.14</td><td class="price-out">$0.28</td><td><span class="ptag t-cheap">极致低价</span></td><td><span class="rec-tag rec-strong">强力推荐</span></td><td class="note-cell">性价比之王，学习练手首选</td></tr>
+            <tr><td class="rank-num">2</td><td><div class="cell-name"><span class="cell-logo" style="background:#ff6a00;">Qw</span><div><div class="n">Qwen3.7 Max</div><div class="v">阿里</div></div></div></td><td>100万</td><td class="price-in">¥6.00</td><td class="price-out">¥18.00</td><td><span class="ptag t-mid">均衡</span></td><td><span class="rec-tag rec-strong">强力推荐</span></td><td class="note-cell">国产旗舰，中文能力顶级</td></tr>
+            <tr><td class="rank-num">3</td><td><div class="cell-name"><span class="cell-logo" style="background:#d97757;">Cl</span><div><div class="n">Claude Opus 5</div><div class="v">Anthropic</div></div></div></td><td>100万</td><td class="price-in">$5.00</td><td class="price-out">$25.00</td><td><span class="ptag t-flag">旗舰</span></td><td><span class="rec-tag rec-strong">强力推荐</span></td><td class="note-cell">深度推理与写作天花板</td></tr>
+            <tr><td class="rank-num">4</td><td><div class="cell-name"><span class="cell-logo" style="background:#000;">GPT</span><div><div class="n">GPT-5.6 Sol</div><div class="v">OpenAI</div></div></div></td><td>105万</td><td class="price-in">$5.00</td><td class="price-out">$30.00</td><td><span class="ptag t-flag">旗舰</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">综合能力天花板</td></tr>
+            <tr><td class="rank-num">5</td><td><div class="cell-name"><span class="cell-logo" style="background:#4285f4;">Ge</span><div><div class="n">Gemini 3.1 Pro</div><div class="v">Google</div></div></div></td><td>105万</td><td class="price-in">$2.00</td><td class="price-out">$12.00</td><td><span class="ptag t-mid">均衡</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">多模态生态强</td></tr>
+            <tr><td class="rank-num">6</td><td><div class="cell-name"><span class="cell-logo" style="background:#1e40af;">Lu</span><div><div class="n">GPT-5.6 Luna</div><div class="v">OpenAI</div></div></div></td><td>105万</td><td class="price-in">$0.20</td><td class="price-out">$1.20</td><td><span class="ptag t-cheap">低价</span></td><td><span class="rec-tag rec-strong">强力推荐</span></td><td class="note-cell">降价80%，入门最划算</td></tr>
+            <tr><td class="rank-num">7</td><td><div class="cell-name"><span class="cell-logo" style="background:#6d28d9;">GLM</span><div><div class="n">GLM-5.2</div><div class="v">智谱</div></div></div></td><td>100万</td><td class="price-in">$1.40</td><td class="price-out">$4.40</td><td><span class="ptag t-mid">均衡</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">国产性价比突出</td></tr>
+            <tr><td class="rank-num">8</td><td><div class="cell-name"><span class="cell-logo" style="background:#0f172a;">Ki</span><div><div class="n">Kimi K3</div><div class="v">月之暗面</div></div></div></td><td>105万</td><td class="price-in">$3.00</td><td class="price-out">$15.00</td><td><span class="ptag t-mid">均衡</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">长文本处理强</td></tr>
+            <tr><td class="rank-num">9</td><td><div class="cell-name"><span class="cell-logo" style="background:#1d1d1f;">Gx</span><div><div class="n">Grok 4.5</div><div class="v">xAI</div></div></div></td><td>50万</td><td class="price-in">$2.00</td><td class="price-out">$6.00</td><td><span class="ptag t-mid">均衡</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">视频理解领先</td></tr>
+            <tr><td class="rank-num">10</td><td><div class="cell-name"><span class="cell-logo" style="background:#e11d48;">MM</span><div><div class="n">MiniMax M3</div><div class="v">MiniMax</div></div></div></td><td>100万</td><td class="price-in">$0.30</td><td class="price-out">$1.20</td><td><span class="ptag t-cheap">低价</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">低价全能选手</td></tr>
+            <tr><td class="rank-num">11</td><td><div class="cell-name"><span class="cell-logo" style="background:#f59e0b;">Mi</span><div><div class="n">小米 MiMo-V2.5</div><div class="v">小米</div></div></div></td><td>100万</td><td class="price-in">$0.14</td><td class="price-out">$0.28</td><td><span class="ptag t-cheap">极致低价</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">与DeepSeek同价</td></tr>
+            <tr><td class="rank-num">12</td><td><div class="cell-name"><span class="cell-logo" style="background:#325ab4;">豆</span><div><div class="n">Doubao Pro</div><div class="v">字节</div></div></div></td><td>128万</td><td class="price-in">¥0.80</td><td class="price-out">¥2.00</td><td><span class="ptag t-cheap">低价</span></td><td><span class="rec-tag rec-yes">推荐</span></td><td class="note-cell">字节生态免费多用</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="table-note">* 每百万 Token 价格 · 数据：devtk.ai 2026年8月</div>
+      <div class="table-note">* 每百万 Token 价格 · 数据：devtk.ai 2026年8月 · 学习练手认准"强力推荐"</div>
     </section>
 
     <!-- GPU -->
     <section id="gpu">
-      <div class="sec-head"><div class="sec-title"><span class="emoji">&#9889;</span>GPU 算力价格对比</div><a class="sec-more" href="https://www.computeunion.net/zh/gpu" target="_blank">实时报价 →</a></div>
+      <div class="sec-head">
+        <div><div class="sec-title"><span class="emoji">&#9889;</span>GPU 算力价格对比</div><div class="sec-sub">自己跑模型？先比个价</div></div>
+        <a class="sec-more" href="https://www.computeunion.net/zh/gpu" target="_blank">实时报价 →</a>
+      </div>
       <div class="table-wrap glass">
         <table>
           <thead><tr><th>型号</th><th>显存</th><th>最低小时价</th><th>平台</th><th>适用场景</th><th>性价比</th></tr></thead>
           <tbody>
-            <tr><td><div class="cell-name"><span class="cell-logo" style="background:#76b900;">NV</span><div class="n">RTX 4090</div></div></td><td>24GB</td><td class="price-out">¥0.97/时</td><td>vast.ai</td><td class="note-cell">推理 / 轻量微调 / 生图</td><td><span class="ptag t-cheap">极高</span></td></tr>
+            <tr><td><div class="cell-name"><span class="cell-logo" style="background:#76b900;">NV</span><div class="n">RTX 4090</div></div></td><td>24GB</td><td class="price-out">¥0.97/时</td><td>vast.ai</td><td class="note-cell">推理 / 生图 / 轻量微调</td><td><span class="ptag t-cheap">极高</span></td></tr>
             <tr><td><div class="cell-name"><span class="cell-logo" style="background:#76b900;">NV</span><div class="n">A100</div></div></td><td>80GB</td><td class="price-out">¥1.91/时</td><td>vast.ai</td><td class="note-cell">大模型微调 / 训练</td><td><span class="ptag t-cheap">高</span></td></tr>
-            <tr><td><div class="cell-name"><span class="cell-logo" style="background:#76b900;">NV</span><div class="n">H100 SXM5</div></div></td><td>80GB</td><td class="price-out">¥9.68/时</td><td>vast.ai</td><td class="note-cell">大规模训练 / 旗舰推理</td><td><span class="ptag t-mid">中</span></td></tr>
+            <tr><td><div class="cell-name"><span class="cell-logo" style="background:#76b900;">NV</span><div class="n">H100 SXM5</div></div></td><td>80GB</td><td class="price-out">¥9.68/时</td><td>vast.ai</td><td class="note-cell">大规模训练</td><td><span class="ptag t-mid">中</span></td></tr>
             <tr><td><div class="cell-name"><span class="cell-logo" style="background:#76b900;">NV</span><div class="n">H100 PCIe</div></div></td><td>80GB</td><td class="price-out">¥18.05/时</td><td>Crusoe</td><td class="note-cell">企业级稳定训练</td><td><span class="ptag t-flag">较低</span></td></tr>
           </tbody>
         </table>
       </div>
-      <div class="table-note">* 参考最低报价，实际随供需波动 · 国内平台（AutoDL/恒源云）4090 约 ¥1.5-3/时</div>
+      <div class="table-note">* 参考最低报价 · 国内平台 4090 约 ¥1.5-3/时</div>
     </section>
 
-    <!-- Prompts -->
+    <!-- 提示词 -->
     <section id="prompts">
-      <div class="sec-head"><div class="sec-title"><span class="emoji">&#128172;</span>精选提示词库</div><a class="sec-more" href="https://github.com/f/awesome-chatgpt-prompts" target="_blank">更多提示词 →</a></div>
+      <div class="sec-head">
+        <div><div class="sec-title"><span class="emoji">&#128172;</span>变现级提示词库</div><div class="sec-sub">直接复制就能接单赚钱的提示词</div></div>
+        <a class="sec-more" href="https://github.com/f/awesome-chatgpt-prompts" target="_blank">更多 →</a>
+      </div>
       <div class="prompt-grid" id="prompt-grid"></div>
     </section>
 
-    <!-- Money -->
-    <section id="money">
-      <div class="sec-head"><div class="sec-title"><span class="emoji">&#128176;</span>AI 副业变现指南</div></div>
-      <div class="money-grid" id="money-grid"></div>
-    </section>
-
-    <!-- Tool sections rendered by JS -->
+    <!-- 工具区 JS 渲染 -->
     <div id="tool-sections"></div>
 
-    <!-- News -->
+    <!-- 资讯 -->
     <section id="news">
-      <div class="sec-head"><div class="sec-title"><span class="emoji">&#128240;</span>今日 AI 头条</div><a class="sec-more" href="https://www.baidu.com/s?wd=AI%20%E6%96%B0%E9%97%BB" target="_blank">更多 →</a></div>
+      <div class="sec-head">
+        <div><div class="sec-title"><span class="emoji">&#128240;</span>今日 AI 头条</div><div class="sec-sub">看懂趋势，才能赚认知内的钱</div></div>
+        <a class="sec-more" href="https://www.baidu.com/s?wd=AI%20%E6%96%B0%E9%97%BB" target="_blank">更多 →</a>
+      </div>
       <div class="news-grid">
         <article class="news-card glass" onclick="window.open('https://ai.zol.com.cn/1226/12268657.html')">
-          <div class="news-source">阿里 · 重磅发布</div>
+          <div class="news-source">阿里 · 重磅</div>
           <h3>Qwen3.8-Max 发布：2.4 万亿参数开源，推理成本降至行业 1/8</h3>
-          <p>每百万 Token 约 6 美元（行业约 50 美元），支持 100 万上下文与原生多模态，旗舰首次开源。</p>
+          <p>每百万 Token 约 6 美元（行业约 50 美元），国产开源模型变现机会大增。</p>
         </article>
         <article class="news-card glass" onclick="window.open('https://ai.zol.com.cn/1226/12263499.html')">
           <div class="news-source">马斯克 · 演示</div>
           <h3>Grok 4.5 视频理解全面开放：精准识破 AI 合成视频</h3>
-          <p>以科比 AI 合成视频为例，识别人物、描述细节并判断真伪，多模态统一理解。</p>
+          <p>多模态统一理解，视频鉴定/审核类副业新机会。</p>
         </article>
         <article class="news-card glass" onclick="window.open('https://www.toutiao.com/w/1872557113626688/')">
           <div class="news-source">监管 · 8月4日</div>
-          <h3>白宫将召集头部 AI 公司举行安全会议</h3>
-          <p>OpenAI 等代表将讨论模型安全测试，全球 AI 监管进入新阶段。</p>
+          <h3>白宫召集头部 AI 公司开安全会议</h3>
+          <p>AI 合规人才需求上升，"AI 安全评估"或成新职业方向。</p>
         </article>
       </div>
     </section>
 
     <!-- GitHub -->
     <section id="github">
-      <div class="sec-head"><div class="sec-title"><span class="emoji">&#128293;</span>GitHub 热门 AI 项目</div><a class="sec-more" href="https://github.com/trending" target="_blank">Trending →</a></div>
+      <div class="sec-head">
+        <div><div class="sec-title"><span class="emoji">&#128293;</span>GitHub 热门 AI 项目</div><div class="sec-sub">跟着开源社区学，免费资源最多</div></div>
+        <a class="sec-more" href="https://github.com/trending" target="_blank">Trending →</a>
+      </div>
       <div class="gh-list">
         <a class="gh-item glass" href="https://github.com/zhaoxuya520/reverse-skill" target="_blank"><div class="gh-rank">1</div><div class="gh-info"><div class="gh-name">zhaoxuya520/reverse-skill <span class="gh-badge">NEW</span></div><div class="gh-desc">逆向工程 / CTF / 安全研究 AI skill 路由包</div></div></a>
         <a class="gh-item glass" href="https://github.com/different-ai/openwork" target="_blank"><div class="gh-rank">2</div><div class="gh-info"><div class="gh-name">different-ai/openwork <span class="gh-badge">▲2</span></div><div class="gh-desc">开源桌面端 cowork 替代，跨平台共享 AI 工作流</div></div></a>
-        <a class="gh-item glass" href="https://github.com/mvanhorn/last30days-skill" target="_blank"><div class="gh-rank">3</div><div class="gh-info"><div class="gh-name">mvanhorn/last30days-skill <span class="gh-badge">▲4</span></div><div class="gh-desc">聚合 Reddit/X/YouTube 等近 30 天全网讨论</div></div></a>
-        <a class="gh-item glass" href="https://github.com/microsoft/AI-For-Beginners" target="_blank"><div class="gh-rank">4</div><div class="gh-info"><div class="gh-name">microsoft/AI-For-Beginners</div><div class="gh-desc">微软 12 周 AI 入门课程</div></div></a>
+        <a class="gh-item glass" href="https://github.com/mvanhorn/last30days-skill" target="_blank"><div class="gh-rank">3</div><div class="gh-info"><div class="gh-name">mvanhorn/last30days-skill <span class="gh-badge">▲4</span></div><div class="gh-desc">聚合 Reddit/X/YouTube 近 30 天全网讨论</div></div></a>
+        <a class="gh-item glass" href="https://github.com/microsoft/AI-For-Beginners" target="_blank"><div class="gh-rank">4</div><div class="gh-info"><div class="gh-name">microsoft/AI-For-Beginners</div><div class="gh-desc">微软 12 周 AI 入门课（路线图第1阶段配套）</div></div></a>
         <a class="gh-item glass" href="https://github.com/github/copilot-sdk" target="_blank"><div class="gh-rank">5</div><div class="gh-info"><div class="gh-name">github/copilot-sdk <span class="gh-badge">NEW</span></div><div class="gh-desc">Copilot 智能体工作流 SDK</div></div></a>
         <a class="gh-item glass" href="https://github.com/agavra/tuicr" target="_blank"><div class="gh-rank">6</div><div class="gh-info"><div class="gh-name">agavra/tuicr <span class="gh-badge">▲5</span></div><div class="gh-desc">终端 UI 代码审查工具</div></div></a>
         <a class="gh-item glass" href="https://github.com/1jehuang/jcode" target="_blank"><div class="gh-rank">7</div><div class="gh-info"><div class="gh-name">1jehuang/jcode <span class="gh-badge">RE</span></div><div class="gh-desc">Rust 原生编码智能体运行时</div></div></a>
@@ -457,267 +641,291 @@ footer p { line-height:2; }
 </div>
 
 <footer>
-  <div class="update-time"><span class="pulse-dot"></span>最近更新：2026年8月3日 18:00</div>
-  <p>AI 精品导航 · 每日 18:00 自动更新</p>
+  <div class="update-time"><span class="pulse-dot"></span>最近更新：2026年8月5日 18:00</div>
+  <p>智富AI · 每天学点AI · 每天用AI赚点</p>
   <p>数据来源：新浪财经 · 36氪 · devtk.ai · computeunion · GitHub Trending</p>
-  <p style="margin-top:10px;">© 2026 AI 精品导航 · jackcats.xyz</p>
+  <p style="margin-top:10px;">© 2026 智富AI ZHIFU.AI · jackcats.xyz</p>
 </footer>
 
 <script>
-/* ===== Tool data ===== */
+/* ===== 粒子 ===== */
+const cv = document.getElementById('particle-canvas');
+const cx = cv.getContext('2d');
+let pts = [];
+function rs(){ cv.width = innerWidth; cv.height = innerHeight; }
+function mk(){
+  pts = [];
+  const n = Math.min(70, Math.floor(innerWidth/18));
+  for(let i=0;i<n;i++) pts.push({x:Math.random()*cv.width, y:Math.random()*cv.height, vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3, s:Math.random()*1.6+.5, o:Math.random()*.25+.08, t:Math.random()*6.28});
+}
+function draw(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  pts.forEach((p,i)=>{
+    p.x+=p.vx; p.y+=p.vy; p.t+=.02;
+    if(p.x<0)p.x=cv.width; if(p.x>cv.width)p.x=0;
+    if(p.y<0)p.y=cv.height; if(p.y>cv.height)p.y=0;
+    cx.beginPath(); cx.arc(p.x,p.y,p.s,0,6.28);
+    cx.fillStyle = `rgba(0,113,227,${p.o*(0.7+0.3*Math.sin(p.t))})`; cx.fill();
+    for(let j=i+1;j<pts.length;j++){
+      const dx=pts[j].x-p.x, dy=pts[j].y-p.y, d=Math.sqrt(dx*dx+dy*dy);
+      if(d<110){ cx.beginPath(); cx.moveTo(p.x,p.y); cx.lineTo(pts[j].x,pts[j].y); cx.strokeStyle=`rgba(0,113,227,${.05*(1-d/110)})`; cx.lineWidth=.5; cx.stroke(); }
+    }
+  });
+  requestAnimationFrame(draw);
+}
+rs(); mk(); draw();
+addEventListener('resize', ()=>{ rs(); mk(); });
+
+/* ===== 鼠标光晕 ===== */
+const glow = document.getElementById('mouse-glow');
+document.addEventListener('mousemove', e => { glow.style.left = e.clientX+'px'; glow.style.top = e.clientY+'px'; });
+
+/* ===== 3D 倾斜 ===== */
+function bindTilt(el){
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX-r.left)/r.width-.5, y = (e.clientY-r.top)/r.height-.5;
+    el.style.transform = `translateY(-4px) rotateX(${-y*5}deg) rotateY(${x*5}deg)`;
+  });
+  el.addEventListener('mouseleave', ()=>{ el.style.transform=''; });
+}
+
+/* ===== 数字滚动 ===== */
+const cntObs = new IntersectionObserver(es => {
+  es.forEach(en => {
+    if(!en.isIntersecting) return;
+    const el = en.target, target = +el.dataset.count, t0 = performance.now();
+    (function tick(now){
+      const p = Math.min((now-t0)/1600, 1);
+      el.textContent = Math.floor((1-Math.pow(1-p,3))*target) + (target>=100?'+':'');
+      if(p<1) requestAnimationFrame(tick);
+    })(t0);
+    cntObs.unobserve(el);
+  });
+},{threshold:.5});
+document.querySelectorAll('.hs-num').forEach(el=>cntObs.observe(el));
+
+/* ===== 工具数据（105+，带夸张简介）===== */
 const SECTIONS = [
  { id:'dialog', icon:'🤖', name:'AI 智能对话', subs:['全部','通用','国产','搜索'], tools:[
-  {n:'ChatGPT',d:'OpenAI 旗舰对话',u:'https://chatgpt.com',a:'GPT',c:'#10a37f',s:'通用',hot:1},
-  {n:'Claude',d:'Anthropic 长文推理',u:'https://claude.ai',a:'Cl',c:'#d97757',s:'通用',hot:1},
-  {n:'Gemini',d:'Google 多模态',u:'https://gemini.google.com',a:'GE',c:'#4285f4',s:'通用',hot:1},
-  {n:'DeepSeek',d:'国产开源推理',u:'https://chat.deepseek.com',a:'DS',c:'#4d6bfe',s:'国产',hot:1,free:1},
-  {n:'通义千问',d:'阿里 Qwen 入口',u:'https://tongyi.aliyun.com',a:'通',c:'#ff6a00',s:'国产',hot:1,free:1},
-  {n:'豆包',d:'字节 AI 助手',u:'https://www.doubao.com',a:'豆',c:'#325ab4',s:'国产',free:1},
-  {n:'Kimi',d:'长文本助手',u:'https://kimi.moonshot.cn',a:'Ki',c:'#0f172a',s:'国产',free:1},
-  {n:'智谱清言',d:'GLM 官方入口',u:'https://chatglm.cn',a:'GLM',c:'#6d28d9',s:'国产',free:1},
-  {n:'Grok',d:'xAI 实时信息',u:'https://grok.com',a:'Gx',c:'#1d1d1f',s:'通用'},
-  {n:'Perplexity',d:'AI 搜索引擎',u:'https://www.perplexity.ai',a:'Pe',c:'#20808d',s:'搜索',free:1},
-  {n:'文心一言',d:'百度大模型',u:'https://yiyan.baidu.com',a:'文',c:'#2932e1',s:'国产',free:1},
-  {n:'Le Chat',d:'Mistral 对话',u:'https://chat.mistral.ai',a:'Mi',c:'#fa520f',s:'通用',free:1},
+  {n:'ChatGPT',d:'5亿人的AI初恋，新世界大门',u:'https://chatgpt.com',a:'GPT',c:'#10a37f',s:'通用',hot:1},
+  {n:'Claude',d:'长文推理天花板，码农白月光',u:'https://claude.ai',a:'Cl',c:'#d97757',s:'通用',hot:1},
+  {n:'Gemini',d:'谷歌亲儿子，文图视频全吃透',u:'https://gemini.google.com',a:'GE',c:'#4285f4',s:'通用',hot:1},
+  {n:'DeepSeek',d:'国产开源之光，卷哭硅谷',u:'https://chat.deepseek.com',a:'DS',c:'#4d6bfe',s:'国产',hot:1,free:1},
+  {n:'通义千问',d:'阿里生态顶梁柱，办公编程全能',u:'https://tongyi.aliyun.com',a:'通',c:'#ff6a00',s:'国产',hot:1,free:1},
+  {n:'豆包',d:'国民AI助手，接地气天花板',u:'https://www.doubao.com',a:'豆',c:'#325ab4',s:'国产',free:1},
+  {n:'Kimi',d:'长文本之神，500页合同一口气读完',u:'https://kimi.moonshot.cn',a:'Ki',c:'#0f172a',s:'国产',free:1},
+  {n:'智谱清言',d:'清华系GLM，国产全能选手',u:'https://chatglm.cn',a:'GLM',c:'#6d28d9',s:'国产',free:1},
+  {n:'Grok',d:'马斯克嘴替，实时信息+识伪视频',u:'https://grok.com',a:'Gx',c:'#1d1d1f',s:'通用'},
+  {n:'Perplexity',d:'让谷歌慌的AI搜索，答案带引用',u:'https://www.perplexity.ai',a:'Pe',c:'#20808d',s:'搜索',free:1},
+  {n:'文心一言',d:'百度国产大模型先行者',u:'https://yiyan.baidu.com',a:'文',c:'#2932e1',s:'国产',free:1},
+  {n:'Le Chat',d:'法国Mistral，欧洲速度怪兽',u:'https://chat.mistral.ai',a:'Mi',c:'#fa520f',s:'通用',free:1},
+  {n:'元宝',d:'腾讯隐藏王牌，微信生态直通',u:'https://yuanbao.tencent.com',a:'元',c:'#0d9488',s:'国产',free:1},
+  {n:'阶跃星辰',d:'多模态黑马，视频理解惊艳',u:'https://www.stepfun.com',a:'阶',c:'#7c3aed',s:'国产'},
  ]},
  { id:'image', icon:'🎨', name:'AI 绘画生成', subs:['全部','通用','国产','开源'], tools:[
-  {n:'Qwen-Image',d:'通义图像生成',u:'https://tongyi.aliyun.com/qianwen',a:'QI',c:'#ff3d00',s:'国产',hot:1},
-  {n:'通义万相',d:'阿里 AI 绘画',u:'https://tongyi.aliyun.com/wanxiang',a:'万',c:'#e07b00',s:'国产',free:1},
-  {n:'Midjourney',d:'艺术生图标杆',u:'https://www.midjourney.com',a:'MJ',c:'#2b2b2b',s:'通用',hot:1},
-  {n:'Stable Diffusion',d:'开源文生图',u:'https://stability.ai',a:'SD',c:'#7c3aed',s:'开源',free:1},
-  {n:'FLUX',d:'BFL 新锐生图',u:'https://blackforestlabs.ai',a:'Fl',c:'#0d9488',s:'开源',free:1},
-  {n:'Ideogram',d:'文字渲染最强',u:'https://ideogram.ai',a:'Id',c:'#6366f1',s:'通用',free:1},
-  {n:'即梦 AI',d:'字节图像创作',u:'https://jimeng.jianying.com',a:'即',c:'#7c3aed',s:'国产',free:1},
-  {n:'Leonardo AI',d:'游戏美术平台',u:'https://leonardo.ai',a:'Le',c:'#64748b',s:'通用',free:1},
-  {n:'DALL·E 3',d:'OpenAI 生图',u:'https://openai.com/dall-e-3',a:'DE',c:'#10a37f',s:'通用'},
-  {n:'堆友',d:'多风格绘画',u:'https://d.design',a:'堆',c:'#8b5cf6',s:'国产',free:1},
-  {n:'LibLibAI',d:'模型分享社区',u:'https://www.liblib.art',a:'Lb',c:'#f43f5e',s:'国产',free:1},
-  {n:'文心一格',d:'百度 AI 作画',u:'https://yige.baidu.com',a:'格',c:'#2932e1',s:'国产',free:1},
+  {n:'Qwen-Image',d:'阿里新图王，中文渲染稳得离谱',u:'https://tongyi.aliyun.com/qianwen',a:'QI',c:'#ff3d00',s:'国产',hot:1},
+  {n:'通义万相',d:'免费国产画神，电商图批量神器',u:'https://tongyi.aliyun.com/wanxiang',a:'万',c:'#e07b00',s:'国产',free:1},
+  {n:'Midjourney',d:'艺术天花板，一行字逼疯设计师',u:'https://www.midjourney.com',a:'MJ',c:'#2b2b2b',s:'通用',hot:1},
+  {n:'Stable Diffusion',d:'开源生图鼻祖，想怎么玩都行',u:'https://stability.ai',a:'SD',c:'#7c3aed',s:'开源',free:1},
+  {n:'FLUX',d:'开源速度怪兽，画质硬刚MJ',u:'https://blackforestlabs.ai',a:'Fl',c:'#0d9488',s:'开源',free:1},
+  {n:'Ideogram',d:'文字渲染天花板，海报logo救星',u:'https://ideogram.ai',a:'Id',c:'#6366f1',s:'通用',free:1},
+  {n:'即梦 AI',d:'字节创作全能王，图视频通吃',u:'https://jimeng.jianying.com',a:'即',c:'#7c3aed',s:'国产',free:1},
+  {n:'Leonardo AI',d:'游戏美术量产机，素材库海量',u:'https://leonardo.ai',a:'Le',c:'#64748b',s:'通用',free:1},
+  {n:'DALL·E 3',d:'OpenAI亲儿子，最懂复杂提示词',u:'https://openai.com/dall-e-3',a:'DE',c:'#10a37f',s:'通用'},
+  {n:'堆友',d:'设计师聚集地，多风格免费玩',u:'https://d.design',a:'堆',c:'#8b5cf6',s:'国产',free:1},
+  {n:'LibLibAI',d:'国产模型社区，万款风格免费用',u:'https://www.liblib.art',a:'Lb',c:'#f43f5e',s:'国产',free:1},
+  {n:'文心一格',d:'百度AI作画，国风一绝',u:'https://yige.baidu.com',a:'格',c:'#2932e1',s:'国产',free:1},
+  {n:'Krea',d:'实时生图，边画边出图',u:'https://www.krea.ai',a:'Kr',c:'#0ea5e9',s:'通用',free:1},
+  {n:'Playground',d:'小白友好出图快，滤镜海量',u:'https://playground.com',a:'Pg',c:'#db2777',s:'通用',free:1},
  ]},
  { id:'video', icon:'🎬', name:'AI 视频创作', subs:['全部','文生视频','数字人'], tools:[
-  {n:'可灵 AI',d:'快手视频生成',u:'https://klingai.com',a:'可',c:'#0284c7',s:'文生视频',hot:1},
-  {n:'Runway',d:'好莱坞级视频',u:'https://runwayml.com',a:'RW',c:'#0d0d0d',s:'文生视频',hot:1},
-  {n:'Luma',d:'高质量文生视频',u:'https://lumalabs.ai',a:'Lu',c:'#4f46e5',s:'文生视频'},
-  {n:'Pika',d:'轻量创意视频',u:'https://pika.art',a:'Pi',c:'#ec4899',s:'文生视频',free:1},
-  {n:'Vidu',d:'生数国产视频',u:'https://vidu.com',a:'Vi',c:'#059669',s:'文生视频'},
-  {n:'HeyGen',d:'AI 数字人',u:'https://www.heygen.com',a:'Hy',c:'#1d4ed8',s:'数字人',hot:1},
-  {n:'即梦视频',d:'字节视频生成',u:'https://jimeng.jianying.com',a:'即',c:'#7c3aed',s:'文生视频',free:1},
-  {n:'Pixmax',d:'AI 短剧创作',u:'https://pixmax.cn',a:'Px',c:'#b91c1c',s:'文生视频'},
-  {n:'有言 AI',d:'一站式视频',u:'https://www.youyan.ai',a:'有',c:'#db2777',s:'数字人'},
-  {n:'剪映 AI',d:'字节剪辑神器',u:'https://www.capcut.cn',a:'剪',c:'#111',s:'文生视频',free:1},
+  {n:'可灵 AI',d:'国产视频之光，物理理解惊艳',u:'https://klingai.com',a:'可',c:'#0284c7',s:'文生视频',hot:1},
+  {n:'Runway',d:'好莱坞级老炮，视频生成鼻祖',u:'https://runwayml.com',a:'RW',c:'#0d0d0d',s:'文生视频',hot:1},
+  {n:'Luma',d:'一键大片，运镜专业级',u:'https://lumalabs.ai',a:'Lu',c:'#4f46e5',s:'文生视频'},
+  {n:'Pika',d:'特效游乐场，脑洞秒变现实',u:'https://pika.art',a:'Pi',c:'#ec4899',s:'文生视频',free:1},
+  {n:'Vidu',d:'清华系长视频，国风表现优秀',u:'https://vidu.com',a:'Vi',c:'#059669',s:'文生视频'},
+  {n:'HeyGen',d:'数字人天花板，口播翻译对口型',u:'https://www.heygen.com',a:'Hy',c:'#1d4ed8',s:'数字人',hot:1},
+  {n:'即梦视频',d:'字节视频引擎，免费额度大方',u:'https://jimeng.jianying.com',a:'即',c:'#7c3aed',s:'文生视频',free:1},
+  {n:'Pixmax',d:'AI短剧流水线，一人即剧组',u:'https://pixmax.cn',a:'Px',c:'#b91c1c',s:'文生视频'},
+  {n:'有言 AI',d:'数字人口播视频，企业宣传救星',u:'https://www.youyan.ai',a:'有',c:'#db2777',s:'数字人'},
+  {n:'剪映 AI',d:'国民剪辑神器，AI一键成片',u:'https://www.capcut.cn',a:'剪',c:'#111',s:'文生视频',free:1},
+  {n:'海螺AI',d:'MiniMax视频模型，动作丝滑',u:'https://hailuoai.com',a:'海',c:'#0891b2',s:'文生视频',free:1},
+  {n:'Dreamina',d:'字节创作社区，模板海量',u:'https://dreamina.com',a:'Dr',c:'#9333ea',s:'文生视频'},
  ]},
  { id:'audio', icon:'🎧', name:'AI 音频处理', subs:['全部','音乐','语音'], tools:[
-  {n:'Suno',d:'AI 音乐领跑者',u:'https://suno.com',a:'Su',c:'#6d28d9',s:'音乐',hot:1},
-  {n:'Udio',d:'高质量音乐',u:'https://www.udio.com',a:'Ud',c:'#a21caf',s:'音乐'},
-  {n:'ElevenLabs',d:'顶级语音克隆',u:'https://elevenlabs.io',a:'El',c:'#0d1117',s:'语音',hot:1},
-  {n:'讯飞听见',d:'语音转写字幕',u:'https://www.iflyrec.com',a:'听',c:'#0b6cb3',s:'语音'},
-  {n:'Mureka',d:'AI 音乐创作',u:'https://www.mureka.ai',a:'Mu',c:'#e11d48',s:'音乐'},
-  {n:'Fish Audio',d:'开源语音合成',u:'https://fish.audio',a:'Fi',c:'#0891b2',s:'语音',free:1},
-  {n:'CosyVoice',d:'阿里语音生成',u:'https://github.com/FunAudioLLM/CosyVoice',a:'Co',c:'#ff6a00',s:'语音',free:1},
-  {n:'网易天音',d:'一键 AI 写歌',u:'https://tianyin.163.com',a:'天',c:'#c2410c',s:'音乐',free:1},
+  {n:'Suno',d:'哼两句就出歌，人人都是周杰伦',u:'https://suno.com',a:'Su',c:'#6d28d9',s:'音乐',hot:1},
+  {n:'Udio',d:'发烧级AI音乐，质感惊艳',u:'https://www.udio.com',a:'Ud',c:'#a21caf',s:'音乐'},
+  {n:'ElevenLabs',d:'声音克隆之神，3秒复刻你的声',u:'https://elevenlabs.io',a:'El',c:'#0d1117',s:'语音',hot:1},
+  {n:'讯飞听见',d:'转写老牌子，会议纪要救星',u:'https://www.iflyrec.com',a:'听',c:'#0b6cb3',s:'语音'},
+  {n:'Mureka',d:'国产AI音乐，词曲唱一体',u:'https://www.mureka.ai',a:'Mu',c:'#e11d48',s:'音乐'},
+  {n:'Fish Audio',d:'开源语音克隆，免费大方',u:'https://fish.audio',a:'Fi',c:'#0891b2',s:'语音',free:1},
+  {n:'CosyVoice',d:'阿里开源TTS，多方言支持',u:'https://github.com/FunAudioLLM/CosyVoice',a:'Co',c:'#ff6a00',s:'语音',free:1},
+  {n:'网易天音',d:'一键写歌，音乐小白福音',u:'https://tianyin.163.com',a:'天',c:'#c2410c',s:'音乐',free:1},
+  {n:'天籁AI',d:'AI配音神器，音色库海量',u:'https://www.tianlaiai.com',a:'籁',c:'#15803d',s:'语音',free:1},
+  {n:'Voicemod',d:'实时变声，直播整活必备',u:'https://www.voicemod.net',a:'Vo',c:'#7c3aed',s:'语音'},
  ]},
  { id:'office', icon:'💼', name:'AI 办公效率', subs:['全部','PPT','文档'], tools:[
-  {n:'Notion AI',d:'知识库+工作流',u:'https://www.notion.so',a:'N',c:'#000',s:'文档',hot:1},
-  {n:'飞书智能伙伴',d:'字节企业 AI',u:'https://www.feishu.cn',a:'飞',c:'#245bdb',s:'文档'},
-  {n:'WPS AI',d:'金山办公助手',u:'https://ai.wps.cn',a:'W',c:'#b33621',s:'文档'},
-  {n:'讯飞智文',d:'一键 PPT/Word',u:'https://zw.xfyun.cn',a:'智',c:'#0f8ad0',s:'PPT',free:1},
-  {n:'Gamma',d:'AI 演示文稿',u:'https://gamma.app',a:'Ga',c:'#7c3aed',s:'PPT',hot:1,free:1},
-  {n:'Kimi PPT',d:'长文转 PPT',u:'https://kimi.moonshot.cn',a:'Ki',c:'#0f172a',s:'PPT',free:1},
-  {n:'ChatExcel',d:'对话处理表格',u:'https://chatexcel.com',a:'Cx',c:'#15803d',s:'文档',free:1},
-  {n:'MindShow',d:'Markdown 转 PPT',u:'https://www.mindshow.fun',a:'MS',c:'#0369a1',s:'PPT',free:1},
-  {n:'腾讯文档 AI',d:'协作办公 AI',u:'https://docs.qq.com',a:'腾',c:'#0046b8',s:'文档',free:1},
+  {n:'Notion AI',d:'第二大脑，知识管理天花板',u:'https://www.notion.so',a:'N',c:'#000',s:'文档',hot:1},
+  {n:'飞书智能伙伴',d:'字节办公AI，会议纪要自动生成',u:'https://www.feishu.cn',a:'飞',c:'#245bdb',s:'文档'},
+  {n:'WPS AI',d:'国民办公福音，PPT文档全家桶',u:'https://ai.wps.cn',a:'W',c:'#b33621',s:'文档'},
+  {n:'讯飞智文',d:'一键PPT，打工人早下班神器',u:'https://zw.xfyun.cn',a:'智',c:'#0f8ad0',s:'PPT',free:1},
+  {n:'Gamma',d:'AI PPT颜值天花板，3分钟交付',u:'https://gamma.app',a:'Ga',c:'#7c3aed',s:'PPT',hot:1,free:1},
+  {n:'Kimi PPT',d:'长文秒变PPT，答辩救星',u:'https://kimi.moonshot.cn',a:'Ki',c:'#0f172a',s:'PPT',free:1},
+  {n:'ChatExcel',d:'对话搞定表格，告别公式',u:'https://chatexcel.com',a:'Cx',c:'#15803d',s:'文档',free:1},
+  {n:'MindShow',d:'Markdown变PPT，程序员最爱',u:'https://www.mindshow.fun',a:'MS',c:'#0369a1',s:'PPT',free:1},
+  {n:'腾讯文档 AI',d:'协作AI，团队效率翻倍',u:'https://docs.qq.com',a:'腾',c:'#0046b8',s:'文档',free:1},
+  {n:'ChatPDF',d:'百页PDF秒读完，随便问',u:'https://www.chatpdf.com',a:'CP',c:'#dc2626',s:'文档',free:1},
+  {n:'有道PPT',d:'企业级PPT生成，模板专业',u:'https://ppt.youdao.com',a:'有',c:'#b91c1c',s:'PPT',free:1},
  ]},
  { id:'writing', icon:'✍️', name:'AI 写作平台', subs:['全部','营销','学术'], tools:[
-  {n:'Jasper',d:'营销文案团队',u:'https://www.jasper.ai',a:'Ja',c:'#dc2626',s:'营销',hot:1},
-  {n:'Copy.ai',d:'营销文案生成',u:'https://www.copy.ai',a:'Cp',c:'#0d1117',s:'营销'},
-  {n:'Wordvice AI',d:'英文润色改写',u:'https://wordvice.ai',a:'Wo',c:'#1d4ed8',s:'学术'},
-  {n:'秘塔写作猫',d:'中文校对写作',u:'https://xiezuocat.com',a:'秘',c:'#0d9488',s:'学术',free:1},
-  {n:'Rytr',d:'AI 写作助手',u:'https://rytr.me',a:'Ry',c:'#ea580c',s:'营销',free:1},
-  {n:'HyperWrite',d:'个人写作助手',u:'https://www.hyperwriteai.com',a:'Hy',c:'#0ea5e9',s:'营销'},
-  {n:'微软爱写作',d:'英文作文批改',u:'https://writing.wps.cn',a:'微',c:'#2563eb',s:'学术',free:1},
-  {n:'讯飞绘文',d:'选题配图成文',u:'https://huiven.xfyun.cn',a:'绘',c:'#0f8ad0',s:'营销',free:1},
+  {n:'Jasper',d:'营销文案天花板，500强都在用',u:'https://www.jasper.ai',a:'Ja',c:'#dc2626',s:'营销',hot:1},
+  {n:'Copy.ai',d:'电商文案流水线，转化率拉满',u:'https://www.copy.ai',a:'Cp',c:'#0d1117',s:'营销'},
+  {n:'Wordvice AI',d:'学术论文润色神，SCI好伴侣',u:'https://wordvice.ai',a:'Wo',c:'#1d4ed8',s:'学术'},
+  {n:'秘塔写作猫',d:'中文校对免费，论文错别字杀手',u:'https://xiezuocat.com',a:'秘',c:'#0d9488',s:'学术',free:1},
+  {n:'Rytr',d:'入门写作神器，免费额度够用',u:'https://rytr.me',a:'Ry',c:'#ea580c',s:'营销',free:1},
+  {n:'HyperWrite',d:'你的私人写作教练',u:'https://www.hyperwriteai.com',a:'Hy',c:'#0ea5e9',s:'营销'},
+  {n:'微软爱写作',d:'英文作文批改免费，学生福音',u:'https://writing.wps.cn',a:'微',c:'#2563eb',s:'学术',free:1},
+  {n:'讯飞绘文',d:'选题配图成文，自媒体量产',u:'https://huiven.xfyun.cn',a:'绘',c:'#0f8ad0',s:'营销',free:1},
+  {n:'笔灵AI',d:'公文写作神器，体制内最爱',u:'https://ibiling.cn',a:'笔',c:'#16a34a',s:'学术',free:1},
+  {n:'造作AI',d:'内容创作工作台，全流程写作',u:'https://www.zaizuo.ai',a:'造',c:'#9333ea',s:'营销'},
  ]},
  { id:'dev', icon:'💻', name:'AI 开发平台', subs:['全部','编码','框架','本地'], tools:[
-  {n:'GitHub',d:'全球开源平台',u:'https://github.com',a:'GH',c:'#111',s:'框架',hot:1,free:1},
-  {n:'Cursor',d:'AI 代码编辑器',u:'https://cursor.com',a:'Cu',c:'#374151',s:'编码',hot:1},
-  {n:'Hugging Face',d:'开源模型大本营',u:'https://huggingface.co',a:'HF',c:'#f59e0b',s:'框架',hot:1,free:1},
-  {n:'通义灵码',d:'阿里编程助手',u:'https://tongyi.aliyun.com/lingma',a:'灵',c:'#ff8f00',s:'编码',free:1},
-  {n:'Ollama',d:'本地跑大模型',u:'https://ollama.com',a:'Ol',c:'#1e40af',s:'本地',free:1},
-  {n:'vLLM',d:'推理加速框架',u:'https://github.com/vllm-project/vllm',a:'vL',c:'#c2410c',s:'框架',free:1},
-  {n:'LangChain',d:'LLM 应用框架',u:'https://www.langchain.com',a:'LC',c:'#15803d',s:'框架',free:1},
-  {n:'ComfyUI',d:'节点式生图工作流',u:'https://github.com/comfyanonymous/ComfyUI',a:'Cf',c:'#6d28d9',s:'本地',free:1},
-  {n:'LM Studio',d:'本地模型管理',u:'https://lmstudio.ai',a:'LM',c:'#115e59',s:'本地',free:1},
-  {n:'Dify',d:'LLM 应用平台',u:'https://dify.ai',a:'Di',c:'#0d1117',s:'框架',free:1},
-  {n:'Coze',d:'字节智能体平台',u:'https://www.coze.com',a:'Co',c:'#1d4ed8',s:'框架',free:1},
-  {n:'FastGPT',d:'知识库问答',u:'https://fastgpt.in',a:'Fa',c:'#7c3aed',s:'框架',free:1},
+  {n:'GitHub',d:'全球最大代码库，程序员老家',u:'https://github.com',a:'GH',c:'#111',s:'框架',hot:1,free:1},
+  {n:'Cursor',d:'AI编辑器，效率翻10倍的秘密',u:'https://cursor.com',a:'Cu',c:'#374151',s:'编码',hot:1},
+  {n:'Hugging Face',d:'开源模型淘宝，百万模型免费',u:'https://huggingface.co',a:'HF',c:'#f59e0b',s:'框架',hot:1,free:1},
+  {n:'通义灵码',d:'阿里编程助手，免费大方',u:'https://tongyi.aliyun.com/lingma',a:'灵',c:'#ff8f00',s:'编码',free:1},
+  {n:'Ollama',d:'本地跑大模型，一键安装隐私免费',u:'https://ollama.com',a:'Ol',c:'#1e40af',s:'本地',free:1},
+  {n:'vLLM',d:'推理加速王者，吞吐量翻倍',u:'https://github.com/vllm-project/vllm',a:'vL',c:'#c2410c',s:'框架',free:1},
+  {n:'LangChain',d:'LLM应用骨架，链式开发鼻祖',u:'https://www.langchain.com',a:'LC',c:'#15803d',s:'框架',free:1},
+  {n:'ComfyUI',d:'节点式生图，折腾党天堂',u:'https://github.com/comfyanonymous/ComfyUI',a:'Cf',c:'#6d28d9',s:'本地',free:1},
+  {n:'LM Studio',d:'大模型桌面版，断网本地用',u:'https://lmstudio.ai',a:'LM',c:'#115e59',s:'本地',free:1},
+  {n:'Dify',d:'10分钟搭AI应用，低代码神器',u:'https://dify.ai',a:'Di',c:'#0d1117',s:'框架',free:1},
+  {n:'Coze',d:'字节智能体平台，不写代码造Bot',u:'https://www.coze.com',a:'Co',c:'#1d4ed8',s:'框架',free:1},
+  {n:'FastGPT',d:'知识库问答开源，私服客服救星',u:'https://fastgpt.in',a:'Fa',c:'#7c3aed',s:'框架',free:1},
+  {n:'GitHub Copilot',d:'AI结对编程鼻祖，代码自动补全',u:'https://github.com/features/copilot',a:'CP',c:'#24292f',s:'编码',hot:1},
+  {n:'Trae',d:'字节AI IDE，中文开发者福音',u:'https://www.trae.ai',a:'Tr',c:'#0d9488',s:'编码',free:1},
  ]},
  { id:'learn', icon:'🎓', name:'AI 学习资源', subs:['全部','课程','社区'], tools:[
-  {n:'AI-For-Beginners',d:'微软入门课',u:'https://github.com/microsoft/AI-For-Beginners',a:'MS',c:'#2563eb',s:'课程',free:1},
-  {n:'DeepLearning.AI',d:'吴恩达课程',u:'https://www.deeplearning.ai',a:'DL',c:'#c2410c',s:'课程',free:1},
-  {n:'HF 课程',d:' transformers 教程',u:'https://huggingface.co/learn',a:'HF',c:'#f59e0b',s:'课程',free:1},
-  {n:'李宏毅 ML',d:'台大机器学习',u:'https://speech.ee.ntu.edu.tw/~hylee/ml/2024-spring.html',a:'李',c:'#7c3aed',s:'课程',free:1},
-  {n:'Prompt Guide',d:'提示词工程指南',u:'https://www.promptingguide.ai/zh',a:'Pr',c:'#0d9488',s:'课程',free:1},
-  {n:'Papers with Code',d:'论文+代码',u:'https://paperswithcode.com',a:'Pw',c:'#1d4ed8',s:'社区',free:1},
-  {n:'ArXiv',d:'最新预印本',u:'https://arxiv.org',a:'Ar',c:'#b91c1c',s:'社区',free:1},
-  {n:'GitHub 每日',d:'每日趋势项目',u:'https://github.com/trending',a:'GT',c:'#111',s:'社区',free:1},
+  {n:'AI-For-Beginners',d:'微软官方入门，12周从零到一',u:'https://github.com/microsoft/AI-For-Beginners',a:'MS',c:'#2563eb',s:'课程',free:1},
+  {n:'DeepLearning.AI',d:'吴恩达亲授，AI界启蒙导师',u:'https://www.deeplearning.ai',a:'DL',c:'#c2410c',s:'课程',free:1},
+  {n:'HF 课程',d:'Transformers官方教程，动手党',u:'https://huggingface.co/learn',a:'HF',c:'#f59e0b',s:'课程',free:1},
+  {n:'李宏毅 ML',d:'最有趣机器学习课，中文友好',u:'https://speech.ee.ntu.edu.tw/~hylee/ml/2024-spring.html',a:'李',c:'#7c3aed',s:'课程',free:1},
+  {n:'Prompt Guide',d:'提示词工程圣经，中文免费',u:'https://www.promptingguide.ai/zh',a:'Pr',c:'#0d9488',s:'课程',free:1},
+  {n:'LangGPT',d:'结构化提示词框架，模板化写作',u:'https://github.com/langgptai/LangGPT',a:'LG',c:'#16a34a',s:'课程',free:1},
+  {n:'Papers with Code',d:'论文+代码对照，追SOTA',u:'https://paperswithcode.com',a:'Pw',c:'#1d4ed8',s:'社区',free:1},
+  {n:'ArXiv',d:'全球最新论文，一手前沿',u:'https://arxiv.org',a:'Ar',c:'#b91c1c',s:'社区',free:1},
+  {n:'GitHub 每日',d:'每天看全球最火开源',u:'https://github.com/trending',a:'GT',c:'#111',s:'社区',free:1},
+  {n:'B站AI教程',d:'免费实战视频合集',u:'https://www.bilibili.com/v/tech',a:'B',c:'#fb7299',s:'课程',free:1},
  ]},
 ];
 
-/* ===== Render tool sections ===== */
-const wrap = document.getElementById('tool-sections');
+/* ===== 渲染工具区 ===== */
+const wrapEl = document.getElementById('tool-sections');
 SECTIONS.forEach(sec => {
   const el = document.createElement('section');
   el.id = 'sec-' + sec.id;
   el.innerHTML = `
-    <div class="sec-head"><div class="sec-title"><span class="emoji">${sec.icon}</span>${sec.name}</div></div>
-    <div class="sub-tabs" data-sec="${sec.id}">
-      ${sec.subs.map((s,i)=>`<button class="sub-tab ${i===0?'active':''}" data-sub="${s}">${s}</button>`).join('')}
-    </div>
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">${sec.icon}</span>${sec.name}</div><div class="sec-sub">${sec.tools.length} 款精选 · 悬停看夸张简介</div></div></div>
+    <div class="sub-tabs">${sec.subs.map((s,i)=>`<button class="sub-tab ${i===0?'active':''}" data-sub="${s}">${s}</button>`).join('')}</div>
     <div class="tool-grid" data-grid="${sec.id}"></div>`;
-  wrap.appendChild(el);
-  renderTools(sec, '全部');
+  wrapEl.appendChild(el);
+  renderTools(sec,'全部');
   el.querySelector('.sub-tabs').addEventListener('click', e => {
-    const btn = e.target.closest('.sub-tab');
-    if (!btn) return;
-    el.querySelectorAll('.sub-tab').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    renderTools(sec, btn.dataset.sub);
+    const b = e.target.closest('.sub-tab'); if(!b) return;
+    el.querySelectorAll('.sub-tab').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    renderTools(sec, b.dataset.sub);
   });
 });
 
-function renderTools(sec, sub) {
+function renderTools(sec, sub){
   const grid = document.querySelector(`[data-grid="${sec.id}"]`);
-  const list = sub === '全部' ? sec.tools : sec.tools.filter(t => t.s === sub);
+  const list = sub==='全部' ? sec.tools : sec.tools.filter(t=>t.s===sub);
   grid.innerHTML = '';
-  list.forEach((t,i) => {
-    const card = document.createElement('a');
-    card.className = 'tool-card glass';
-    card.href = t.u; card.target = '_blank';
-    card.style.transitionDelay = (i % 6) * 0.04 + 's';
-    card.innerHTML = `
+  list.forEach((t,i)=>{
+    const c = document.createElement('a');
+    c.className = 'tool-card glass';
+    c.href = t.u; c.target = '_blank';
+    c.style.transitionDelay = (i%6)*0.04+'s';
+    c.innerHTML = `
       <div class="tool-head">
         <span class="tool-icon" style="background:${t.c};">${t.a}</span>
-        ${t.hot ? '<span class="tool-flag flag-hot">HOT</span>' : (t.free ? '<span class="tool-flag flag-free">免费</span>' : '')}
+        ${t.hot?'<span class="tool-flag flag-hot">HOT</span>':(t.free?'<span class="tool-flag flag-free">免费</span>':'')}
       </div>
       <h3>${t.n}</h3><p>${t.d}</p>`;
-    grid.appendChild(card);
+    grid.appendChild(c);
   });
-  requestAnimationFrame(()=>grid.querySelectorAll('.tool-card').forEach(c=>c.classList.add('visible')));
+  requestAnimationFrame(()=>grid.querySelectorAll('.tool-card').forEach(x=>x.classList.add('visible')));
 }
 
-/* ===== Prompts ===== */
+/* ===== 提示词 ===== */
 const PROMPTS = [
- {tag:'自媒体', name:'小红书爆款文案', text:'你是一位小红书爆款文案专家。请为【主题】写3篇笔记，要求：标题带emoji和数字、前3行制造悬念、正文用分点+emoji、结尾引导互动，语气活泼真实。'},
- {tag:'编程', name:'资深代码审查', text:'你是一位10年经验的资深工程师。请审查以下代码，指出：1)潜在bug 2)性能问题 3)安全隐患 4)可读性改进，并给出重构后的代码。代码：【粘贴】'},
- {tag:'职场', name:'面试模拟器', text:'请你扮演【岗位】的面试官，对我进行模拟面试。每次只问一个问题，等我回答后给出点评和改进建议，再问下一个。从自我介绍开始。'},
- {tag:'办公', name:'PPT 大纲生成', text:'请为【主题】生成一份10页PPT大纲，每页包含：标题、3个要点、建议的图表类型。结构遵循：背景-问题-方案-案例-总结。'},
- {tag:'学习', name:'英文润色翻译', text:'请将以下中文翻译成地道英文，要求：学术/商务语气、句式多样、避免中式英语，并指出原文可以优化的表达。原文：【粘贴】'},
- {tag:'创业', name:'商业计划梳理', text:'你是一位创投顾问。请基于【项目描述】，输出：目标用户、核心痛点、解决方案、商业模式、竞品对比、3个月落地计划。'},
+ {tag:'接单变现', name:'小红书爆款文案', text:'你是一位小红书爆款文案专家。请为【主题】写3篇笔记：标题带emoji和数字、前3行制造悬念、正文分点+emoji、结尾引导互动，语气活泼真实。'},
+ {tag:'接单变现', name:'简历优化服务', text:'你是一位10年经验的HR总监。请优化以下简历：1)量化工作成果 2)突出与【目标岗位】匹配的技能 3)删除冗余表述，输出优化后完整简历。简历：【粘贴】'},
+ {tag:'编程接单', name:'资深代码审查', text:'你是10年经验资深工程师。审查以下代码：1)潜在bug 2)性能问题 3)安全隐患 4)可读性改进，并给出重构代码。代码：【粘贴】'},
+ {tag:'办公提效', name:'PPT 大纲生成', text:'请为【主题】生成10页PPT大纲，每页含：标题、3个要点、建议图表类型。结构：背景-问题-方案-案例-总结。'},
+ {tag:'自媒体', name:'短视频脚本', text:'你是百万粉短视频编剧。为【主题】写一个45秒口播脚本：前3秒黄金钩子、中间3个信息点、结尾引导关注，口语化。'},
+ {tag:'学习提升', name:'费曼学习法', text:'请用费曼学习法教我【概念】：1)用小学生能懂的话解释 2)举一个生活例子 3)指出常见误区 4)出一个练习题检验我。'},
 ];
 const pGrid = document.getElementById('prompt-grid');
 PROMPTS.forEach(p => {
-  const card = document.createElement('div');
-  card.className = 'prompt-card glass';
-  card.innerHTML = `
-    <div class="p-tag">${p.tag}</div>
-    <h3>${p.name}</h3>
-    <pre>${p.text}</pre>
-    <button class="copy-btn">复制提示词</button>`;
-  card.querySelector('.copy-btn').addEventListener('click', e => {
+  const c = document.createElement('div');
+  c.className = 'prompt-card glass tilt';
+  c.innerHTML = `<div class="p-tag">${p.tag}</div><h3>${p.name}</h3><pre>${p.text}</pre><button class="copy-btn">复制提示词</button>`;
+  c.querySelector('.copy-btn').addEventListener('click', e => {
     navigator.clipboard.writeText(p.text).then(()=>{
-      e.target.textContent = '已复制 ✓';
-      e.target.classList.add('copied');
-      setTimeout(()=>{ e.target.textContent='复制提示词'; e.target.classList.remove('copied'); }, 1600);
+      e.target.textContent='已复制 ✓'; e.target.classList.add('copied');
+      setTimeout(()=>{ e.target.textContent='复制提示词'; e.target.classList.remove('copied'); },1600);
     });
   });
-  pGrid.appendChild(card);
+  pGrid.appendChild(c);
 });
 
-/* ===== Money ===== */
-const MONEY = [
- {e:'📱', name:'AI 自媒体矩阵', desc:'用 AI 批量产出小红书/抖音图文视频内容，做垂直账号涨粉变现。', diff:'难度 ★★', income:'¥3k-20k/月', tools:'即梦 + 剪映 + Kimi'},
- {e:'📊', name:'AI PPT 定制', desc:'接职场/学生 PPT 定制单，AI 生成大纲+排版，人工微调交付。', diff:'难度 ★', income:'¥2k-10k/月', tools:'Gamma + ChatGPT'},
- {e:'🎬', name:'AI 无真人短视频', desc:'AI 生成画面+配音做解说号，无需出镜，靠播放量分成。', diff:'难度 ★★', income:'¥2k-15k/月', tools:'可灵 + 剪映 + ElevenLabs'},
- {e:'🖼️', name:'AI 绘画定制', desc:'头像/壁纸/电商图定制，社交平台接单，按张收费。', diff:'难度 ★', income:'¥1k-8k/月', tools:'Midjourney + Qwen-Image'},
- {e:'💻', name:'AI 编程接单', desc:'用 AI 辅助接外包小项目/脚本定制，效率翻倍。', diff:'难度 ★★★', income:'¥5k-30k/月', tools:'Cursor + Copilot'},
- {e:'🧠', name:'提示词/知识付费', desc:'整理高质量提示词与教程，做社群或课程变现。', diff:'难度 ★★', income:'¥2k-12k/月', tools:'ChatGPT + 知识星球'},
-];
-const mGrid = document.getElementById('money-grid');
-MONEY.forEach(m => {
-  const card = document.createElement('div');
-  card.className = 'money-card glass';
-  card.innerHTML = `
-    <div class="m-emoji">${m.e}</div>
-    <h3>${m.name}</h3>
-    <div class="m-desc">${m.desc}</div>
-    <div class="money-meta"><span>${m.diff}</span><span class="income">${m.income}</span></div>
-    <div class="money-tools">工具：${m.tools}</div>`;
-  mGrid.appendChild(card);
-});
-
-/* ===== Search ===== */
+/* ===== 搜索 ===== */
 let engine = 'site';
-document.querySelectorAll('.engine-tab').forEach(t => {
-  t.addEventListener('click', () => {
+document.querySelectorAll('.engine-tab').forEach(t=>{
+  t.addEventListener('click', ()=>{
     document.querySelectorAll('.engine-tab').forEach(x=>x.classList.remove('active'));
-    t.classList.add('active');
-    engine = t.dataset.e;
+    t.classList.add('active'); engine = t.dataset.e;
   });
 });
-function doSearch() {
-  const q = document.getElementById('search-input').value.trim();
-  if (!q) return;
-  const urls = {
-    baidu: 'https://www.baidu.com/s?wd=',
-    google: 'https://www.google.com/search?q=',
-    bing: 'https://www.bing.com/search?q=',
-    sogou: 'https://www.sogou.com/web?query=',
-  };
-  if (engine === 'site') {
-    // filter tool cards
-    let found = 0;
-    document.querySelectorAll('.tool-card').forEach(c => {
-      const hit = c.textContent.toLowerCase().includes(q.toLowerCase());
-      c.style.display = hit ? '' : 'none';
-      if (hit) found++;
+function doSearch(){
+  const q = document.getElementById('search-input').value.trim(); if(!q) return;
+  const urls = { baidu:'https://www.baidu.com/s?wd=', google:'https://www.google.com/search?q=', bing:'https://www.bing.com/search?q=', sogou:'https://www.sogou.com/web?query=' };
+  if(engine==='site'){
+    document.querySelectorAll('.tool-card').forEach(c=>{
+      c.style.display = c.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
     });
     document.getElementById('sec-dialog').scrollIntoView({behavior:'smooth'});
-  } else {
-    window.open(urls[engine] + encodeURIComponent(q), '_blank');
-  }
+  } else window.open(urls[engine]+encodeURIComponent(q),'_blank');
 }
 document.getElementById('search-btn').addEventListener('click', doSearch);
-document.getElementById('search-input').addEventListener('keydown', e => { if (e.key==='Enter') doSearch(); });
+document.getElementById('search-input').addEventListener('keydown', e=>{ if(e.key==='Enter') doSearch(); });
 
-/* ===== Nav scroll ===== */
+/* ===== 导航滚动 ===== */
 const nav = document.getElementById('main-nav');
-window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+addEventListener('scroll', ()=>nav.classList.toggle('scrolled', scrollY>40));
 
-/* ===== Reveal ===== */
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('visible'); observer.unobserve(en.target); } });
-}, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
-document.querySelectorAll('.news-card, .gh-item, .prompt-card, .money-card').forEach((el,i)=>{
-  el.style.transitionDelay = (i % 3) * 0.08 + 's';
-  observer.observe(el);
+/* ===== 渐入 + 倾斜绑定 ===== */
+const obs = new IntersectionObserver(es=>{
+  es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('visible'); obs.unobserve(en.target); } });
+},{threshold:.06, rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.lesson-card,.money-card,.road-step,.prompt-card,.news-card,.gh-item').forEach((el,i)=>{
+  el.style.transitionDelay = (i%3)*0.08+'s';
+  obs.observe(el);
 });
+document.querySelectorAll('.tilt').forEach(bindTilt);
 
-/* ===== Sidebar scrollspy ===== */
-const spy = new IntersectionObserver(entries => {
-  entries.forEach(en => {
-    if (en.isIntersecting) {
-      document.querySelectorAll('.side-item').forEach(s => s.classList.toggle('active', s.getAttribute('href') === '#' + en.target.id));
+/* ===== 侧栏 scrollspy ===== */
+const spy = new IntersectionObserver(es=>{
+  es.forEach(en=>{
+    if(en.isIntersecting){
+      document.querySelectorAll('.side-item').forEach(s=>s.classList.toggle('active', s.getAttribute('href')==='#'+en.target.id));
     }
   });
-}, { rootMargin: '-40% 0px -55% 0px' });
-document.querySelectorAll('main section').forEach(s => spy.observe(s));
-
-/* ===== Date ===== */
-(function(){
-  const d = new Date();
-  const w = ['周日','周一','周二','周三','周四','周五','周六'];
-  document.getElementById('date-chip').textContent = `${d.getMonth()+1}月${d.getDate()}日 ${w[d.getDay()]}`;
-})();
+},{rootMargin:'-40% 0px -55% 0px'});
+document.querySelectorAll('main section').forEach(s=>spy.observe(s));
 </script>
 </body>
 </html>
