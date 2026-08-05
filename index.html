@@ -24,7 +24,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Hel
 @keyframes blobFloat{0%{transform:translate(0,0) scale(1);}100%{transform:translate(50px,40px) scale(1.18);}}
 #particle-canvas{position:fixed;inset:0;z-index:-2;pointer-events:none;}
 #mouse-glow{position:fixed;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(0,113,227,0.07) 0%,transparent 60%);z-index:-1;pointer-events:none;transform:translate(-50%,-50%);}
-.glass{background:var(--card);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--card-border);border-radius:var(--radius);box-shadow:var(--shadow);}
+.glass{background:linear-gradient(145deg,rgba(255,255,255,.62),rgba(255,255,255,.30));backdrop-filter:blur(26px) saturate(190%);-webkit-backdrop-filter:blur(26px) saturate(190%);border:1px solid rgba(255,255,255,.7);border-radius:var(--radius);box-shadow:0 8px 32px rgba(31,38,135,.10), inset 0 1px 1px rgba(255,255,255,.9), inset 0 -1px 1px rgba(255,255,255,.35);}
 
 /* nav with view tabs */
 nav{position:fixed;top:0;left:0;width:100%;z-index:100;padding:10px 32px;display:flex;align-items:center;gap:18px;background:rgba(255,255,255,0.5);backdrop-filter:var(--blur);border-bottom:1px solid rgba(255,255,255,0.6);transition:all .4s;}
@@ -216,7 +216,7 @@ tbody tr:nth-child(3) .rank-num{color:#cd7f32;}
 .tool-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
 .tool-icon{width:42px;height:42px;border-radius:12px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.15);}
 .tool-icon .fb{font-size:15px;font-weight:700;color:#fff;}
-.tool-icon img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#fff;}
+.tool-icon img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
 .tool-flag{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:100px;}
 .flag-hot{color:var(--red);background:rgba(255,59,48,.12);}
 .flag-free{color:var(--green);background:rgba(48,177,78,.13);}
@@ -314,6 +314,14 @@ footer p{line-height:2;}
 .wx-sim{width:100%;padding:12px;border-radius:12px;border:none;background:var(--wx);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
 .wx-note{font-size:10.5px;color:var(--tt);margin-top:12px;line-height:1.6;}
 
+/* marquee */
+.marquee{overflow:hidden;max-width:1400px;margin:0 auto 26px;padding:12px 0;}
+.mq-track{display:flex;gap:44px;white-space:nowrap;animation:mq 26s linear infinite;}
+.marquee:hover .mq-track{animation-play-state:paused;}
+.mq-track span{font-size:13px;color:var(--ts);display:inline-flex;align-items:center;gap:6px;}
+.mq-track span b{color:var(--accent3);}
+@keyframes mq{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
 @media (max-width:1100px){.grid-2,.grid-3{grid-template-columns:1fr;}.grid-4{grid-template-columns:repeat(2,1fr);}.duo{grid-template-columns:1fr;}.news-grid{grid-template-columns:1fr;}}
 @media (max-width:640px){.grid-4{grid-template-columns:1fr;}.nav-tabs{order:3;width:100%;}}
 </style>
@@ -351,6 +359,7 @@ footer p{line-height:2;}
       </div>
     </div>
   </header>
+  <div class="marquee glass"><div class="mq-track" id="mq-track"></div></div>
   <section>
     <div class="learn-banner glass">
       <span class="lb-emoji">&#127891;</span>
@@ -365,6 +374,14 @@ footer p{line-height:2;}
   <section id="home-erchuang">
     <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128293;</span>爆款二创工坊 <span class="hot-flag">精选</span></div><div class="sec-sub">拆解爆款→二创方向+工具+文案，直接模仿</div></div><a class="sec-more" href="javascript:switchView('learn')">全部 →</a></div>
     <div class="grid-2" id="ec-grid-home"></div>
+  </section>
+  <section id="home-bloggers">
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127775;</span>热门AI博主 · 跟他们学</div><div class="sec-sub">站在大佬肩膀上，直接学变现</div></div><a class="sec-more" href="javascript:switchView('learn')">全部 →</a></div>
+    <div class="grid-4" id="home-blogger-grid"></div>
+  </section>
+  <section id="home-opp">
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128176;</span>今日变现机会</div><div class="sec-sub">点"看怎么接单"直达图文详情</div></div><a class="sec-more" href="javascript:switchView('news')">更多 →</a></div>
+    <div class="grid-3" id="home-opp-grid"></div>
   </section>
 </div>
 
@@ -583,11 +600,11 @@ const W=q=>'https://weixin.sogou.com/weixin?type=2&query='+encodeURIComponent(q)
 /* ===== tree ===== */
 const TIERS=[
  {name:'基础层',nodes:[{id:'prompt',i:'&#128172;',n:'提示词'},{id:'agent',i:'&#129302;',n:'工具选择'}]},
- {name:'技能层',nodes:[{id:'image',i:'&#127912;',n:'AI绘画'},{id:'video',i:'&#127909;',n:'AI视频'},{id:'writing',i:'&#9997;&#65039;',n:'AI写作'},{id:'audio',i:'&#127911;',n:'AI配音'}]},
- {name:'进阶层',nodes:[{id:'avatar',i:'&#127912;',n:'头像定制'},{id:'matrix',i:'&#128241;',n:'矩阵运营'},{id:'ppt',i:'&#128202;',n:'AI PPT'},{id:'code',i:'&#128187;',n:'AI编程'},{id:'music',i:'&#127925;',n:'AI音乐'}]},
+ {name:'技能层',nodes:[{id:'image',i:'&#127912;',n:'AI绘画'},{id:'video',i:'&#127909;',n:'AI视频'},{id:'writing',i:'&#9997;&#65039;',n:'AI写作'},{id:'audio',i:'&#127911;',n:'AI配音'},{id:'aigent',i:'&#129302;',n:'AI Agent'}]},
+ {name:'进阶层',nodes:[{id:'avatar',i:'&#127912;',n:'头像定制'},{id:'matrix',i:'&#128241;',n:'矩阵运营'},{id:'ppt',i:'&#128202;',n:'AI PPT'},{id:'code',i:'&#128187;',n:'AI编程'},{id:'music',i:'&#127925;',n:'AI音乐'},{id:'knowpay',i:'&#128142;',n:'知识付费'}]},
  {name:'变现层',nodes:[{id:'money',i:'&#128176;',n:'接单变现'}]},
 ];
-const EDGES=[['prompt','image'],['prompt','video'],['prompt','writing'],['prompt','audio'],['agent','code'],['agent','ppt'],['image','avatar'],['video','matrix'],['audio','music'],['writing','ppt'],['avatar','money'],['matrix','money'],['ppt','money'],['code','money'],['music','money']];
+const EDGES=[['prompt','image'],['prompt','video'],['prompt','writing'],['prompt','audio'],['agent','code'],['agent','ppt'],['agent','aigent'],['image','avatar'],['video','matrix'],['audio','music'],['writing','ppt'],['aigent','knowpay'],['writing','knowpay'],['avatar','money'],['matrix','money'],['ppt','money'],['code','money'],['music','money'],['knowpay','money']];
 let learned=new Set(JSON.parse(localStorage.getItem('zhifu_learned')||'[]'));
 
 /* ===== DETAIL (本站图文详情) ===== */
@@ -604,6 +621,8 @@ const DETAIL={
  code:{t:'AI编程',intro:'Cursor+Copilot接爬虫/脚本/小程序单，效率x3。',steps:['接外包小单','Cursor辅助编码','交付收款','涨单价'],tools:['Cursor','Copilot','Ollama'],prompt:'你是资深工程师。用Python写【需求】，含注释+异常处理+示例。',tips:['从爬虫/脚本切入'],income:'月入¥5k-30k',links:[['B站','Cursor 接单'],['抖音','AI编程 变现']]},
  music:{t:'AI音乐',intro:'Suno批量做歌上传音乐平台赚版权分成。',steps:['Suno生成','筛选精品','上传网易/QQ','赚分成'],tools:['Suno','Udio'],prompt:'一首【治愈系】纯音乐，钢琴+弦乐，BPM80，适合学习/睡眠场景。',tips:['批量+长尾收益'],income:'月入¥1k-10k',links:[['B站','Suno 教程'],['抖音','AI音乐 变现']]},
  money:{t:'接单变现',intro:'终极目标：把前面技能组合起来跑通第一笔收入。',steps:['选1个技能深耕','做3个样品','挂闲鱼/小红书','跑通首单复盘'],tools:['闲鱼','小红书'],prompt:'（行动）本周内完成：选技能→做样品→上架→首单。',tips:['先完成再完美','首单不为钱为案例'],income:'跑通后复利增长',links:[['B站','AI副业 实战'],['抖音','AI变现 案例'],['微信','AI副业 指南']]},
+ aigent:{t:'AI Agent',intro:'用Coze/Dify搭建自动化的AI智能体，是进阶高价值技能。',steps:[['学Coze/Dify搭Bot'],['接自动化需求'],['做细分智能体']],tools:['Coze','Dify','LangChain'],prompt:'用Coze搭一个【场景】智能体：输入→处理→输出，配置知识库。',tips:['从细分场景切入'],learn:['智能体搭建','自动化'],path:['接自动化单','做SaaS小产品'],avoid:['别做大而全'],income:'月入¥3k-20k',links:[['B站','Coze 教程'],['抖音','AI Agent']]},
+ knowpay:{t:'知识付费',intro:'把学到的AI知识整理成课程/社群/模板，做知识付费变现。',steps:['整理知识体系'],['做模板/课程'],['建付费社群']],tools:['ChatGPT','Notion'],prompt:'把【技能】整理成10节小课大纲+配套提示词模板。',tips:['先免费引流再付费'],learn:['知识整理','社群运营'],path:['课程+社群+模板'],avoid:['别免费全发，留钩子'],income:'年入¥10k-100k',links:[['微信','知识付费'],['B站','知识付费']]},
 };
 
 /* ===== 详情页增强：能学到/二创路径/避坑 ===== */
@@ -702,16 +721,16 @@ function drawTreeLines(){
   });
 }
 function lvInfo(n){
-  if(n>=12)return['Lv.MAX AI变现大师','全部点亮！你已具备完整AI变现能力。'];
-  if(n>=9)return['Lv.3 变现高手','距离大师只差3个节点，冲！'];
-  if(n>=6)return['Lv.2 进阶者','技能层已成型，向变现层进发。'];
-  if(n>=3)return['Lv.1 入门者','地基打牢，继续点亮技能层。'];
+  if(n>=17)return['Lv.MAX AI变现大师','全部点亮！你已具备完整AI变现能力。'];
+  if(n>=12)return['Lv.3 变现高手','距离大师只差几步，冲！'];
+  if(n>=8)return['Lv.2 进阶者','技能层已成型，向变现层进发。'];
+  if(n>=4)return['Lv.1 入门者','地基打牢，继续点亮技能层。'];
   return['Lv.0 AI小白','点击任意节点，开始你的打怪升级之旅。'];
 }
 function updateTreeMeta(){
   const n=learned.size;
   document.getElementById('ring-num').textContent=n;
-  document.getElementById('ring-fg').style.strokeDashoffset=251.2*(1-n/15);
+  document.getElementById('ring-fg').style.strokeDashoffset=251.2*(1-n/17);
   const [ln,ld]=lvInfo(n);
   document.getElementById('lv-name').textContent=ln;
   document.getElementById('lv-desc').textContent=ld;
@@ -722,7 +741,7 @@ function updateTreeMeta(){
   }).join('');
   document.querySelectorAll('.learn-btn').forEach(b=>{const on=learned.has(b.dataset.node);b.classList.toggle('done',on);b.textContent=on?'已学习 ✓':'标为已学习';});
 }
-function markLearned(node){if(learned.has(node))return;learned.add(node);localStorage.setItem('zhifu_learned',JSON.stringify([...learned]));renderTree();}
+function markLearned(node){if(learned.has(node)){learned.delete(node);}else{learned.add(node);}localStorage.setItem('zhifu_learned',JSON.stringify([...learned]));renderTree();}
 document.addEventListener('click',e=>{const b=e.target.closest('.learn-btn');if(!b)return;e.stopPropagation();markLearned(b.dataset.node);});
 
 /* ===== EC 二创 ===== */
@@ -989,6 +1008,12 @@ const TOOL_META={
 const HL=new Set(['DeepSeek','通义千问','即梦 AI','剪映 AI','WorkBuddy','Qoder Work','Gamma','Kimi','Ollama','可灵 AI']);
 
 function favHost(u){try{return new URL(u).hostname;}catch(e){return '';}}
+function favFail(img){
+  const h=img.dataset.host;
+  if(!img.dataset.t1){img.dataset.t1=1;img.src='https://www.google.com/s2/favicons?sz=64&domain='+h;}
+  else if(!img.dataset.t2){img.dataset.t2=1;img.src='https://'+h+'/favicon.ico';}
+  else img.remove();
+}
 const wrapEl=document.getElementById('tool-sections');
 SECTIONS.forEach(sec=>{
   const el=document.createElement('section');el.id='sec-'+sec.id;
@@ -1012,7 +1037,7 @@ function renderTools(sec,sub){
     if(meta.price)tags+=`<i class="price">${meta.price}</i>`;
     if(meta.net==='blocked')tags+=`<i class="net">外网受限</i>`;else if(meta.net==='cn')tags+=`<i class="cn">国内直连</i>`;
     const c=document.createElement('a');c.className='tool-card glass'+(hl?' hl':'');c.href=t.u;c.target='_blank';c.style.transitionDelay=(i%6)*.03+'s';
-    c.innerHTML=`${hl?'<span class="hl-badge">&#128293; 高性价比·新手首选</span>':''}<div class="tool-head"><span class="tool-icon" style="background:${t.c};"><span class="fb">${t.a}</span><img loading="lazy" src="https://api.iowen.cn/favicon/${host}.png" onerror="this.remove()"></span>${flag}</div><h3>${t.n}</h3><div class="t-desc">${t.d}</div><div class="tool-tags">${tags}</div>`;
+    c.innerHTML=`${hl?'<span class="hl-badge">&#128293; 高性价比·新手首选</span>':''}<div class="tool-head"><span class="tool-icon" style="background:${t.c};"><span class="fb">${t.a}</span><img loading="lazy" data-host="${host}" src="https://api.iowen.cn/favicon/${host}.png" onerror="favFail(this)"></span>${flag}</div><h3>${t.n}</h3><div class="t-desc">${t.d}</div><div class="tool-tags">${tags}</div>`;
     grid.appendChild(c);
   });
   requestAnimationFrame(()=>grid.querySelectorAll('.tool-card').forEach(x=>x.classList.add('visible')));
@@ -1066,7 +1091,9 @@ GH.forEach(g=>{const a=document.createElement('a');a.className='gh-item glass';a
 /* ===== AI 五维股票·ETF 实时排行（腾讯财经JSONP） ===== */
 const STOCKS=[
  {code:'sh512480',type:'ETF'},{code:'sz159813',type:'ETF'},{code:'sz159819',type:'ETF'},{code:'sh515070',type:'ETF'},{code:'sh515880',type:'ETF'},{code:'sh562500',type:'ETF'},
+ {code:'sz159516',type:'ETF'},{code:'sz159995',type:'ETF'},{code:'sh588200',type:'ETF'},
  {code:'sz300308',type:'股票'},{code:'sz300502',type:'股票'},{code:'sh688256',type:'股票'},{code:'sh688041',type:'股票'},{code:'sz002230',type:'股票'},{code:'sz000977',type:'股票'},
+ {code:'sz002371',type:'股票'},{code:'sh688012',type:'股票'},
 ];
 function parseQ(code){const v=window['v_'+code];if(!v)return null;const a=v.split('~');return {name:a[1],price:+a[3],pct:+a[32],turn:+a[38],pe:+a[39],amp:+a[43],mcap:+a[45]};}
 function renderStocks(){
@@ -1144,7 +1171,7 @@ document.getElementById('search-input').addEventListener('keydown',e=>{if(e.key=
 
 addEventListener('scroll',()=>document.getElementById('main-nav').classList.toggle('scrolled',scrollY>30));
 const obs=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('visible');obs.unobserve(en.target);}});},{threshold:.05,rootMargin:'0px 0px -20px 0px'});
-function observeAll(){document.querySelectorAll('.card,.combo-card,.course-item,.news-card,.gh-item,.tool-card').forEach((el,i)=>{if(!el.classList.contains('visible')){el.style.transitionDelay=(i%4)*.05+'s';obs.observe(el);}});}
+function observeAll(){document.querySelectorAll('.card,.combo-card,.course-item,.news-card,.gh-item,.tool-card,.tl-item,.gloss-card').forEach((el,i)=>{if(!el.classList.contains('visible')){el.style.transitionDelay=(i%4)*.05+'s';obs.observe(el);}});}
 observeAll();
 
 /* wechat qr login */
@@ -1165,6 +1192,25 @@ document.getElementById('wx-sim').addEventListener('click',()=>{
   loginModal.classList.remove('show');renderLogin();
 });
 renderLogin();
+/* home previews */
+(function(){
+  const hb=document.getElementById('home-blogger-grid');
+  BLOGGERS.slice(0,4).forEach((b,i)=>{
+    const c=document.createElement('div');c.className='card glass';c.style.transitionDelay=(i%4)*.06+'s';
+    c.innerHTML=`<div class="c-top"><span class="c-ava" style="background:${b.bg};">${b.emo}</span><div style="min-width:0;flex:1;"><h3>${b.name}</h3><div class="c-sub">${b.plat} · ${b.fans}</div></div></div><div class="c-row"><b>学：</b>${b.learn}</div><div class="c-row"><b>变现：</b>${b.money}</div>`;
+    hb.appendChild(c);
+  });
+  const ho=document.getElementById('home-opp-grid');
+  OPP.slice(0,3).forEach((o,i)=>{
+    const c=document.createElement('div');c.className='card glass';c.style.transitionDelay=(i%3)*.06+'s';
+    c.innerHTML=`<div class="c-top"><span class="c-ava" style="background:#30b14e;">&#128176;</span><div style="min-width:0;flex:1;"><h3>${o.t}</h3><div class="c-sub">预期 ${o.inc}</div></div></div><div class="c-actions"><button class="mini-btn mb-detail" data-detail="${o.node}">看怎么接单</button></div>`;
+    ho.appendChild(c);
+  });
+  const kw=['AI视频解说','商业信息图','AI PPT','老照片修复','AI头像','AI音乐','提示词工程','AI矩阵','数字人','AI编程接单'];
+  const half=kw.map(k=>`<span>&#128293; <b>${k}</b></span>`).join('');
+  document.getElementById('mq-track').innerHTML=half+half;
+})();
+observeAll();
 renderTree();
 loadQuotes();
 </script>
