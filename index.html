@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>智富AI — 学AI·用AI·赚AI | 学习中心·知识树·二创工坊·Arena排行·130+工具</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%230071e3'/%3E%3Cstop offset='1' stop-color='%23af52de'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='44' font-size='32' font-weight='700' text-anchor='middle' fill='white' font-family='sans-serif'%3E%E6%99%BA%3C/text%3E%3C/svg%3E">
 <style>
 :root{
   --bg:#eef0f6;--card:rgba(255,255,255,0.45);--card-border:rgba(255,255,255,0.78);
@@ -32,6 +33,7 @@ nav.scrolled{background:rgba(255,255,255,0.8);}
 .nav-brand{font-size:17px;font-weight:800;display:flex;align-items:center;gap:9px;white-space:nowrap;cursor:pointer;}
 .nav-brand .logo-dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 0 14px rgba(0,113,227,.6);}
 .nav-brand em{font-style:normal;font-size:10px;color:var(--tt);letter-spacing:2px;}
+.logo-mark{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 2px 10px rgba(0,113,227,.45), inset 0 1px 1px rgba(255,255,255,.5);flex-shrink:0;}
 .nav-tabs{display:flex;gap:4px;margin:0 auto;overflow-x:auto;scrollbar-width:none;}
 .nav-tabs::-webkit-scrollbar{display:none;}
 .nav-tab{padding:8px 18px;border-radius:100px;font-size:14px;font-weight:600;color:var(--ts);cursor:pointer;border:none;background:transparent;font-family:inherit;white-space:nowrap;transition:all .3s;}
@@ -204,6 +206,18 @@ tbody tr:nth-child(3) .rank-num{color:#cd7f32;}
 .sub-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
 .sub-tab{padding:6px 16px;border-radius:100px;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.4);font-size:12.5px;color:var(--ts);cursor:pointer;font-family:inherit;}
 .sub-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+/* tools layout + side nav */
+.tools-layout{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start;}
+.tools-side{position:sticky;top:70px;max-height:calc(100vh - 90px);overflow-y:auto;padding:14px 10px;scrollbar-width:none;}
+.tools-side::-webkit-scrollbar{display:none;}
+.ts-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;font-size:13.5px;color:var(--ts);cursor:pointer;margin-bottom:2px;transition:all .35s cubic-bezier(.16,1,.3,1);position:relative;}
+.ts-item .tsi{width:20px;text-align:center;}
+.ts-item:hover{color:var(--accent);background:rgba(0,113,227,.07);transform:translateX(4px);}
+.ts-item.active{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 4px 16px rgba(0,113,227,.35);font-weight:700;}
+.ts-count{margin-left:auto;font-size:10.5px;background:rgba(0,0,0,.06);border-radius:100px;padding:1px 8px;color:var(--tt);}
+.ts-item.active .ts-count{background:rgba(255,255,255,.25);color:#fff;}
+@media (max-width:1000px){.tools-layout{grid-template-columns:1fr;}.tools-side{display:none;}}
+
 .tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;}
 .tool-card{padding:16px 14px;text-decoration:none;color:inherit;display:block;position:relative;transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s,opacity .3s;opacity:0;transform:translateY(18px) scale(.97);}
 .tool-card.hl{box-shadow:0 0 0 2px rgba(255,149,0,.55),0 8px 30px rgba(255,149,0,.28);}
@@ -321,6 +335,25 @@ footer p{line-height:2;}
 .stat-card .sn{font-size:26px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums;}
 .stat-card .sl{font-size:12px;color:var(--tt);margin-top:2px;}
 @media (max-width:900px){.stats-strip{grid-template-columns:repeat(2,1fr);}}
+/* hero cta */
+.hero-cta{display:flex;gap:14px;justify-content:center;margin:0 0 18px;flex-wrap:wrap;}
+.cta-main{padding:13px 34px;border-radius:100px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:15px;font-weight:700;font-family:inherit;box-shadow:0 8px 26px rgba(0,113,227,.4);transition:all .3s;}
+.cta-main:hover{transform:translateY(-3px);box-shadow:0 12px 34px rgba(0,113,227,.5);}
+.cta-ghost{padding:13px 34px;border-radius:100px;cursor:pointer;background:rgba(255,255,255,.5);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.8);color:var(--ts);font-size:15px;font-weight:600;font-family:inherit;transition:all .3s;}
+.cta-ghost:hover{color:var(--accent);transform:translateY(-3px);}
+.hero-trust{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.hero-trust span{font-size:12px;color:var(--ts);background:rgba(255,255,255,.45);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);padding:5px 14px;border-radius:100px;}
+/* search dropdown */
+.search-box{position:relative;}
+.search-drop{position:absolute;top:calc(100% - 46px);left:0;right:0;margin-top:52px;background:rgba(255,255,255,.96);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.8);border-radius:16px;box-shadow:var(--shadow-hover);max-height:340px;overflow:auto;display:none;z-index:60;}
+.search-drop.show{display:block;animation:fadeUp .3s both;}
+.sd-item{padding:12px 16px;display:flex;gap:10px;align-items:center;cursor:pointer;border-bottom:1px solid rgba(0,0,0,.04);}
+.sd-item:last-child{border-bottom:none;}
+.sd-item:hover{background:rgba(0,113,227,.06);}
+.sd-type{font-size:10px;font-weight:700;padding:2px 9px;border-radius:100px;background:rgba(0,113,227,.1);color:var(--accent);flex-shrink:0;}
+.sd-name{font-size:13px;font-weight:700;}
+.sd-desc{font-size:11px;color:var(--tt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sd-empty{padding:16px;text-align:center;font-size:12px;color:var(--tt);}
 
 /* marquee */
 .marquee{overflow:hidden;max-width:1400px;margin:0 auto 26px;padding:12px 0;}
@@ -344,7 +377,7 @@ footer p{line-height:2;}
 <div id="mouse-glow"></div>
 
 <nav id="main-nav">
-  <div class="nav-brand" data-view="home"><span class="logo-dot"></span>智富AI <em>ZHIFU.AI</em></div>
+  <div class="nav-brand" data-view="home"><span class="logo-mark">智</span>智富AI <em>ZHIFU.AI</em></div>
   <div class="nav-tabs">
     <button class="nav-tab active" data-view="home">&#127968; 首页</button>
     <button class="nav-tab hl" data-view="learn">&#127891; 学习中心</button>
@@ -360,8 +393,16 @@ footer p{line-height:2;}
   <header class="hero">
     <h1><span class="flow-text">智富AI</span> · 让AI为你打工</h1>
     <div class="slogan">学AI · 用AI · 赚AI — 站在大佬肩膀上，低成本产出变现内容</div>
+    <div class="hero-cta">
+      <button class="cta-main" onclick="switchView('learn')">&#127891; 进入学习中心</button>
+      <button class="cta-ghost" onclick="switchView('news')">&#128176; 查看变现机会</button>
+    </div>
+    <div class="hero-trust">
+      <span>&#9989; 免费起步</span><span>&#127464;&#127475; 国内直连</span><span>&#128257; 每日18:00更新</span><span>&#127942; Arena实时排行</span>
+    </div>
     <div class="search-box">
-      <div class="search-bar"><input id="search-input" placeholder="搜索 130+ 工具 / 玩法 / 模型…"/><button class="search-btn" id="search-btn">搜索</button></div>
+      <div class="search-bar"><input id="search-input" placeholder="搜索 130+ 工具 / 博主 / 方案 / 玩法…"/><button class="search-btn" id="search-btn">搜索</button></div>
+      <div class="search-drop" id="search-drop"></div>
       <div class="engine-tabs">
         <button class="engine-tab active" data-e="site">本站</button><button class="engine-tab" data-e="baidu">百度</button><button class="engine-tab" data-e="google">Google</button><button class="engine-tab" data-e="bing">Bing</button>
       </div>
@@ -463,7 +504,10 @@ footer p{line-height:2;}
     <span class="lb-emoji">&#129520;</span>
     <div style="flex:1;min-width:220px;"><h2>AI 工具箱 · 130+ 精选</h2><p>橙标=个人神器 · 标签=实时福利/特性 · 全部带丰富简介，新手友好。</p></div>
   </div>
-  <div id="tool-sections"></div>
+  <div class="tools-layout">
+    <aside class="tools-side glass" id="tools-side"></aside>
+    <div id="tool-sections"></div>
+  </div>
 </div>
 
 <!-- ============ DATA ============ -->
@@ -568,7 +612,7 @@ footer p{line-height:2;}
 </div>
 
 <footer>
-  <p style="font-weight:700;">智富AI · 学AI · 用AI · 赚AI · 站在大佬肩膀上变现</p>
+  <p style="font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;"><span class="logo-mark">智</span>智富AI · 学AI · 用AI · 赚AI · 站在大佬肩膀上变现</p>
   <p>联系邮箱：<a href="mailto:a951814898@163.com" style="color:var(--accent);">a951814898@163.com</a> · 学习内容来源：抖音 · B站 · 微信（高质量爆款）+ 本站自建图文详情</p>
   <p>© 2026 智富AI ZHIFU.AI · jackcats.xyz · <a href="https://beian.miit.gov.cn" target="_blank" style="color:var(--ts);">豫ICP备19018042号</a></p>
   <p style="max-width:900px;margin:10px auto 0;font-size:11px;color:var(--tt);line-height:1.7;">免责声明：本站内容仅供学习参考，不构成任何投资、理财或收益建议；AI工具、模型与行情数据来自公开渠道，不保证准确与完整；变现案例为公开信息整理，实际收益因人而异。据此操作，风险自担。</p>
@@ -1055,6 +1099,18 @@ SECTIONS.forEach(sec=>{
   renderTools(sec,'全部');
   el.querySelector('.sub-tabs').addEventListener('click',e=>{const b=e.target.closest('.sub-tab');if(!b)return;el.querySelectorAll('.sub-tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderTools(sec,b.dataset.sub);});
 });
+/* tools side nav */
+(function(){
+  const side=document.getElementById('tools-side');
+  SECTIONS.forEach(sec=>{
+    const d=document.createElement('div');d.className='ts-item';d.dataset.sec=sec.id;
+    d.innerHTML=`<span class="tsi">${sec.icon}</span>${sec.name}<span class="ts-count">${sec.tools.length}</span>`;
+    d.onclick=()=>{const el=document.getElementById('sec-'+sec.id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});};
+    side.appendChild(d);
+  });
+  const spy2=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){const id=en.target.id.replace('sec-','');document.querySelectorAll('.ts-item').forEach(x=>x.classList.toggle('active',x.dataset.sec===id));}});},{rootMargin:'-30% 0px -60% 0px'});
+  SECTIONS.forEach(sec=>{const el=document.getElementById('sec-'+sec.id);if(el)spy2.observe(el);});
+})();
 function renderTools(sec,sub){
   const grid=document.querySelector(`[data-grid="${sec.id}"]`);
   const list=sub==='全部'?sec.tools:sec.tools.filter(t=>t.s===sub);
@@ -1196,9 +1252,28 @@ document.getElementById('sideincome-tbody').innerHTML=[...SIDE_INC].sort((a,b)=>
 /* search */
 let engine='site';
 document.querySelectorAll('.engine-tab').forEach(t=>{t.addEventListener('click',()=>{document.querySelectorAll('.engine-tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');engine=t.dataset.e;});});
-function doSearch(){const q=document.getElementById('search-input').value.trim();if(!q)return;const urls={baidu:'https://www.baidu.com/s?wd=',google:'https://www.google.com/search?q=',bing:'https://www.bing.com/search?q='};if(engine==='site'){switchView('tools');setTimeout(()=>{document.querySelectorAll('.tool-card').forEach(c=>{c.style.display=c.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';});},100);}else window.open(urls[engine]+encodeURIComponent(q),'_blank');}
+function buildIndex(){
+  const idx=[];
+  SECTIONS.forEach(sec=>sec.tools.forEach(t=>idx.push({type:'工具',name:t.n,desc:t.d,view:'tools',anchor:'sec-'+sec.id})));
+  BLOGGERS.forEach(b=>idx.push({type:'博主',name:b.name,desc:b.learn,view:'learn',anchor:'l-bloggers'}));
+  RECIPES.forEach(r=>idx.push({type:'方案',name:r.name,desc:r.combo,view:'learn',anchor:'l-recipes'}));
+  EC.forEach(e=>idx.push({type:'二创',name:e.name,desc:e.an,view:'learn',anchor:'l-ec'}));
+  return idx;
+}
+const SEARCH_IDX=buildIndex();
+const drop=document.getElementById('search-drop');
+function showDrop(q){
+  if(!q){drop.classList.remove('show');return;}
+  const res=SEARCH_IDX.filter(x=>(x.name+x.desc).toLowerCase().includes(q.toLowerCase())).slice(0,8);
+  drop.innerHTML=res.length?res.map((r,i)=>`<div class="sd-item" data-i="${i}"><span class="sd-type">${r.type}</span><div style="min-width:0;"><div class="sd-name">${r.name}</div><div class="sd-desc">${r.desc}</div></div></div>`).join(''):`<div class="sd-empty">未找到"${q}"，试试换个关键词</div>`;
+  drop.classList.add('show');
+  drop.querySelectorAll('.sd-item').forEach(el=>{el.onclick=()=>{const r=res[+el.dataset.i];drop.classList.remove('show');switchView(r.view);setTimeout(()=>{const a=document.getElementById(r.anchor);if(a)a.scrollIntoView({behavior:'smooth',block:'start'});},200);};});
+}
+document.getElementById('search-input').addEventListener('input',e=>{if(engine==='site')showDrop(e.target.value.trim());});
+function doSearch(){const q=document.getElementById('search-input').value.trim();if(!q)return;const urls={baidu:'https://www.baidu.com/s?wd=',google:'https://www.google.com/search?q=',bing:'https://www.bing.com/search?q='};if(engine==='site'){showDrop(q);}else window.open(urls[engine]+encodeURIComponent(q),'_blank');}
 document.getElementById('search-btn').addEventListener('click',doSearch);
 document.getElementById('search-input').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
+document.addEventListener('click',e=>{if(!e.target.closest('.search-box'))drop.classList.remove('show');});
 
 addEventListener('scroll',()=>document.getElementById('main-nav').classList.toggle('scrolled',scrollY>30));
 const obs=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('visible');obs.unobserve(en.target);}});},{threshold:.05,rootMargin:'0px 0px -20px 0px'});
@@ -1242,7 +1317,8 @@ renderLogin();
   document.getElementById('mq-track').innerHTML=half+half;
 })();
 observeAll();
-animNum(document.getElementById('stat-visit'),VISIT_BASE,'+');
+const _v=(+localStorage.getItem('zhifu_visit')||0)+1;localStorage.setItem('zhifu_visit',_v);
+animNum(document.getElementById('stat-visit'),VISIT_BASE+_v,'+');
 animNum(document.getElementById('stat-plan'),PLAN_BASE,'+');
 updateStats();
 renderTree();
