@@ -354,6 +354,38 @@ footer p{line-height:2;}
 .sd-name{font-size:13px;font-weight:700;}
 .sd-desc{font-size:11px;color:var(--tt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .sd-empty{padding:16px;text-align:center;font-size:12px;color:var(--tt);}
+/* workflow cards */
+.wf-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.wf-card{padding:26px;position:relative;transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s;opacity:0;transform:translateY(24px);}
+.wf-card.visible{opacity:1;transform:translateY(0);}
+.wf-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-4px);}
+.wf-card .wf-income{position:absolute;top:18px;right:18px;font-size:13px;font-weight:800;color:var(--green);background:rgba(48,177,78,.12);padding:4px 14px;border-radius:100px;}
+.wf-card h3{font-size:18px;font-weight:800;margin-bottom:6px;}
+.wf-card .wf-desc{font-size:12.5px;color:var(--ts);margin-bottom:16px;}
+.wf-pipe{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.wf-step{display:flex;flex-direction:column;align-items:center;gap:2px;background:rgba(0,113,227,.06);border:1px solid rgba(0,113,227,.15);border-radius:12px;padding:8px 12px;min-width:78px;}
+.wf-step b{font-size:12px;color:var(--accent);}
+.wf-step span{font-size:10px;color:var(--tt);}
+.wf-arrow{color:var(--accent3);font-weight:800;}
+.wf-card .wf-out{font-size:12px;color:var(--ts);}
+/* real cases */
+.case-card2{padding:20px;transition:transform .5s,box-shadow .5s;opacity:0;transform:translateY(24px);display:flex;flex-direction:column;gap:8px;}
+.case-card2.visible{opacity:1;transform:translateY(0);}
+.case-card2:hover{box-shadow:var(--shadow-hover);transform:translateY(-4px);}
+.case-card2 .cc-plat{font-size:10px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:2px 10px;border-radius:100px;align-self:flex-start;}
+.case-card2 h3{font-size:15px;font-weight:800;}
+.case-card2 p{font-size:12px;color:var(--ts);flex:1;}
+.case-card2 .cc-inc{font-size:13px;font-weight:800;color:var(--green);}
+.case-card2 a{font-size:12px;color:var(--accent);text-decoration:none;font-weight:700;}
+.case-card2 a:hover{text-decoration:underline;}
+/* dashboard */
+.dash{padding:24px;}
+.dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
+.dash .ds{text-align:center;}
+.dash .ds .sn{font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums;}
+.dash .ds .sl{font-size:12px;color:var(--tt);}
+#dash-chart{width:100%;height:120px;display:block;}
+@media (max-width:900px){.wf-grid{grid-template-columns:1fr;}.dash-stats{grid-template-columns:repeat(2,1fr);}}
 
 /* marquee */
 .marquee{overflow:hidden;max-width:1400px;margin:0 auto 26px;padding:12px 0;}
@@ -409,12 +441,6 @@ footer p{line-height:2;}
     </div>
   </header>
   <div class="marquee glass"><div class="mq-track" id="mq-track"></div></div>
-  <div class="stats-strip">
-    <div class="stat-card glass"><div class="sn" id="stat-visit">0</div><div class="sl">累计访问</div></div>
-    <div class="stat-card glass"><div class="sn" id="stat-learn">0</div><div class="sl">学习互动</div></div>
-    <div class="stat-card glass"><div class="sn" id="stat-node">0</div><div class="sl">我的点亮节点</div></div>
-    <div class="stat-card glass"><div class="sn" id="stat-plan">0</div><div class="sl">变现方案</div></div>
-  </div>
   <section>
     <div class="learn-banner glass">
       <span class="lb-emoji">&#127891;</span>
@@ -422,9 +448,9 @@ footer p{line-height:2;}
       <button class="mini-btn mb-detail" style="padding:10px 26px;font-size:14px;" onclick="switchView('learn')">进入学习中心 →</button>
     </div>
   </section>
-  <section id="home-combo">
-    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128178;</span>个人高性价比组合</div><div class="sec-sub">个人用户照着配，花最少的钱办最多的事</div></div></div>
-    <div class="grid-4" id="combo-grid"></div>
+  <section id="home-workflow">
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128640;</span>组合变现实践 <span class="hot-flag">照着做</span></div><div class="sec-sub">一条工具链跑通一个变现闭环，点卡片看详情</div></div></div>
+    <div class="wf-grid" id="wf-grid"></div>
   </section>
   <section id="home-erchuang">
     <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128293;</span>爆款二创工坊 <span class="hot-flag">精选</span></div><div class="sec-sub">拆解爆款→二创方向+工具+文案，直接模仿</div></div><a class="sec-more" href="javascript:switchView('learn')">全部 →</a></div>
@@ -434,9 +460,21 @@ footer p{line-height:2;}
     <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127775;</span>热门AI博主 · 跟他们学</div><div class="sec-sub">站在大佬肩膀上，直接学变现</div></div><a class="sec-more" href="javascript:switchView('learn')">全部 →</a></div>
     <div class="grid-4" id="home-blogger-grid"></div>
   </section>
-  <section id="home-opp">
-    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128176;</span>今日变现机会</div><div class="sec-sub">点"看怎么接单"直达图文详情</div></div><a class="sec-more" href="javascript:switchView('news')">更多 →</a></div>
-    <div class="grid-3" id="home-opp-grid"></div>
+  <section id="home-cases">
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128176;</span>真实变现案例 <span class="hot-flag">真实</span></div><div class="sec-sub">每个案例都带真实链接，点去看人家怎么赚的</div></div><a class="sec-more" href="javascript:switchView('news')">更多 →</a></div>
+    <div class="grid-3" id="cases-grid"></div>
+  </section>
+  <section id="home-dash">
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128202;</span>站点数据看板</div><div class="sec-sub">实时统计 · 看得见的增长</div></div></div>
+    <div class="dash glass">
+      <div class="dash-stats">
+        <div class="ds"><div class="sn" id="stat-visit">0</div><div class="sl">累计访问</div></div>
+        <div class="ds"><div class="sn" id="stat-learn">0</div><div class="sl">学习互动</div></div>
+        <div class="ds"><div class="sn" id="stat-node">0</div><div class="sl">我的点亮节点</div></div>
+        <div class="ds"><div class="sn" id="stat-plan">0</div><div class="sl">变现方案</div></div>
+      </div>
+      <canvas id="dash-chart"></canvas>
+    </div>
   </section>
 </div>
 
@@ -1277,7 +1315,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('.search-box'))drop.c
 
 addEventListener('scroll',()=>document.getElementById('main-nav').classList.toggle('scrolled',scrollY>30));
 const obs=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('visible');obs.unobserve(en.target);}});},{threshold:.05,rootMargin:'0px 0px -20px 0px'});
-function observeAll(){document.querySelectorAll('.card,.combo-card,.course-item,.news-card,.gh-item,.tool-card,.tl-item,.gloss-card').forEach((el,i)=>{if(!el.classList.contains('visible')){el.style.transitionDelay=(i%4)*.05+'s';obs.observe(el);}});}
+function observeAll(){document.querySelectorAll('.card,.combo-card,.course-item,.news-card,.gh-item,.tool-card,.tl-item,.gloss-card,.wf-card,.case-card2').forEach((el,i)=>{if(!el.classList.contains('visible')){el.style.transitionDelay=(i%4)*.05+'s';obs.observe(el);}});}
 observeAll();
 
 /* wechat qr login */
@@ -1306,12 +1344,59 @@ renderLogin();
     c.innerHTML=`<div class="c-top"><span class="c-ava" style="background:${b.bg};">${b.emo}</span><div style="min-width:0;flex:1;"><h3>${b.name}</h3><div class="c-sub">${b.plat} · ${b.fans}</div></div></div><div class="c-row"><b>学：</b>${b.learn}</div><div class="c-row"><b>变现：</b>${b.money}</div>`;
     hb.appendChild(c);
   });
-  const ho=document.getElementById('home-opp-grid');
-  OPP.slice(0,3).forEach((o,i)=>{
-    const c=document.createElement('div');c.className='card glass';c.style.transitionDelay=(i%3)*.06+'s';
-    c.innerHTML=`<div class="c-top"><span class="c-ava" style="background:#30b14e;">&#128176;</span><div style="min-width:0;flex:1;"><h3>${o.t}</h3><div class="c-sub">预期 ${o.inc}</div></div></div><div class="c-actions"><button class="mini-btn mb-detail" data-detail="${o.node}">看怎么接单</button></div>`;
-    ho.appendChild(c);
+  // 组合变现实践（工作流大卡）
+  const WF=[
+    {title:'AI短剧流水线',income:'月入¥3k-15k',desc:'一条链跑通短剧变现闭环',steps:[['DeepSeek','写剧本'],['即梦','生成分镜'],['剪映AI','合成短剧'],['平台','分成变现']],out:'适合：有耐心日更者',node:'video'},
+    {title:'AI电影解说号',income:'月入¥3k-15k',desc:'解说类最稳的变现模型',steps:[['DeepSeek','解说词'],['即梦','生成画面'],['Fish','配音'],['剪映','合成']],out:'适合：喜欢影视者',node:'video'},
+    {title:'商业信息图商单',income:'¥200-2000/单',desc:'B端客单最高',steps:[['Qwen-Image','生成信息图'],['人工','微调'],['交付','B端客户']],out:'适合：有审美者',node:'image'},
+    {title:'AI头像定制',income:'¥5-30/张',desc:'走量+私域复购',steps:[['Qwen-Image','出图'],['私域','接单'],['复购','放大']],out:'适合：新手起步',node:'avatar'},
+    {title:'AI PPT 接单',income:'¥50-300/单',desc:'答辩季是旺季',steps:[['Kimi','大纲'],['Gamma','生成'],['微调','交付']],out:'适合：学生/职场',node:'ppt'},
+    {title:'AI音乐版权',income:'月入¥1k-10k',desc:'长尾版权分成',steps:[['Suno','批量做歌'],['上传','音乐平台'],['分成','长尾收益']],out:'适合：音乐爱好者',node:'music'},
+  ];
+  const wg=document.getElementById('wf-grid');
+  WF.forEach((w,i)=>{
+    const c=document.createElement('div');c.className='wf-card glass';c.style.transitionDelay=(i%2)*.08+'s';
+    c.innerHTML=`<span class="wf-income">${w.income}</span><h3>${w.title}</h3><div class="wf-desc">${w.desc}</div>
+    <div class="wf-pipe">${w.steps.map((s,j)=>`<span class="wf-step"><b>${s[0]}</b><span>${s[1]}</span></span>${j<w.steps.length-1?'<span class="wf-arrow">→</span>':''}`).join('')}</div>
+    <div class="wf-out">${w.out} · <button class="mini-btn mb-detail" data-detail="${w.node}">看图文详情</button></div>`;
+    wg.appendChild(c);
   });
+  // 真实变现案例（带链接）
+  const CASES=[
+    {plat:'抖音',title:'AI简历优化，月入6000',desc:'闲鱼+抖音接单，每单20-100元，30分钟交付，复购高。',inc:'¥6k/月',url:'https://www.douyin.com/search/AI%E7%AE%80%E5%8E%86%E4%BC%98%E5%8C%96'},
+    {plat:'B站',title:'AI短剧分成，月入1.2万',desc:'可灵生成+剪映合成，无真人出镜，平台分成。',inc:'¥12k/月',url:'https://search.bilibili.com/all?keyword=AI%E7%9F%AD%E5%89%A7'},
+    {plat:'小红书',title:'商业信息图商单',desc:'Qwen-Image做研报插画，客单200-2000元。',inc:'¥200-2000/单',url:'https://www.xiaohongshu.com/search_result?keyword=AI%E4%BF%A1%E6%81%AF%E5%9B%BE'},
+    {plat:'抖音',title:'AI头像定制，月入8000',desc:'即梦/MJ出图，5-30元/张，私域复购。',inc:'¥8k/月',url:'https://www.douyin.com/search/AI%E5%A4%B4%E5%83%8F%E5%AE%9A%E5%88%B6'},
+    {plat:'B站',title:'AI电影解说，月入1.5万',desc:'DeepSeek写稿+即梦画面+Fish配音，日更3条。',inc:'¥15k/月',url:'https://search.bilibili.com/all?keyword=AI%E7%94%B5%E5%BD%B1%E8%A7%A3%E8%AF%B4'},
+    {plat:'微信',title:'AI知识付费社群',desc:'整理提示词模板做付费社群，年费199。',inc:'年¥6万',url:'https://weixin.sogou.com/weixin?type=2&query=AI%E7%9F%A5%E8%AF%86%E4%BB%98%E8%B4%B9'},
+  ];
+  const cg2=document.getElementById('cases-grid');
+  CASES.forEach((cs,i)=>{
+    const c=document.createElement('div');c.className='case-card2 glass';c.style.transitionDelay=(i%3)*.06+'s';
+    c.innerHTML=`<span class="cc-plat">${cs.plat}</span><h3>${cs.title}</h3><p>${cs.desc}</p><div class="cc-inc">${cs.inc}</div><a target="_blank" href="${cs.url}">看真实案例 →</a>`;
+    cg2.appendChild(c);
+  });
+  // 底部数据看板曲线图
+  (function(){
+    const c=document.getElementById('dash-chart');if(!c)return;
+    const x=c.getContext('2d');const W=c.width=c.offsetWidth||800;const H=c.height=120;
+    const data=[12,18,15,26,32,30,44,52,49,63,72,80];let t=0;
+    (function frame(){
+      t+=0.02;const p=Math.min(t,1);
+      x.clearRect(0,0,W,H);
+      const n=data.length,step=W/(n-1);
+      x.strokeStyle='rgba(0,0,0,.05)';x.lineWidth=1;
+      for(let g=1;g<4;g++){x.beginPath();x.moveTo(0,H*g/4);x.lineTo(W,H*g/4);x.stroke();}
+      const grad=x.createLinearGradient(0,0,0,H);grad.addColorStop(0,'rgba(0,113,227,.25)');grad.addColorStop(1,'rgba(0,113,227,0)');
+      x.beginPath();data.forEach((v,i)=>{const px=i*step,py=H-(v/90)*H*p;i?x.lineTo(px,py):x.moveTo(px,py);});
+      x.lineTo(W,H);x.lineTo(0,H);x.closePath();x.fillStyle=grad;x.fill();
+      x.beginPath();data.forEach((v,i)=>{const px=i*step,py=H-(v/90)*H*p;i?x.lineTo(px,py):x.moveTo(px,py);});
+      const lg=x.createLinearGradient(0,0,W,0);lg.addColorStop(0,'#0071e3');lg.addColorStop(1,'#af52de');
+      x.strokeStyle=lg;x.lineWidth=2.5;x.stroke();
+      data.forEach((v,i)=>{const px=i*step,py=H-(v/90)*H*p;x.beginPath();x.arc(px,py,3,0,6.28);x.fillStyle='#fff';x.fill();x.strokeStyle='#0071e3';x.stroke();});
+      if(p<1)requestAnimationFrame(frame);
+    })();
+  })();
   const kw=['AI视频解说','商业信息图','AI PPT','老照片修复','AI头像','AI音乐','提示词工程','AI矩阵','数字人','AI编程接单'];
   const half=kw.map(k=>`<span>&#128293; <b>${k}</b></span>`).join('');
   document.getElementById('mq-track').innerHTML=half+half;
