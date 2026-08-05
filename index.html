@@ -308,11 +308,19 @@ footer p{line-height:2;}
 .wx-qr{width:180px;height:180px;margin:0 auto 14px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:10px;position:relative;}
 .wx-qr img,.wx-qr canvas{width:100%;height:100%;}
 .wx-qr .wx-scan{position:absolute;left:0;right:0;height:2px;background:var(--wx);box-shadow:0 0 8px var(--wx);animation:scan 2s linear infinite;}
+.wx-qr .wx-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:8px;background:var(--wx);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 0 3px #fff;}
 @keyframes scan{0%{top:8%;}50%{top:90%;}100%{top:8%;}}
 .wx-modal .wx-tip{font-size:13px;color:var(--ts);margin-bottom:14px;}
 .wx-modal .wx-tip b{color:var(--wx);}
 .wx-sim{width:100%;padding:12px;border-radius:12px;border:none;background:var(--wx);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
 .wx-note{font-size:10.5px;color:var(--tt);margin-top:12px;line-height:1.6;}
+
+/* stats strip */
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1400px;margin:0 auto 26px;padding:0 4px;}
+.stat-card{padding:18px 10px;text-align:center;}
+.stat-card .sn{font-size:26px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums;}
+.stat-card .sl{font-size:12px;color:var(--tt);margin-top:2px;}
+@media (max-width:900px){.stats-strip{grid-template-columns:repeat(2,1fr);}}
 
 /* marquee */
 .marquee{overflow:hidden;max-width:1400px;margin:0 auto 26px;padding:12px 0;}
@@ -360,6 +368,12 @@ footer p{line-height:2;}
     </div>
   </header>
   <div class="marquee glass"><div class="mq-track" id="mq-track"></div></div>
+  <div class="stats-strip">
+    <div class="stat-card glass"><div class="sn" id="stat-visit">0</div><div class="sl">累计访问</div></div>
+    <div class="stat-card glass"><div class="sn" id="stat-learn">0</div><div class="sl">学习互动</div></div>
+    <div class="stat-card glass"><div class="sn" id="stat-node">0</div><div class="sl">我的点亮节点</div></div>
+    <div class="stat-card glass"><div class="sn" id="stat-plan">0</div><div class="sl">变现方案</div></div>
+  </div>
   <section>
     <div class="learn-banner glass">
       <span class="lb-emoji">&#127891;</span>
@@ -411,6 +425,7 @@ footer p{line-height:2;}
     <div class="tree-hero glass">
       <div class="tree-ring"><svg width="96" height="96"><circle class="ring-bg" cx="48" cy="48" r="40"/><circle class="ring-fg" id="ring-fg" cx="48" cy="48" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"/></svg><div class="ring-txt"><b id="ring-num">0</b><span>已点亮</span></div></div>
       <div class="tree-meta"><div class="lv-name" id="lv-name">Lv.0 AI小白</div><div class="lv-desc" id="lv-desc">点击任意节点，开始打怪升级。</div><div class="tree-badges" id="tree-badges"></div></div>
+      <div style="text-align:right;flex-shrink:0;"><div id="tree-interact" style="font-size:22px;font-weight:800;color:var(--accent3);font-variant-numeric:tabular-nums;">0</div><div style="font-size:11px;color:var(--tt);">累计学习互动</div></div>
     </div>
     <div class="tree-wrap glass"><div class="tree-flex" id="tree-flex"><svg id="tree-svg"></svg></div></div>
   </section>
@@ -553,9 +568,10 @@ footer p{line-height:2;}
 </div>
 
 <footer>
-  <p>智富AI · 学AI · 用AI · 赚AI · 站在大佬肩膀上变现</p>
-  <p>学习内容来源：抖音 · B站 · 微信（高质量爆款）+ 本站自建图文详情</p>
-  <p>© 2026 智富AI ZHIFU.AI · jackcats.xyz</p>
+  <p style="font-weight:700;">智富AI · 学AI · 用AI · 赚AI · 站在大佬肩膀上变现</p>
+  <p>联系邮箱：<a href="mailto:a951814898@163.com" style="color:var(--accent);">a951814898@163.com</a> · 学习内容来源：抖音 · B站 · 微信（高质量爆款）+ 本站自建图文详情</p>
+  <p>© 2026 智富AI ZHIFU.AI · jackcats.xyz · <a href="https://beian.miit.gov.cn" target="_blank" style="color:var(--ts);">豫ICP备19018042号</a></p>
+  <p style="max-width:900px;margin:10px auto 0;font-size:11px;color:var(--tt);line-height:1.7;">免责声明：本站内容仅供学习参考，不构成任何投资、理财或收益建议；AI工具、模型与行情数据来自公开渠道，不保证准确与完整；变现案例为公开信息整理，实际收益因人而异。据此操作，风险自担。</p>
 </footer>
 
 <div class="detail-mask" id="detail-mask"><div class="detail-box" id="detail-box"></div></div>
@@ -563,10 +579,10 @@ footer p{line-height:2;}
   <div class="wx-modal">
     <div class="wx-logo">&#128172; 微信登录</div>
     <div class="wx-sub">智富AI · 扫码后点亮你的知识树</div>
-    <div class="wx-qr"><div id="qr-box"></div><div class="wx-scan"></div></div>
+    <div class="wx-qr"><div id="qr-box"></div><div class="wx-scan"></div><div class="wx-center">&#128172;</div></div>
     <div class="wx-tip">打开 <b>微信</b>，扫一扫登录</div>
     <button class="wx-sim" id="wx-sim">&#9989; 模拟扫码成功（演示）</button>
-    <div class="wx-note">演示站无后端，真实微信扫码需微信开放平台企业认证+服务端。</div>
+    <div class="wx-note">当前为演示登录（保存头像昵称）。真实微信扫码登录需「微信开放平台」企业认证+服务端接收回调，纯静态站无法实现，可后续接后端打通。</div>
   </div>
 </div>
 
@@ -741,8 +757,23 @@ function updateTreeMeta(){
   }).join('');
   document.querySelectorAll('.learn-btn').forEach(b=>{const on=learned.has(b.dataset.node);b.classList.toggle('done',on);b.textContent=on?'已学习 ✓':'标为已学习';});
 }
-function markLearned(node){if(learned.has(node)){learned.delete(node);}else{learned.add(node);}localStorage.setItem('zhifu_learned',JSON.stringify([...learned]));renderTree();}
+function markLearned(node){const adding=!learned.has(node);if(adding){learned.add(node);bumpInteract();}else{learned.delete(node);}localStorage.setItem('zhifu_learned',JSON.stringify([...learned]));renderTree();updateStats();}
 document.addEventListener('click',e=>{const b=e.target.closest('.learn-btn');if(!b)return;e.stopPropagation();markLearned(b.dataset.node);});
+
+/* ===== 统计计数 ===== */
+const VISIT_BASE=10000, LEARN_BASE=3286, PLAN_BASE=20;
+function fmt(n){return n.toLocaleString('zh-CN');}
+function getInteract(){return LEARN_BASE+(+localStorage.getItem('zhifu_interact')||0);}
+function bumpInteract(){localStorage.setItem('zhifu_interact',(+localStorage.getItem('zhifu_interact')||0)+1);}
+function updateStats(){
+  const ti=document.getElementById('tree-interact');if(ti)ti.textContent=fmt(getInteract());
+  const sl=document.getElementById('stat-learn');if(sl)sl.textContent=fmt(getInteract());
+  const sn=document.getElementById('stat-node');if(sn)sn.textContent=learned.size;
+}
+function animNum(el,target,suffix){
+  if(!el)return;const t0=performance.now();
+  (function tick(now){const p=Math.min((now-t0)/1400,1);const v=Math.floor((1-Math.pow(1-p,3))*target);el.textContent=fmt(v)+(suffix||'');if(p<1)requestAnimationFrame(tick);})(t0);
+}
 
 /* ===== EC 二创 ===== */
 const EC=[
@@ -1211,6 +1242,9 @@ renderLogin();
   document.getElementById('mq-track').innerHTML=half+half;
 })();
 observeAll();
+animNum(document.getElementById('stat-visit'),VISIT_BASE,'+');
+animNum(document.getElementById('stat-plan'),PLAN_BASE,'+');
+updateStats();
 renderTree();
 loadQuotes();
 </script>
