@@ -122,9 +122,10 @@ section{margin-bottom:44px;scroll-margin-top:80px;}
 .card .c-ava{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;flex-shrink:0;}
 .card h3{font-size:16px;font-weight:800;}
 .card .c-sub{font-size:11.5px;color:var(--accent3);font-weight:700;}
-.card .c-row{font-size:12.5px;color:var(--ts);line-height:1.7;margin-bottom:7px;}
+.card .c-row{font-size:12.5px;color:var(--ts);line-height:1.7;margin-bottom:7px;word-break:break-word;}
 .card .c-row b{color:var(--accent);}
-.c-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.c-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center;}
+.c-actions .mini-btn{white-space:nowrap;}
 .mini-btn{padding:6px 14px;border-radius:100px;font-size:11.5px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .3s;border:none;font-family:inherit;}
 .mb-case{background:rgba(255,59,48,.1);color:var(--red);}
 .mb-tut{background:rgba(0,113,227,.1);color:var(--accent);}
@@ -342,7 +343,7 @@ footer p{line-height:2;}
     <div style="flex:1;min-width:220px;"><h2>AI 学习中心</h2><p>打怪升级式学习：看详情→学完点亮知识树→从AI小白到变现大师。内容只选抖音/B站/微信高质量爆款。</p></div>
   </div>
   <div class="learn-subnav">
-    <a href="#l-tree">知识图谱</a><a href="#l-daily">每日一课</a><a href="#l-tags">标签学习</a><a href="#l-ec">二创工坊</a><a href="#l-recipes">图文方案</a><a href="#l-courses">精品课程</a>
+    <a href="#l-tree">知识图谱</a><a href="#l-daily">每日一课</a><a href="#l-tags">标签学习</a><a href="#l-ec">二创工坊</a><a href="#l-recipes">图文方案</a><a href="#l-bloggers">博主排行</a>
   </div>
 
   <section id="l-tree">
@@ -375,9 +376,9 @@ footer p{line-height:2;}
     <div class="grid-2" id="recipe-grid"></div>
   </section>
 
-  <section id="l-courses">
-    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127891;</span>精品课程</div><div class="sec-sub">免费高质量课程，配本站详情+外站链接</div></div></div>
-    <div style="display:flex;flex-direction:column;gap:10px;" id="course-list"></div>
+  <section id="l-bloggers">
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127775;</span>热门AI博主排行 <span class="hot-flag">接地气</span></div><div class="sec-sub">抖音/B站/微信真实大佬：能学什么+变现工具+变现方式+二创方向，直接跟他们学</div></div></div>
+    <div class="grid-2" id="blogger-grid"></div>
   </section>
 </div>
 
@@ -511,8 +512,38 @@ const DETAIL={
  music:{t:'AI音乐',intro:'Suno批量做歌上传音乐平台赚版权分成。',steps:['Suno生成','筛选精品','上传网易/QQ','赚分成'],tools:['Suno','Udio'],prompt:'一首【治愈系】纯音乐，钢琴+弦乐，BPM80，适合学习/睡眠场景。',tips:['批量+长尾收益'],income:'月入¥1k-10k',links:[['B站','Suno 教程'],['抖音','AI音乐 变现']]},
  money:{t:'接单变现',intro:'终极目标：把前面技能组合起来跑通第一笔收入。',steps:['选1个技能深耕','做3个样品','挂闲鱼/小红书','跑通首单复盘'],tools:['闲鱼','小红书'],prompt:'（行动）本周内完成：选技能→做样品→上架→首单。',tips:['先完成再完美','首单不为钱为案例'],income:'跑通后复利增长',links:[['B站','AI副业 实战'],['抖音','AI变现 案例'],['微信','AI副业 指南']]},
 };
+
+/* ===== 详情页增强：能学到/二创路径/避坑 ===== */
+const EXTRA={
+ prompt:{learn:['结构化提示词四段式（背景+任务+格式+示例）','角色扮演让输出更专业','用示例代替抽象描述'],path:['整理行业提示词模板售卖','做提示词付费社群'],avoid:['别堆砌形容词','一次只改一个变量']},
+ agent:{learn:['按场景选免费/付费模型','组合工具栈省钱'],path:['帮人配置AI工具栈收费','做工具测评号'],avoid:['别一上来就买贵模型']},
+ image:{learn:['信息图/头像/壁纸三赛道','提示词控制风格'],path:['信息图接B端商单(客单高)','头像走量5-30元/张'],avoid:['别做写实明星脸(易侵权)']},
+ video:{learn:['45秒口播结构','分镜+配音+合成流水线'],path:['日更起号赚平台分成','接解说外包'],avoid:['别抄原稿，换题材二创']},
+ writing:{learn:['金句/文案/公文三类','批量产出+人工润色'],path:['语录号','软文单','公文单'],avoid:['别发纯AI文，要润色']},
+ audio:{learn:['声音克隆','配音外包交付'],path:['解说配音','有声书'],avoid:['克隆他人声音需授权']},
+ avatar:{learn:['建风格模板','接单交付流程'],path:['头像定制','壁纸号'],avoid:['别用明星/真人脸']},
+ matrix:{learn:['选垂直赛道','批量出图+多号分发'],path:['广告+带货佣金'],avoid:['一机一号防限流']},
+ ppt:{learn:['Gamma生成+人工微调','闲鱼接单定价'],path:['答辩/述职/路演单'],avoid:['旺季前囤好模板']},
+ code:{learn:['Cursor辅助编码','接小单交付'],path:['爬虫/脚本/小程序'],avoid:['先收定金再开工']},
+ music:{learn:['Suno参数控制','批量筛选精品'],path:['版权分成','定制歌'],avoid:['别侵权翻唱']},
+ money:{learn:['选1个技能深耕','做样品上架复盘'],path:['首单跑通后放大'],avoid:['先完成再完美']},
+};
+
+/* ===== 真实AI博主详情 ===== */
+const BDETAIL={
+ b1:{t:'数字生命卡兹克',intro:'全网100w+粉AI深度测评头部，公众号/B站。认知型博主，适合建立AI前沿判断力。',steps:[['读他的深度测评','学选题+结构+金句'],['拆开头钩子','前3行制造好奇'],['换赛道二创','做你领域的AI测评']],tools:['ChatGPT','Claude','国产模型'],prompt:'你是AI深度测评博主。为【工具】写测评：场景痛点+实测对比+结论金句，口语化有观点。',tips:['观点鲜明才涨粉','实测>洗稿'],learn:['AI前沿认知','深度测评写法'],path:['测评拆成短视频','知识付费/社群'],avoid:['别洗稿，要实测'],income:'广告+知识付费',links:[['微信','数字生命卡兹克'],['B站','数字生命卡兹克']]},
+ b2:{t:'秋芝2046',intro:'抖音/B站AI工具实操教程，80w+粉。手把手型，适合学工具落地。',steps:[['跟做工具教程','学实操节奏'],['选新工具首发','吃流量红利'],['换垂直赛道二创']],tools:['即梦','剪映','各类新工具'],prompt:'你是AI工具教程博主。为【工具】写30秒口播教程：痛点+3步操作+效果展示。',tips:['新工具首发流量好'],learn:['工具实操','教程节奏'],path:['教程带货','广告'],avoid:['别只讲不练'],income:'带货+广告',links:[['抖音','秋芝2046'],['B站','秋芝2046']]},
+ b3:{t:'秋叶AI',intro:'全平台100w+粉，AI PPT/办公头部。适合学办公变现+课程模式。',steps:[['学AI PPT工作流'],['做垂直行业模板'],['接企业培训/卖课']],tools:['Gamma','WPS AI','ChatGPT'],prompt:'为【行业】做10页PPT大纲：封面+痛点+方案+案例+金句结尾。',tips:['答辩季/年终是旺季'],learn:['AI PPT','办公提效'],path:['课程+书籍+企业培训'],avoid:['模板要原创'],income:'课程+培训',links:[['B站','秋叶AI'],['微信','秋叶AI']]},
+ b4:{t:'歸藏',intro:'小红书/公众号AI绘画海报，50w+粉。审美型，适合学商业海报接单。',steps:[['学他的海报提示词'],['做行业海报模板'],['接品牌商单']],tools:['Midjourney','Qwen-Image'],prompt:'【品牌】节日海报，极简留白，主视觉【元素】，高级灰+点缀色，中文标题排版，高清。',tips:['审美>工具'],learn:['AI海报','商业审美'],path:['商单+课程'],avoid:['别盗用他人风格'],income:'商单+课程',links:[['微信','歸藏'],['B站','歸藏']]},
+ b5:{t:'李继刚',intro:'公众号/即刻提示词大佬，30w+粉。适合学提示词+社群变现。',steps:[['学结构化提示词'],['整理模板库'],['做付费社群']],tools:['Claude','ChatGPT'],prompt:'用【角色+任务+格式+示例】重写以下需求，输出可直接用的提示词。',tips:['提示词是地基技能'],learn:['提示词工程'],path:['社群+咨询'],avoid:['别免费全发，留钩子'],income:'社群+咨询',links:[['微信','李继刚'],['B站','李继刚']]},
+ b6:{t:'林亦LYi',intro:'B站AI整活视频，100w+粉。创意型，适合学AI视频创意+平台分成。',steps:[['学整活创意结构'],['换题材二创'],['赚平台分成+广告']],tools:['可灵','Runway','剪映'],prompt:'写一个AI整活视频创意：反差设定+3个笑点+结尾反转，适合B站。',tips:['创意>画质'],learn:['AI视频创意'],path:['平台分成+广告'],avoid:['别抄创意，换梗'],income:'分成+广告',links:[['B站','林亦LYi'],['抖音','林亦LYi']]},
+ b7:{t:'花叔',intro:'公众号/B站AI独立开发变现，30w+粉。适合学做AI小产品变现。',steps:[['学独立开发思路'],['做细分小工具'],['产品+社群变现']],tools:['Cursor','Claude'],prompt:'用Cursor做一个【细分需求】小工具，MVP一周内上线。',tips:['小工具大利润'],learn:['AI独立开发'],path:['产品+社群'],avoid:['别做大而全'],income:'产品+社群',links:[['微信','花叔'],['B站','花叔']]},
+ b8:{t:'图灵的猫',intro:'B站/抖音AI科普讲故事，80w+粉。叙事型，适合学科普故事+带货。',steps:[['学科普故事结构'],['换领域二创'],['广告+带货']],tools:['ChatGPT','即梦'],prompt:'把【概念】讲成1分钟故事：开头悬念+打比方+结尾升华。',tips:['故事>术语'],learn:['AI科普叙事'],path:['广告+带货'],avoid:['别堆术语'],income:'广告+带货',links:[['B站','图灵的猫'],['抖音','图灵的猫']]},
+};
+
 function openDetail(id){
-  const d=DETAIL[id];if(!d)return;
+  const base=DETAIL[id]||BDETAIL[id];if(!base)return;
+  const d=Object.assign({},base,EXTRA[id]||{});
   const box=document.getElementById('detail-box');
   box.innerHTML=`<button class="detail-close" onclick="document.getElementById('detail-mask').classList.remove('show')">&#10005;</button>
   <span class="d-tag">本站方案详情</span><h2>${d.t}</h2><div class="d-intro">${d.intro}</div>
@@ -520,6 +551,9 @@ function openDetail(id){
   <div class="d-block"><div class="db-t">&#128295; 工具组合</div><div class="tool-tags">${d.tools.map(t=>`<i>${t}</i>`).join('')}</div></div>
   <div class="d-block"><div class="db-t">&#128172; 现成提示词（直接复制）</div><div class="d-prompt">${d.prompt}</div></div>
   <div class="d-block"><div class="db-t">&#128161; 老手经验</div><ul class="d-tips">${d.tips.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+  ${d.learn?`<div class="d-block"><div class="db-t">&#127919; 能学到什么</div><ul class="d-tips">${d.learn.map(t=>`<li>${t}</li>`).join('')}</ul></div>`:''}
+  ${d.path?`<div class="d-block"><div class="db-t">&#128640; 二创变现路径</div><ul class="d-tips">${d.path.map(t=>`<li>${t}</li>`).join('')}</ul></div>`:''}
+  ${d.avoid?`<div class="d-block"><div class="db-t">&#9888;&#65039; 避坑指南</div><ul class="d-tips">${d.avoid.map(t=>`<li>${t}</li>`).join('')}</ul></div>`:''}
   <div class="d-block"><div class="db-t">&#128176; 收益预期：${d.income}</div></div>
   <div class="d-foot">${d.links.map(l=>`<a class="mini-btn ${l[0]==='B站'?'mb-tut':l[0]==='抖音'?'mb-case':'mb-copy'}" target="_blank" href="${l[0]==='B站'?B(l[1]):l[0]==='抖音'?D(l[1]):W(l[1])}"><span class="plat ${l[0]==='B站'?'plat-b':l[0]==='抖音'?'plat-d':'plat-w'}">${l[0]}</span>${l[1]}</a>`).join('')}<button class="mini-btn learn-btn" data-node="${id}">标为已学习</button></div>`;
   document.getElementById('detail-mask').classList.add('show');
@@ -676,24 +710,27 @@ RECIPES.forEach((r,i)=>{
   rg.appendChild(c);
 });
 
-/* ===== courses ===== */
-const COURSES=[
- {i:'&#127891;',bg:'#2563eb',name:'微软 AI-For-Beginners',desc:'12周从零到一，系统入门首选',meta:['免费','系统','入门'],node:'prompt',url:'https://github.com/microsoft/AI-For-Beginners'},
- {i:'&#127909;',bg:'#c2410c',name:'吴恩达 DeepLearning.AI',desc:'AI启蒙导师，短课精炼',meta:['免费','名师'],node:'prompt',url:'https://www.deeplearning.ai'},
- {i:'&#128172;',bg:'#0d9488',name:'提示词工程指南(中文)',desc:'Prompt圣经，变现地基',meta:['免费','中文'],node:'prompt',url:'https://www.promptingguide.ai/zh'},
- {i:'&#127909;',bg:'#7c3aed',name:'李宏毅 机器学习',desc:'最有趣ML课，中文友好',meta:['免费','有趣'],node:'agent',url:'https://speech.ee.ntu.edu.tw/~hylee/ml/2024-spring.html'},
- {i:'&#127909;',bg:'#fb7299',name:'B站 AI 实战教程',desc:'免费高质量视频合集',meta:['免费','视频'],node:'video',url:'https://www.bilibili.com/v/tech'},
- {i:'&#128187;',bg:'#374151',name:'Cursor 编程实战',desc:'AI编程接单必修课',meta:['变现','编程'],node:'code',url:B('Cursor 教程')},
+/* ===== 热门AI博主排行 ===== */
+const BLOGGERS=[
+ {r:1,name:'数字生命卡兹克',plat:'公众号·全网',fans:'100w+',emo:'&#129504;',bg:'#0071e3',learn:'AI前沿认知+深度测评写法',tools:'ChatGPT/Claude/国产模型',money:'广告+知识付费',ec:'深度测评拆成短视频/图文',node:'agent'},
+ {r:2,name:'秋芝2046',plat:'抖音·B站',fans:'80w+',emo:'&#128295;',bg:'#0284c7',learn:'AI工具实操教程节奏',tools:'即梦/剪映/新工具',money:'教程带货+广告',ec:'跟做工具教程换垂直赛道',node:'video'},
+ {r:3,name:'秋叶AI',plat:'全平台',fans:'100w+',emo:'&#128202;',bg:'#15803d',learn:'AI PPT/办公+课程模式',tools:'Gamma/WPS/ChatGPT',money:'课程+书籍+企业培训',ec:'做垂直行业PPT模板',node:'ppt'},
+ {r:4,name:'歸藏',plat:'小红书·公众号',fans:'50w+',emo:'&#127912;',bg:'#7c3aed',learn:'AI商业海报审美+提示词',tools:'Midjourney/Qwen-Image',money:'商单+课程',ec:'换行业做海报模板',node:'image'},
+ {r:5,name:'李继刚',plat:'公众号·即刻',fans:'30w+',emo:'&#128172;',bg:'#0d9488',learn:'结构化提示词工程',tools:'Claude/ChatGPT',money:'社群+咨询',ec:'整理提示词模板售卖',node:'prompt'},
+ {r:6,name:'林亦LYi',plat:'B站',fans:'100w+',emo:'&#127909;',bg:'#e11d48',learn:'AI整活视频创意',tools:'可灵/Runway/剪映',money:'平台分成+广告',ec:'模仿整活创意换题材',node:'video'},
+ {r:7,name:'花叔',plat:'公众号·B站',fans:'30w+',emo:'&#128187;',bg:'#374151',learn:'AI独立开发变现',tools:'Cursor/Claude',money:'产品+社群',ec:'做细分AI小工具',node:'code'},
+ {r:8,name:'图灵的猫',plat:'B站·抖音',fans:'80w+',emo:'&#128049;',bg:'#c2410c',learn:'AI科普讲故事叙事',tools:'ChatGPT/即梦',money:'广告+带货',ec:'科普故事换领域',node:'writing'},
 ];
-const cl=document.getElementById('course-list');
-COURSES.forEach((c,i)=>{
-  const el=document.createElement('div');el.className='course-item glass';el.style.transitionDelay=(i%3)*.06+'s';
-  el.innerHTML=`<span class="ci-ico" style="background:${c.bg};">${c.i}</span>
-  <div class="ci-info"><div class="ci-name">${c.name}</div><div class="ci-desc">${c.desc}</div></div>
-  <div class="ci-meta">${c.meta.map(m=>`<i>${m}</i>`).join('')}</div>
-  <button class="mini-btn mb-detail" data-detail="${c.node}">详情</button>
-  <a class="mini-btn mb-tut" target="_blank" href="${c.url}">去学习</a>`;
-  cl.appendChild(el);
+const bgGrid=document.getElementById('blogger-grid');
+BLOGGERS.forEach((b,i)=>{
+  const c=document.createElement('div');c.className='card glass';c.style.transitionDelay=(i%2)*.08+'s';
+  c.innerHTML=`<div class="c-top"><span class="c-ava" style="background:${b.bg};">${b.emo}</span><div style="min-width:0;flex:1;"><h3>${b.r}. ${b.name}</h3><div class="c-sub">${b.plat} · ${b.fans}</div></div></div>
+  <div class="c-row"><b>能学到：</b>${b.learn}</div>
+  <div class="c-row"><b>变现工具：</b>${b.tools}</div>
+  <div class="c-row"><b>变现方式：</b>${b.money}</div>
+  <div class="c-row"><b>二创方向：</b>${b.ec}</div>
+  <div class="c-actions"><a class="mini-btn mb-tut" target="_blank" href="${B(b.name)}"><span class="plat plat-b">B站</span>主页</a><a class="mini-btn mb-case" target="_blank" href="${D(b.name)}"><span class="plat plat-d">抖音</span>主页</a><button class="mini-btn mb-detail" data-detail="b${b.r}">本站详情</button><button class="mini-btn learn-btn" data-node="${b.node}">标为已学习</button></div>`;
+  bgGrid.appendChild(c);
 });
 
 /* combo */
