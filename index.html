@@ -470,6 +470,19 @@ footer p{line-height:2;}
       </tbody>
     </table></div>
   </section>
+
+  <section id="stocks">
+    <div class="sec-head">
+      <div><div class="sec-title"><span class="emoji">&#128200;</span>AI 五维股票·ETF 排行榜 <span class="hot-flag">实时</span></div>
+      <div class="sec-sub">五维=涨跌幅(动量)·换手率(情绪)·市盈率(估值)·振幅(波动)·市值(体量) · 数据源：腾讯财经实时行情</div></div>
+      <button class="mini-btn mb-tut" onclick="loadQuotes()">&#128260; 刷新行情</button>
+    </div>
+    <div class="table-wrap glass"><table>
+      <thead><tr><th>#</th><th>名称</th><th>类型</th><th>最新价</th><th>涨跌幅</th><th>换手率</th><th>市盈率</th><th>振幅</th><th>总市值</th></tr></thead>
+      <tbody id="stock-tbody"><tr><td colspan="9" style="text-align:center;color:var(--tt);">行情加载中…</td></tr></tbody>
+    </table></div>
+    <div class="table-note" id="stock-note">* 实时行情来自腾讯财经(qt.gtimg.cn)，交易时段每秒更新 · 非交易时段为收盘数据 · 不构成投资建议</div>
+  </section>
 </div>
 
 <!-- ============ NEWS ============ -->
@@ -529,6 +542,7 @@ function switchView(v){
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.view===v));
   window.scrollTo({top:0,behavior:'smooth'});
   if(v==='learn')requestAnimationFrame(()=>{drawTreeLines();});
+  if(v==='data')loadQuotes();
   requestAnimationFrame(observeAll);
 }
 document.querySelectorAll('[data-view]').forEach(t=>t.addEventListener('click',()=>switchView(t.dataset.view)));
@@ -1021,6 +1035,33 @@ const GH=[
 const gl=document.getElementById('gh-list');
 GH.forEach(g=>{const a=document.createElement('a');a.className='gh-item glass';a.href=g[4];a.target='_blank';a.innerHTML=`<div class="gh-rank">${g[0]}</div><div class="gh-info"><div class="gh-name">${g[1]}</div><div class="gh-desc">${g[2]}</div></div><div class="gh-star">&#9733;${g[3]}</div>`;gl.appendChild(a);});
 
+/* ===== AI 五维股票·ETF 实时排行（腾讯财经JSONP） ===== */
+const STOCKS=[
+ {code:'sh512480',type:'ETF'},{code:'sz159813',type:'ETF'},{code:'sz159819',type:'ETF'},{code:'sh515070',type:'ETF'},{code:'sh515880',type:'ETF'},{code:'sh562500',type:'ETF'},
+ {code:'sz300308',type:'股票'},{code:'sz300502',type:'股票'},{code:'sh688256',type:'股票'},{code:'sh688041',type:'股票'},{code:'sz002230',type:'股票'},{code:'sz000977',type:'股票'},
+];
+function parseQ(code){const v=window['v_'+code];if(!v)return null;const a=v.split('~');return {name:a[1],price:+a[3],pct:+a[32],turn:+a[38],pe:+a[39],amp:+a[43],mcap:+a[45]};}
+function renderStocks(){
+  const rows=STOCKS.map(s=>{const q=parseQ(s.code);return q?Object.assign({code:s.code,type:s.type},q):null;}).filter(Boolean);
+  rows.sort((a,b)=>b.pct-a.pct);
+  const tb=document.getElementById('stock-tbody');
+  if(!rows.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--tt);">行情加载失败，点此<a href="javascript:loadQuotes()">重试</a></td></tr>';return;}
+  tb.innerHTML=rows.map((r,i)=>{
+    const up=r.pct>=0;
+    return `<tr><td class="rank-num">${i+1}</td><td><div class="cell-name"><span class="cell-logo" style="background:${r.type==='ETF'?'#0071e3':'#af52de'};">${r.type==='ETF'?'E':'股'}</span><div class="n">${r.name}</div></div></td><td><span class="ptag ${r.type==='ETF'?'t-mid':'t-flag'}">${r.type}</span></td><td class="price-in">${r.price.toFixed(2)}</td><td style="color:${up?'#e03131':'#2f9e44'};font-weight:700;">${up?'+':''}${r.pct.toFixed(2)}%</td><td>${r.turn.toFixed(2)}%</td><td>${isFinite(r.pe)&&r.pe>0?r.pe.toFixed(1):'—'}</td><td>${r.amp.toFixed(2)}%</td><td>${Math.round(r.mcap)}亿</td></tr>`;
+  }).join('');
+  const d=new Date();
+  document.getElementById('stock-note').textContent=`* 实时行情来自腾讯财经 · 更新于 ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')} · 不构成投资建议`;
+}
+function loadQuotes(){
+  const codes=STOCKS.map(s=>s.code).join(',');
+  const s=document.createElement('script');
+  s.src='https://qt.gtimg.cn/q='+codes+'&t='+Date.now();
+  s.onload=()=>{renderStocks();s.remove();};
+  s.onerror=()=>{document.getElementById('stock-note').textContent='* 实时行情加载失败（网络限制），请稍后刷新';s.remove();};
+  document.head.appendChild(s);
+}
+
 /* search */
 let engine='site';
 document.querySelectorAll('.engine-tab').forEach(t=>{t.addEventListener('click',()=>{document.querySelectorAll('.engine-tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');engine=t.dataset.e;});});
@@ -1052,6 +1093,7 @@ document.getElementById('wx-sim').addEventListener('click',()=>{
 });
 renderLogin();
 renderTree();
+loadQuotes();
 </script>
 </body>
 </html>
