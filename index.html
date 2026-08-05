@@ -250,6 +250,33 @@ tbody tr:nth-child(3) .rank-num{color:#cd7f32;}
 .gh-desc{font-size:11.5px;color:var(--ts);}
 .gh-star{font-size:11.5px;color:var(--accent3);font-weight:700;}
 
+/* timeline news */
+.tl{position:relative;padding-left:26px;}
+.tl::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2));}
+.tl-item{position:relative;margin-bottom:14px;padding:16px 18px;cursor:pointer;transition:transform .4s,box-shadow .4s;opacity:0;transform:translateY(20px);}
+.tl-item.visible{opacity:1;transform:translateY(0);}
+.tl-item:hover{transform:translateX(4px);box-shadow:var(--shadow-hover);}
+.tl-item::before{content:'';position:absolute;left:-23px;top:20px;width:12px;height:12px;border-radius:50%;background:#fff;border:3px solid var(--accent);}
+.tl-time{display:inline-block;font-size:11px;font-weight:700;color:var(--accent);background:rgba(0,113,227,.1);padding:2px 10px;border-radius:100px;margin-bottom:6px;}
+.tl-cat{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;margin-left:6px;color:#fff;}
+.tl-item h3{font-size:14px;font-weight:700;margin-bottom:4px;}
+.tl-item p{font-size:12px;color:var(--ts);}
+.tl-heat{font-size:11px;color:var(--accent3);font-weight:700;margin-top:6px;}
+/* glossary */
+.gloss-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.gloss-card{padding:16px;transition:transform .4s,box-shadow .4s;opacity:0;transform:translateY(20px);}
+.gloss-card.visible{opacity:1;transform:translateY(0);}
+.gloss-card:hover{box-shadow:var(--shadow-hover);}
+.gloss-card .g-term{font-size:14px;font-weight:800;color:var(--accent);margin-bottom:4px;}
+.gloss-card .g-exp{font-size:12px;color:var(--ts);line-height:1.6;}
+/* newbie steps */
+.newbie{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.newbie .nb{padding:20px;text-align:center;}
+.newbie .nb .nbn{width:40px;height:40px;margin:0 auto 10px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.newbie .nb h4{font-size:15px;font-weight:800;margin-bottom:6px;}
+.newbie .nb p{font-size:12px;color:var(--ts);}
+@media (max-width:1100px){.gloss-grid{grid-template-columns:repeat(2,1fr);}.newbie{grid-template-columns:1fr;}}
+
 footer{padding:36px 24px 50px;text-align:center;color:var(--tt);font-size:13px;}
 footer p{line-height:2;}
 
@@ -348,8 +375,19 @@ footer p{line-height:2;}
     <div style="flex:1;min-width:220px;"><h2>AI 学习中心</h2><p>打怪升级式学习：看详情→学完点亮知识树→从AI小白到变现大师。内容只选抖音/B站/微信高质量爆款。</p></div>
   </div>
   <div class="learn-subnav">
-    <a href="#l-tree">知识图谱</a><a href="#l-daily">每日一课</a><a href="#l-tags">标签学习</a><a href="#l-ec">二创工坊</a><a href="#l-recipes">图文方案</a><a href="#l-bloggers">博主排行</a>
+    <a href="#l-newbie">新手入门</a><a href="#l-tree">知识图谱</a><a href="#l-daily">每日一课</a><a href="#l-tags">标签学习</a><a href="#l-ec">二创工坊</a><a href="#l-recipes">图文方案</a><a href="#l-bloggers">博主排行</a>
   </div>
+
+  <section id="l-newbie">
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128105;&#8205;&#127891;</span>新手三步走 <span class="hot-flag">零基础</span></div><div class="sec-sub">完全不懂AI？跟着这三步，7天跑通第一单</div></div></div>
+    <div class="newbie">
+      <div class="nb glass"><div class="nbn">1</div><h4>选个免费工具</h4><p>从"性价比之王"里选一个国内直连免费工具（如DeepSeek/即梦），先玩熟。</p></div>
+      <div class="nb glass"><div class="nbn">2</div><h4>学一个技能</h4><p>点知识树任一节点，看本站图文详情，学会一个能变现的技能。</p></div>
+      <div class="nb glass"><div class="nbn">3</div><h4>接第一单</h4><p>做3个样品挂闲鱼/小红书，跑通首单，再放大。</p></div>
+    </div>
+    <div class="sec-head" style="margin-top:22px;"><div><div class="sec-title"><span class="emoji">&#128214;</span>名词解释 · 秒懂</div><div class="sec-sub">把AI黑话翻译成人话</div></div></div>
+    <div class="gloss-grid" id="gloss-grid"></div>
+  </section>
 
   <section id="l-tree">
     <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127795;</span>AI 知识图谱 · 打怪升级 <span class="hot-flag">核心</span></div><div class="sec-sub">点节点看图文详情→学完"标为已学习"→点亮升级</div></div></div>
@@ -438,12 +476,20 @@ footer p{line-height:2;}
 <div class="view" id="view-news">
   <div class="learn-banner glass">
     <span class="lb-emoji">&#128240;</span>
-    <div style="flex:1;min-width:220px;"><h2>资讯社区</h2><p>今日AI头条 + GitHub热榜，看懂趋势赚认知内的钱。</p></div>
+    <div style="flex:1;min-width:220px;"><h2>资讯社区 · AI变现日报</h2><p id="news-date">…</p></div>
   </div>
   <section>
     <div class="duo">
-      <div><div class="sec-head"><div class="sec-title"><span class="emoji">&#128240;</span>今日AI头条</div></div><div class="news-grid" id="news-grid"></div></div>
-      <div><div class="sec-head"><div class="sec-title"><span class="emoji">&#128293;</span>GitHub热榜</div></div><div class="gh-list" id="gh-list"></div></div>
+      <div>
+        <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128337;</span>今日AI头条 · 时间线</div><div class="sec-sub">按时间排序，看懂趋势赚认知内的钱</div></div></div>
+        <div class="tl" id="news-tl"></div>
+      </div>
+      <div>
+        <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128293;</span>GitHub热榜</div></div></div>
+        <div class="gh-list" id="gh-list"></div>
+        <div class="sec-head" style="margin-top:22px;"><div><div class="sec-title"><span class="emoji">&#128176;</span>今日变现机会</div><div class="sec-sub">点详情看怎么接单</div></div></div>
+        <div style="display:flex;flex-direction:column;gap:10px;" id="opp-list"></div>
+      </div>
     </div>
   </section>
 </div>
@@ -544,6 +590,8 @@ const BDETAIL={
  b6:{t:'林亦LYi',intro:'B站AI整活视频，100w+粉。创意型，适合学AI视频创意+平台分成。',steps:[['学整活创意结构'],['换题材二创'],['赚平台分成+广告']],tools:['可灵','Runway','剪映'],prompt:'写一个AI整活视频创意：反差设定+3个笑点+结尾反转，适合B站。',tips:['创意>画质'],learn:['AI视频创意'],path:['平台分成+广告'],avoid:['别抄创意，换梗'],income:'分成+广告',links:[['B站','林亦LYi'],['抖音','林亦LYi']]},
  b7:{t:'花叔',intro:'公众号/B站AI独立开发变现，30w+粉。适合学做AI小产品变现。',steps:[['学独立开发思路'],['做细分小工具'],['产品+社群变现']],tools:['Cursor','Claude'],prompt:'用Cursor做一个【细分需求】小工具，MVP一周内上线。',tips:['小工具大利润'],learn:['AI独立开发'],path:['产品+社群'],avoid:['别做大而全'],income:'产品+社群',links:[['微信','花叔'],['B站','花叔']]},
  b8:{t:'图灵的猫',intro:'B站/抖音AI科普讲故事，80w+粉。叙事型，适合学科普故事+带货。',steps:[['学科普故事结构'],['换领域二创'],['广告+带货']],tools:['ChatGPT','即梦'],prompt:'把【概念】讲成1分钟故事：开头悬念+打比方+结尾升华。',tips:['故事>术语'],learn:['AI科普叙事'],path:['广告+带货'],avoid:['别堆术语'],income:'广告+带货',links:[['B站','图灵的猫'],['抖音','图灵的猫']]},
+ b9:{t:'Genji',intro:'B站AI视频/工具系统教程，50w+粉。系统型，适合从零学AI视频。',steps:[['跟系统教程'],['拆成短视频'],['接教程带货']],tools:['Runway','剪映'],prompt:'为【工具】写3分钟系统教程大纲：入门→进阶→实战案例。',tips:['系统课涨粉稳'],learn:['AI视频系统方法'],path:['广告+课程'],avoid:['别只追热点'],income:'广告+课程',links:[['B站','Genji']]},
+ b10:{t:'AI进化论-花生',intro:'公众号/B站AI变现案例拆解，40w+粉。拆解型，适合学别人怎么赚钱。',steps:[['读变现案例拆解'],['选可复制的'],['换赛道执行']],tools:['各类工具'],prompt:'拆解【案例】：流量从哪来+怎么变现+我如何复制。',tips:['选可复制的案例'],learn:['变现案例拆解'],path:['社群+咨询'],avoid:['别碰重资产'],income:'社群+咨询',links:[['微信','AI进化论'],['B站','AI进化论']]},
 };
 
 function openDetail(id){
@@ -643,6 +691,8 @@ const EC=[
  {ava:'&#127908;',bg:'#e11d48',name:'AI情感语录号',fans:'起号快·易变现',an:'金句+氛围图+治愈配音，成本极低。',dir:'细分人群(职场/考研)场景化提高转发。',tools:'Kimi+即梦+Fish',node:'writing',prompt:'你是情感爆款写手。为【人群】写5条扎心金句：短句+对比+留白。'},
  {ava:'&#127891;',bg:'#15803d',name:'AI知识科普号',fans:'稳定·长尾流量',an:'把专业知识做成"1分钟看懂"动画，收藏率高。',dir:'选财税/法律/健康等刚需领域。',tools:'Kimi+即梦+剪映',node:'video',prompt:'你是科普爆款编剧。把【知识】讲成1分钟口播：开头抛疑问+中间打比方+结尾给结论。'},
  {ava:'&#128722;',bg:'#c2410c',name:'AI带货图文号',fans:'变现直接',an:'AI出商品场景图+种草文案，挂链接赚佣金。',dir:'选家居/美妆高佣品类。',tools:'即梦+Kimi+小红书',node:'matrix',prompt:'你是带货文案专家。为【商品】写3条种草笔记：痛点+场景+利益点+行动号召。'},
+ {ava:'&#128247;',bg:'#0891b2',name:'AI老照片修复',fans:'刚需·高复购',an:'老照片修复/上色/动态化，中老年市场刚需。',dir:'主打"修复+动态化"套餐，私域复购。',tools:'即梦/SD+剪映',node:'image',prompt:'修复这张老照片：去划痕+上色+高清放大，保持人物神态自然。'},
+ {ava:'&#128512;',bg:'#db2777',name:'AI表情包/头像号',fans:'起号快·走量',an:'AI做表情包/情侣头像，引流私域卖会员。',dir:'做系列IP表情包，涨粉后接定制。',tools:'Qwen-Image/即梦',node:'avatar',prompt:'为【主题】做9宫格表情包：夸张表情+大字文案，风格统一可爱。'},
 ];
 function renderEC(el,limit){
   el.innerHTML='';
@@ -713,6 +763,8 @@ const RECIPES=[
  {tag:'爆款标题',name:'小红书爆款标题',combo:'Kimi + 爆款标题提示词',node:'writing',prompt:'你是小红书爆款标题专家。为【主题】写10个标题：带emoji+数字+悬念，前8字抓眼球。'},
  {tag:'带货文案',name:'种草带货笔记',combo:'Kimi + 即梦 + 小红书',node:'matrix',prompt:'你是带货文案专家。为【商品】写3条种草笔记：痛点+场景+利益点+行动号召，带emoji。'},
  {tag:'AI音乐',name:'治愈系音乐量产',combo:'Suno + 网易/QQ音乐',node:'music',prompt:'一首【治愈系】纯音乐，钢琴+弦乐，BPM80，适合学习/睡眠场景，时长2分钟。'},
+ {tag:'老照片修复',name:'老照片修复套餐',combo:'即梦/SD + 剪映',node:'image',prompt:'修复老照片：去划痕+上色+高清放大，保持神态自然，输出2K。'},
+ {tag:'表情包',name:'九宫格表情包量产',combo:'Qwen-Image + 私域',node:'avatar',prompt:'为【主题】做9宫格表情包：夸张表情+大字文案，风格统一。'},
 ];
 const rg=document.getElementById('recipe-grid');
 RECIPES.forEach((r,i)=>{
@@ -733,6 +785,8 @@ const BLOGGERS=[
  {r:6,name:'林亦LYi',plat:'B站',fans:'100w+',emo:'&#127909;',bg:'#e11d48',learn:'AI整活视频创意',tools:'可灵/Runway/剪映',money:'平台分成+广告',ec:'模仿整活创意换题材',node:'video'},
  {r:7,name:'花叔',plat:'公众号·B站',fans:'30w+',emo:'&#128187;',bg:'#374151',learn:'AI独立开发变现',tools:'Cursor/Claude',money:'产品+社群',ec:'做细分AI小工具',node:'code'},
  {r:8,name:'图灵的猫',plat:'B站·抖音',fans:'80w+',emo:'&#128049;',bg:'#c2410c',learn:'AI科普讲故事叙事',tools:'ChatGPT/即梦',money:'广告+带货',ec:'科普故事换领域',node:'writing'},
+ {r:9,name:'Genji',plat:'B站',fans:'50w+',emo:'&#127909;',bg:'#0ea5e9',learn:'AI视频/工具系统教程',tools:'Runway/剪映',money:'广告+课程',ec:'系统教程拆成短视频',node:'video'},
+ {r:10,name:'AI进化论-花生',plat:'公众号·B站',fans:'40w+',emo:'&#128200;',bg:'#16a34a',learn:'AI变现案例拆解',tools:'各类工具',money:'社群+咨询',ec:'拆解案例换赛道',node:'money'},
 ];
 const bgGrid=document.getElementById('blogger-grid');
 BLOGGERS.forEach((b,i)=>{
@@ -744,6 +798,24 @@ BLOGGERS.forEach((b,i)=>{
   <div class="c-row"><b>二创方向：</b>${b.ec}</div>
   <div class="c-actions"><a class="mini-btn mb-tut" target="_blank" href="${B(b.name)}"><span class="plat plat-b">B站</span>主页</a><a class="mini-btn mb-case" target="_blank" href="${D(b.name)}"><span class="plat plat-d">抖音</span>主页</a><button class="mini-btn mb-detail" data-detail="b${b.r}">本站详情</button><button class="mini-btn learn-btn" data-node="${b.node}">标为已学习</button></div>`;
   bgGrid.appendChild(c);
+});
+
+/* ===== 名词解释·秒懂 ===== */
+const GLOSS=[
+ ['Token','AI计费的"字数"。中文1字≈1-2个Token，看懂价格表必懂。'],
+ ['提示词','你给AI下的指令。越具体，输出越好。'],
+ ['二创','参考爆款换题材/形式再创作，不抄原稿。'],
+ ['矩阵','同时运营多个账号分发内容，放大收益。'],
+ ['文生图','打字让AI画图，如Qwen-Image/Midjourney。'],
+ ['数字人','AI生成的虚拟人，能对口型口播。'],
+ ['私域','把粉丝引到微信等自有阵地，反复变现。'],
+ ['客单价','每单赚的钱。信息图>PPT>头像。'],
+];
+const gg=document.getElementById('gloss-grid');
+GLOSS.forEach((g,i)=>{
+  const c=document.createElement('div');c.className='gloss-card glass';c.style.transitionDelay=(i%4)*.05+'s';
+  c.innerHTML=`<div class="g-term">${g[0]}</div><div class="g-exp">${g[1]}</div>`;
+  gg.appendChild(c);
 });
 
 /* combo */
@@ -906,15 +978,36 @@ function renderTools(sec,sub){
 
 /* news+github */
 const NEWS=[
- ['阿里','Qwen3.8-Max发布：2.4万亿参数开源，成本1/8','Arena代码榜国产第一#4。','https://ai.zol.com.cn/1226/12268657.html'],
- ['马斯克','Grok 4.5视频理解全面开放','视频鉴定副业新机会。','https://ai.zol.com.cn/1226/12263499.html'],
- ['监管','白宫召集头部AI公司开安全会','AI安全评估或成新职业。','https://www.toutiao.com/w/1872557113626688/'],
- ['B站','B站成WAIC官方AI视频平台','月均1.9亿用户消费AI内容。','https://finance.sina.cn/2026-07-18/detail-iniiewei8307826.d.html'],
- ['36氪','扒了上百条AI爆款视频的6点观察','情绪叙事+人设+节奏=爆款密码。','https://m.36kr.com/p/3788978905029635'],
- ['观点','AI投资泡沫之争再起','应用层变现机会真实存在。','https://sputniknews.cn/20260803/1072603564.html'],
+ {time:'09:30',cat:'模型',cc:'#0071e3',title:'Qwen3.8-Max开源：2.4万亿参数，成本降至1/8',desc:'Arena代码榜国产第一#4，免费可用，个人变现首选模型。',heat:'★★★★★',url:'https://ai.zol.com.cn/1226/12268657.html'},
+ {time:'09:00',cat:'副业',cc:'#30b14e',title:'AI简历优化成闲鱼新热门',desc:'每单20-100元、30分钟交付，新手零门槛，复购高。',heat:'★★★★★',url:'https://www.douyin.com/search/AI%E7%AE%80%E5%8E%86%E4%BC%98%E5%8C%96'},
+ {time:'08:40',cat:'视频',cc:'#e11d48',title:'Grok 4.5视频理解全面开放',desc:'AI视频鉴定/审核类副业新机会，可二创识伪内容。',heat:'★★★★',url:'https://ai.zol.com.cn/1226/12263499.html'},
+ {time:'08:10',cat:'绘画',cc:'#7c3aed',title:'商业信息图商单需求上涨',desc:'CPO/算力/储能研报插画客单200-2000元，Qwen-Image可做。',heat:'★★★★',url:'https://search.bilibili.com/all?keyword=AI%E4%BF%A1%E6%81%AF%E5%9B%BE'},
+ {time:'07:50',cat:'平台',cc:'#0284c7',title:'B站成WAIC官方AI视频平台',desc:'月均1.9亿用户消费AI内容，AI解说号分成红利期。',heat:'★★★★',url:'https://finance.sina.cn/2026-07-18/detail-iniiewei8307826.d.html'},
+ {time:'07:20',cat:'PPT',cc:'#15803d',title:'答辩季AI PPT订单激增',desc:'Gamma+人工微调，闲鱼50-300元/单，旺季抓紧。',heat:'★★★★',url:'https://search.bilibili.com/all?keyword=Gamma%20PPT'},
+ {time:'07:00',cat:'监管',cc:'#ff9500',title:'白宫召集头部AI公司开安全会',desc:'AI安全评估或成新职业方向，关注合规人才需求。',heat:'★★★',url:'https://www.toutiao.com/w/1872557113626688/'},
+ {time:'06:30',cat:'观察',cc:'#8e8f96',title:'36氪：AI爆款视频6点观察',desc:'情绪叙事+人设+节奏=爆款密码，可直接二创。',heat:'★★★',url:'https://m.36kr.com/p/3788978905029635'},
 ];
-const ng=document.getElementById('news-grid');
-NEWS.forEach(n=>{const a=document.createElement('article');a.className='news-card glass';a.onclick=()=>window.open(n[3]);a.innerHTML=`<div class="news-source">${n[0]}</div><h3>${n[1]}</h3><p>${n[2]}</p>`;ng.appendChild(a);});
+const ntl=document.getElementById('news-tl');
+NEWS.forEach((n,i)=>{
+  const a=document.createElement('article');a.className='tl-item glass';a.style.transitionDelay=(i%4)*.06+'s';
+  a.onclick=()=>window.open(n.url);
+  a.innerHTML=`<span class="tl-time">&#128337; ${n.time}</span><span class="tl-cat" style="background:${n.cc};">${n.cat}</span><h3>${n.title}</h3><p>${n.desc}</p><div class="tl-heat">热度 ${n.heat}</div>`;
+  ntl.appendChild(a);
+});
+(function(){const d=new Date();const w=['周日','周一','周二','周三','周四','周五','周六'];document.getElementById('news-date').textContent=`${d.getMonth()+1}月${d.getDate()}日 ${w[d.getDay()]} · 每天18:00更新 · 只看能变现的信息`;})();
+const OPP=[
+ {t:'AI简历优化',inc:'¥20-100/单',node:'money'},
+ {t:'商业信息图商单',inc:'¥200-2000/单',node:'image'},
+ {t:'AI PPT答辩季',inc:'¥50-300/单',node:'ppt'},
+ {t:'AI解说号分成',inc:'月¥3k-15k',node:'video'},
+ {t:'AI头像定制',inc:'¥5-30/张',node:'avatar'},
+];
+const ol=document.getElementById('opp-list');
+OPP.forEach(o=>{
+  const c=document.createElement('div');c.className='course-item glass';
+  c.innerHTML=`<div class="ci-info"><div class="ci-name">${o.t}</div><div class="ci-desc">预期 ${o.inc}</div></div><button class="mini-btn mb-detail" data-detail="${o.node}">看怎么接单</button>`;
+  ol.appendChild(c);
+});
 const GH=[
  ['1','zhaoxuya520/reverse-skill','逆向/CTF AI skill路由包','飙升','https://github.com/zhaoxuya520/reverse-skill'],
  ['2','different-ai/openwork','开源cowork替代','12k+','https://github.com/different-ai/openwork'],
