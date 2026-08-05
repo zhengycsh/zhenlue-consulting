@@ -205,7 +205,12 @@ tbody tr:nth-child(3) .rank-num{color:#cd7f32;}
 .sub-tab{padding:6px 16px;border-radius:100px;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.4);font-size:12.5px;color:var(--ts);cursor:pointer;font-family:inherit;}
 .sub-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
 .tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;}
-.tool-card{padding:16px 14px;text-decoration:none;color:inherit;display:block;transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s,opacity .3s;opacity:0;transform:translateY(18px) scale(.97);}
+.tool-card{padding:16px 14px;text-decoration:none;color:inherit;display:block;position:relative;transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s,opacity .3s;opacity:0;transform:translateY(18px) scale(.97);}
+.tool-card.hl{box-shadow:0 0 0 2px rgba(255,149,0,.55),0 8px 30px rgba(255,149,0,.28);}
+.tool-card .hl-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);padding:3px 14px;border-radius:100px;background:linear-gradient(135deg,#ff9500,#ff3b30);color:#fff;font-size:10px;font-weight:800;white-space:nowrap;box-shadow:0 4px 12px rgba(255,59,48,.4);z-index:2;}
+.tool-tags i.net{background:rgba(255,59,48,.1);color:var(--red);}
+.tool-tags i.cn{background:rgba(48,177,78,.12);color:var(--green);}
+.tool-tags i.price{background:rgba(0,0,0,.06);color:var(--ts);}
 .tool-card.visible{opacity:1;transform:translateY(0) scale(1);}
 .tool-card:hover{transform:translateY(-5px) scale(1.03);box-shadow:var(--shadow-hover);}
 .tool-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
@@ -555,11 +560,19 @@ function openDetail(id){
   ${d.path?`<div class="d-block"><div class="db-t">&#128640; 二创变现路径</div><ul class="d-tips">${d.path.map(t=>`<li>${t}</li>`).join('')}</ul></div>`:''}
   ${d.avoid?`<div class="d-block"><div class="db-t">&#9888;&#65039; 避坑指南</div><ul class="d-tips">${d.avoid.map(t=>`<li>${t}</li>`).join('')}</ul></div>`:''}
   <div class="d-block"><div class="db-t">&#128176; 收益预期：${d.income}</div></div>
-  <div class="d-foot">${d.links.map(l=>`<a class="mini-btn ${l[0]==='B站'?'mb-tut':l[0]==='抖音'?'mb-case':'mb-copy'}" target="_blank" href="${l[0]==='B站'?B(l[1]):l[0]==='抖音'?D(l[1]):W(l[1])}"><span class="plat ${l[0]==='B站'?'plat-b':l[0]==='抖音'?'plat-d':'plat-w'}">${l[0]}</span>${l[1]}</a>`).join('')}<button class="mini-btn learn-btn" data-node="${id}">标为已学习</button></div>`;
+  <div class="d-foot">${d.links.map(l=>`<a class="mini-btn ${l[0]==='B站'?'mb-tut':l[0]==='抖音'?'mb-case':'mb-copy'}" target="_blank" href="${l[0]==='B站'?B(l[1]):l[0]==='抖音'?D(l[1]):W(l[1])}"><span class="plat ${l[0]==='B站'?'plat-b':l[0]==='抖音'?'plat-d':'plat-w'}">${l[0]}</span>${l[1]}</a>`).join('')}<button class="mini-btn mb-tut" onclick="goRel('${id}')">&#128279; 前往相关内容</button><button class="mini-btn learn-btn" data-node="${id}">标为已学习</button></div>`;
   document.getElementById('detail-mask').classList.add('show');
   updateTreeMeta();
 }
 document.getElementById('detail-mask').addEventListener('click',e=>{if(e.target.id==='detail-mask')e.target.classList.remove('show');});
+/* 图谱↔板块联动：跳到相关内容 */
+function goRel(id){
+  document.getElementById('detail-mask').classList.remove('show');
+  const REL={prompt:'#l-tags',agent:'#l-tree',image:'#l-recipes',video:'#l-ec',writing:'#l-ec',audio:'#l-ec',avatar:'#l-recipes',matrix:'#l-ec',ppt:'#l-recipes',code:'#l-bloggers',music:'#l-recipes',money:'#l-bloggers'};
+  const sel=id[0]==='b'?'#l-bloggers':(REL[id]||'#l-ec');
+  switchView('learn');
+  setTimeout(()=>{const el=document.querySelector(sel);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},200);
+}
 
 /* tree render */
 const treeFlex=document.getElementById('tree-flex');
@@ -809,6 +822,7 @@ const SECTIONS=[
  ]},
  {id:'office',icon:'💼',name:'AI 办公效率',subs:['全部','PPT','文档'],tools:[
   {n:'WorkBuddy',d:'腾讯AI办公助手，文档/表格/会议全能',u:'https://workbuddy.qq.com',a:'WB',c:'#0052d9',s:'文档',hot:1,tg:['可能国产最强办公AI','腾讯']},
+  {n:'Qoder Work',d:'AI办公智能体，表格/文档/汇报全能，打工人神器',u:'https://qoder.com',a:'QW',c:'#7c3aed',s:'文档',hot:1,pick:1,tg:['办公智能体','国产','免费']},
   {n:'Gamma',d:'PPT颜值天花板，3分钟交付',u:'https://gamma.app',a:'Ga',c:'#7c3aed',s:'PPT',hot:1,free:1,pick:1,tg:['PPT第一','免费']},
   {n:'Kimi PPT',d:'长文秒变PPT，答辩救星',u:'https://kimi.moonshot.cn',a:'Ki',c:'#0f172a',s:'PPT',free:1,pick:1,tg:['免费','长文转PPT']},
   {n:'Notion AI',d:'第二大脑，知识管理天花板',u:'https://www.notion.so',a:'N',c:'#000',s:'文档',hot:1,tg:['知识管理']},
@@ -846,6 +860,20 @@ const SECTIONS=[
   {n:'Kaggle',d:'数据科学实战社区，做比赛练手',u:'https://www.kaggle.com',a:'Kg',c:'#20beff',s:'社区',free:1,tg:['免费','实战']},
  ]},
 ];
+/* 工具增强元数据：价格 + 网络属性（新手友好） */
+const TOOL_META={
+ 'ChatGPT':{net:'blocked',price:'免费试用'},'Claude':{net:'blocked',price:'免费试用'},'Gemini':{net:'blocked',price:'免费'},'Grok':{net:'blocked',price:'免费试用'},'Perplexity':{net:'blocked',price:'免费试用'},
+ 'Midjourney':{net:'blocked',price:'付费'},'Runway':{net:'blocked',price:'免费试用'},'Luma':{net:'blocked',price:'免费试用'},'Pika':{net:'blocked',price:'免费'},'HeyGen':{net:'blocked',price:'免费试用'},
+ 'Leonardo':{net:'blocked',price:'免费'},'Ideogram':{net:'blocked',price:'免费'},'Krea':{net:'blocked',price:'免费'},'Suno':{net:'blocked',price:'免费试用'},'Udio':{net:'blocked',price:'免费试用'},
+ 'ElevenLabs':{net:'blocked',price:'免费试用'},'Notion AI':{net:'blocked',price:'付费'},'Jasper':{net:'blocked',price:'付费'},'Copy.ai':{net:'blocked',price:'免费试用'},'Wordvice':{net:'blocked',price:'免费试用'},
+ 'Windsurf':{net:'blocked',price:'免费试用'},'Cursor':{net:'blocked',price:'免费试用'},'Kaggle':{net:'blocked',price:'免费'},
+ 'DeepSeek':{net:'cn',price:'免费'},'通义千问':{net:'cn',price:'免费'},'豆包':{net:'cn',price:'免费'},'Kimi':{net:'cn',price:'免费'},'元宝':{net:'cn',price:'免费'},'智谱清言':{net:'cn',price:'免费'},'文心一言':{net:'cn',price:'免费'},
+ '即梦 AI':{net:'cn',price:'免费'},'通义万相':{net:'cn',price:'免费'},'LibLibAI':{net:'cn',price:'免费'},'可灵 AI':{net:'cn',price:'免费试用'},'剪映 AI':{net:'cn',price:'免费'},'海螺AI':{net:'cn',price:'免费'},
+ 'WorkBuddy':{net:'cn',price:'免费'},'Qoder Work':{net:'cn',price:'免费'},'Gamma':{net:'cn',price:'免费试用'},'Ollama':{net:'cn',price:'免费'},'Coze':{net:'cn',price:'免费'},'Dify':{net:'cn',price:'免费'},
+};
+/* 高性价比+方便 → 整卡突出 */
+const HL=new Set(['DeepSeek','通义千问','即梦 AI','剪映 AI','WorkBuddy','Qoder Work','Gamma','Kimi','Ollama','可灵 AI']);
+
 function favHost(u){try{return new URL(u).hostname;}catch(e){return '';}}
 const wrapEl=document.getElementById('tool-sections');
 SECTIONS.forEach(sec=>{
@@ -863,10 +891,14 @@ function renderTools(sec,sub){
   grid.innerHTML='';
   list.forEach((t,i)=>{
     const host=favHost(t.u);
-    const flag=t.pick?'<span class="tool-flag flag-pick">神器</span>':(t.hot?'<span class="tool-flag flag-hot">HOT</span>':(t.free?'<span class="tool-flag flag-free">免费</span>':''));
-    const tags=(t.tg||[]).slice(0,3).map((g,j)=>`<i class="${g.includes('免费')?'new':'hot'}">${g}</i>`).join('');
-    const c=document.createElement('a');c.className='tool-card glass';c.href=t.u;c.target='_blank';c.style.transitionDelay=(i%6)*.03+'s';
-    c.innerHTML=`<div class="tool-head"><span class="tool-icon" style="background:${t.c};"><span class="fb">${t.a}</span><img loading="lazy" src="https://api.iowen.cn/favicon/${host}.png" onerror="this.remove()"></span>${flag}</div><h3>${t.n}</h3><div class="t-desc">${t.d}</div><div class="tool-tags">${tags}</div>`;
+    const meta=TOOL_META[t.n]||{};
+    const hl=HL.has(t.n);
+    const flag=hl?'<span class="tool-flag flag-pick">性价比之王</span>':(t.pick?'<span class="tool-flag flag-pick">神器</span>':(t.hot?'<span class="tool-flag flag-hot">HOT</span>':(t.free?'<span class="tool-flag flag-free">免费</span>':'')));
+    let tags=(t.tg||[]).slice(0,3).map((g)=>`<i class="${g.includes('免费')?'new':'hot'}">${g}</i>`).join('');
+    if(meta.price)tags+=`<i class="price">${meta.price}</i>`;
+    if(meta.net==='blocked')tags+=`<i class="net">外网受限</i>`;else if(meta.net==='cn')tags+=`<i class="cn">国内直连</i>`;
+    const c=document.createElement('a');c.className='tool-card glass'+(hl?' hl':'');c.href=t.u;c.target='_blank';c.style.transitionDelay=(i%6)*.03+'s';
+    c.innerHTML=`${hl?'<span class="hl-badge">&#128293; 高性价比·新手首选</span>':''}<div class="tool-head"><span class="tool-icon" style="background:${t.c};"><span class="fb">${t.a}</span><img loading="lazy" src="https://api.iowen.cn/favicon/${host}.png" onerror="this.remove()"></span>${flag}</div><h3>${t.n}</h3><div class="t-desc">${t.d}</div><div class="tool-tags">${tags}</div>`;
     grid.appendChild(c);
   });
   requestAnimationFrame(()=>grid.querySelectorAll('.tool-card').forEach(x=>x.classList.add('visible')));
