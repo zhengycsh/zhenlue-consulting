@@ -378,6 +378,36 @@ footer p{line-height:2;}
 .case-card2 .cc-inc{font-size:13px;font-weight:800;color:var(--green);}
 .case-card2 a{font-size:12px;color:var(--accent);text-decoration:none;font-weight:700;}
 .case-card2 a:hover{text-decoration:underline;}
+.case-card2 .cc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:4px;}
+.case-card2 .like-btn{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:100px;border:1px solid rgba(255,59,48,.35);background:rgba(255,255,255,.5);color:var(--red);font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .3s;}
+.case-card2 .like-btn:hover{background:var(--red);color:#fff;}
+.case-card2 .like-btn.liked{background:var(--red);color:#fff;}
+
+/* 社区：问答折叠 + 金句 */
+.qa-item{padding:14px 18px;cursor:pointer;transition:transform .4s,box-shadow .4s;opacity:0;transform:translateY(16px);}
+.qa-item.visible{opacity:1;transform:translateY(0);}
+.qa-item:hover{box-shadow:var(--shadow-hover);}
+.qa-item .qa-q{font-size:13.5px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.qa-item .qa-q .arrow{color:var(--tt);transition:transform .3s;font-size:12px;flex-shrink:0;}
+.qa-item.open .qa-q .arrow{transform:rotate(90deg);}
+.qa-item .qa-a{font-size:12px;color:var(--ts);line-height:1.7;max-height:0;overflow:hidden;transition:max-height .4s ease;}
+.qa-item.open .qa-a{max-height:220px;}
+.qa-item .qa-a p{margin-top:8px;}
+.quote-card{padding:24px 22px;text-align:center;opacity:0;transform:translateY(16px);}
+.quote-card.visible{opacity:1;transform:translateY(0);}
+.quote-card .q-mark{font-size:34px;line-height:1;color:var(--accent3);opacity:.5;}
+.quote-card p{font-size:15px;font-weight:700;line-height:1.8;margin:8px 0 4px;}
+.quote-card .q-src{font-size:11px;color:var(--tt);}
+
+/* 社区：工具动态条 */
+.tn-item{display:flex;align-items:center;gap:14px;padding:13px 18px;transition:transform .4s,box-shadow .4s;opacity:0;transform:translateY(16px);}
+.tn-item.visible{opacity:1;transform:translateY(0);}
+.tn-item:hover{transform:translateX(4px);box-shadow:var(--shadow-hover);}
+.tn-item .tn-ico{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;flex-shrink:0;}
+.tn-item .tn-info{flex:1;min-width:0;}
+.tn-item .tn-name{font-size:13.5px;font-weight:700;}
+.tn-item .tn-desc{font-size:11.5px;color:var(--ts);line-height:1.5;}
+.tn-item .tn-badge{font-size:10px;font-weight:800;padding:2px 9px;border-radius:100px;background:linear-gradient(135deg,#ff9500,#ff3b30);color:#fff;flex-shrink:0;white-space:nowrap;}
 /* dashboard */
 .dash{padding:24px;}
 .dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
@@ -507,6 +537,12 @@ footer p{line-height:2;}
       <div style="text-align:right;flex-shrink:0;"><div id="tree-interact" style="font-size:22px;font-weight:800;color:var(--accent3);font-variant-numeric:tabular-nums;">0</div><div style="font-size:11px;color:var(--tt);">累计学习互动</div></div>
     </div>
     <div class="tree-wrap glass"><div class="tree-flex" id="tree-flex"><svg id="tree-svg"></svg></div></div>
+  </section>
+
+  <section id="l-skilltree">
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127919;</span>变现技能图谱 · 从工具Skill到赚钱 <span class="hot-flag">Skill</span></div>
+    <div class="sec-sub">工具Skill(Codex/WorkBuddy/DeepSeek)→核心技能→变现技能→接单变现 · 点节点看详情+工具Skill组合</div></div></div>
+    <div class="tree-wrap glass"><div class="tree-flex" id="skill-tree-flex"><svg id="skill-tree-svg"></svg></div></div>
   </section>
 
   <section id="l-daily">
@@ -644,6 +680,10 @@ footer p{line-height:2;}
     <div style="flex:1;min-width:220px;"><h2>资讯社区 · AI变现日报</h2><p id="news-date">…</p></div>
   </div>
   <section>
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128293;</span>热点话题</div><div class="sec-sub">点话题直达抖音/B站/微信高质量内容</div></div></div>
+    <div class="tag-row" id="hot-topic-row"></div>
+  </section>
+  <section>
     <div class="duo">
       <div>
         <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128337;</span>今日AI头条 · 时间线</div><div class="sec-sub">按时间排序，看懂趋势赚认知内的钱</div></div></div>
@@ -654,6 +694,24 @@ footer p{line-height:2;}
         <div class="gh-list" id="gh-list"></div>
         <div class="sec-head" style="margin-top:22px;"><div><div class="sec-title"><span class="emoji">&#128176;</span>今日变现机会</div><div class="sec-sub">点详情看怎么接单</div></div></div>
         <div style="display:flex;flex-direction:column;gap:10px;" id="opp-list"></div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128165;</span>爆款案例榜 <span class="hot-flag">跟做</span></div><div class="sec-sub">真实AI变现案例 · 点赞收藏跟做</div></div></div>
+    <div class="news-grid" id="case-feed"></div>
+  </section>
+  <section>
+    <div class="duo">
+      <div>
+        <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128640;</span>工具/模型动态</div><div class="sec-sub">新工具=新机会，抢先掌握</div></div></div>
+        <div style="display:flex;flex-direction:column;gap:10px;" id="tool-news"></div>
+      </div>
+      <div>
+        <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128172;</span>变现问答</div><div class="sec-sub">新手高频问题，点开即答</div></div></div>
+        <div style="display:flex;flex-direction:column;gap:10px;" id="qa-list"></div>
+        <div class="sec-head" style="margin-top:22px;"><div><div class="sec-title"><span class="emoji">&#128172;</span>每日金句</div><div class="sec-sub">每天一句认知</div></div></div>
+        <div class="quote-card glass" id="quote-card"></div>
       </div>
     </div>
   </section>
@@ -694,7 +752,7 @@ function switchView(v){
   document.getElementById('view-'+v).classList.add('show');
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.view===v));
   window.scrollTo({top:0,behavior:'smooth'});
-  if(v==='learn')requestAnimationFrame(()=>{drawTreeLines();});
+  if(v==='learn')requestAnimationFrame(()=>{drawTreeLines();drawSkillTreeLines();});
   if(v==='data')loadQuotes();
   requestAnimationFrame(observeAll);
 }
@@ -771,6 +829,7 @@ function openDetail(id){
   <span class="d-tag">本站方案详情</span><h2>${d.t}</h2><div class="d-intro">${d.intro}</div>
   <div class="d-steps">${d.steps.map((s,i)=>`<div class="d-step"><div class="sn">${i+1}</div><div class="st"><b>${s[0]}</b><span>${s[1]}</span></div></div>`).join('')}</div>
   <div class="d-block"><div class="db-t">&#128295; 工具组合</div><div class="tool-tags">${d.tools.map(t=>`<i>${t}</i>`).join('')}</div></div>
+  ${d.toolSkills?`<div class="d-block"><div class="db-t">&#128295;&#65039; 工具Skill组合（每个工具怎么用）</div><ul class="d-tips">${d.toolSkills.map(t=>`<li><b>${t.n}</b>：${t.d}</li>`).join('')}</ul></div>`:''}
   <div class="d-block"><div class="db-t">&#128172; 现成提示词（直接复制）</div><div class="d-prompt">${d.prompt}</div></div>
   <div class="d-block"><div class="db-t">&#128161; 老手经验</div><ul class="d-tips">${d.tips.map(t=>`<li>${t}</li>`).join('')}</ul></div>
   ${d.learn?`<div class="d-block"><div class="db-t">&#127919; 能学到什么</div><ul class="d-tips">${d.learn.map(t=>`<li>${t}</li>`).join('')}</ul></div>`:''}
@@ -827,6 +886,49 @@ function drawTreeLines(){
     const p=document.createElementNS('http://www.w3.org/2000/svg','path');
     p.setAttribute('d',`M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`);
     p.setAttribute('class','tline'+(learned.has(b)?' lit':''));
+    svg.appendChild(p);
+  });
+}
+
+/* ===== 变现技能图谱（工具Skill→核心技能→变现技能→赚钱） ===== */
+const SKILL_TIERS=[
+ {name:'地基·工具Skill',nodes:[{id:'sk-prompt',i:'&#128172;',n:'提示词',detail:'prompt'},{id:'sk-codex',i:'&#129302;',n:'Codex',detail:'code'},{id:'sk-workbuddy',i:'&#128188;',n:'WorkBuddy',detail:'aigent'},{id:'sk-deepseek',i:'&#128176;',n:'DeepSeek',detail:'agent'}]},
+ {name:'核心技能',nodes:[{id:'sk-video',i:'&#127909;',n:'AI视频',detail:'video'},{id:'sk-code',i:'&#128187;',n:'AI编程',detail:'code'},{id:'sk-image',i:'&#127912;',n:'AI绘画',detail:'image'},{id:'sk-aigent',i:'&#129302;',n:'AI Agent',detail:'aigent'},{id:'sk-writing',i:'&#9997;&#65039;',n:'AI写作',detail:'writing'},{id:'sk-music',i:'&#127925;',n:'AI音乐',detail:'music'}]},
+ {name:'变现技能',nodes:[{id:'s1',i:'&#127916;',n:'AI短剧',detail:'s1'},{id:'s2',i:'&#128187;',n:'编程接单',detail:'s2'},{id:'s3',i:'&#127908;',n:'AI解说',detail:'s3'},{id:'s4',i:'&#129302;',n:'Agent自动化',detail:'s4'},{id:'s5',i:'&#128200;',n:'信息图',detail:'s5'},{id:'s6',i:'&#128722;',n:'图文带货',detail:'s6'}]},
+ {name:'变现目标',nodes:[{id:'sk-money',i:'&#128176;',n:'接单变现',detail:'money'}]},
+];
+const SKILL_EDGES=[['sk-prompt','sk-video'],['sk-prompt','sk-writing'],['sk-prompt','sk-code'],['sk-deepseek','sk-writing'],['sk-deepseek','sk-video'],['sk-deepseek','sk-image'],['sk-codex','sk-code'],['sk-codex','sk-aigent'],['sk-workbuddy','sk-aigent'],['sk-workbuddy','sk-writing'],['sk-video','s1'],['sk-video','s3'],['sk-code','s2'],['sk-aigent','s4'],['sk-image','s5'],['sk-writing','s3'],['sk-writing','s6'],['sk-music','sk-money'],['s1','sk-money'],['s2','sk-money'],['s3','sk-money'],['s4','sk-money'],['s5','sk-money'],['s6','sk-money']];
+const skFlex=document.getElementById('skill-tree-flex');
+function renderSkillTree(){
+  if(!skFlex)return;
+  skFlex.querySelectorAll('.tree-tier').forEach(e=>e.remove());
+  SKILL_TIERS.forEach(tier=>{
+    const col=document.createElement('div');col.className='tree-tier';
+    col.innerHTML=`<div class="tier-name">${tier.name}</div>`;
+    tier.nodes.forEach(nd=>{
+      const k=document.createElement('div');k.className='knode';k.dataset.nodeId=nd.id;
+      k.innerHTML=`<span class="ki">${nd.i}</span><span class="kn">${nd.n}</span>`;
+      k.onclick=()=>openDetail(nd.detail);
+      col.appendChild(k);
+    });
+    skFlex.appendChild(col);
+  });
+  requestAnimationFrame(drawSkillTreeLines);
+}
+function drawSkillTreeLines(){
+  const svg=document.getElementById('skill-tree-svg');if(!svg)return;
+  const r=skFlex.getBoundingClientRect();
+  svg.setAttribute('width',r.width);svg.setAttribute('height',r.height);
+  svg.innerHTML='';
+  SKILL_EDGES.forEach(([a,b])=>{
+    const ea=skFlex.querySelector(`[data-node-id="${a}"]`),eb=skFlex.querySelector(`[data-node-id="${b}"]`);
+    if(!ea||!eb)return;
+    const ra=ea.getBoundingClientRect(),rb=eb.getBoundingClientRect();
+    const x1=ra.left-r.left+ra.width/2,y1=ra.top-r.top+ra.height,x2=rb.left-r.left+rb.width/2,y2=rb.top-r.top;
+    const my=(y1+y2)/2;
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',`M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`);
+    p.setAttribute('class','tline');
     svg.appendChild(p);
   });
 }
@@ -1087,6 +1189,7 @@ const SECTIONS=[
   {n:'火山写作',d:'字节写作助手，中文营销文案强',u:'https://www.writingo.net',a:'火',c:'#fe2c55',s:'营销',free:1,tg:['免费','中文营销']},
  ]},
  {id:'dev',icon:'💻',name:'AI 开发平台',subs:['全部','编码','框架','本地'],tools:[
+  {n:'Codex',d:'OpenAI编程Agent，对话即编码，一个需求直接产出完整工程',u:'https://chatgpt.com/codex',a:'Cx',c:'#10a37f',s:'编码',hot:1,pick:1,tg:['Agent编程','对话即编码','火热']},
   {n:'Cursor',d:'AI编辑器，效率翻10倍的秘密',u:'https://cursor.com',a:'Cu',c:'#374151',s:'编码',hot:1,pick:1,tg:['编程第一','效率']},
   {n:'GitHub',d:'全球最大代码库，程序员老家',u:'https://github.com',a:'GH',c:'#111',s:'框架',hot:1,free:1,tg:['免费','开源']},
   {n:'Hugging Face',d:'开源模型淘宝，百万模型免费',u:'https://huggingface.co',a:'HF',c:'#f59e0b',s:'框架',hot:1,free:1,tg:['免费','模型多']},
@@ -1113,7 +1216,7 @@ const TOOL_META={
  'Midjourney':{net:'blocked',price:'付费'},'Runway':{net:'blocked',price:'免费试用'},'Luma':{net:'blocked',price:'免费试用'},'Pika':{net:'blocked',price:'免费'},'HeyGen':{net:'blocked',price:'免费试用'},
  'Leonardo':{net:'blocked',price:'免费'},'Ideogram':{net:'blocked',price:'免费'},'Krea':{net:'blocked',price:'免费'},'Suno':{net:'blocked',price:'免费试用'},'Udio':{net:'blocked',price:'免费试用'},
  'ElevenLabs':{net:'blocked',price:'免费试用'},'Notion AI':{net:'blocked',price:'付费'},'Jasper':{net:'blocked',price:'付费'},'Copy.ai':{net:'blocked',price:'免费试用'},'Wordvice':{net:'blocked',price:'免费试用'},
- 'Windsurf':{net:'blocked',price:'免费试用'},'Cursor':{net:'blocked',price:'免费试用'},'Kaggle':{net:'blocked',price:'免费'},
+ 'Windsurf':{net:'blocked',price:'免费试用'},'Codex':{net:'blocked',price:'付费(Plus)'},'Cursor':{net:'blocked',price:'免费试用'},'Kaggle':{net:'blocked',price:'免费'},
  'DeepSeek':{net:'cn',price:'免费'},'通义千问':{net:'cn',price:'免费'},'豆包':{net:'cn',price:'免费'},'Kimi':{net:'cn',price:'免费'},'元宝':{net:'cn',price:'免费'},'智谱清言':{net:'cn',price:'免费'},'文心一言':{net:'cn',price:'免费'},
  '即梦 AI':{net:'cn',price:'免费'},'通义万相':{net:'cn',price:'免费'},'LibLibAI':{net:'cn',price:'免费'},'可灵 AI':{net:'cn',price:'免费试用'},'剪映 AI':{net:'cn',price:'免费'},'海螺AI':{net:'cn',price:'免费'},
  'WorkBuddy':{net:'cn',price:'免费'},'Qoder Work':{net:'cn',price:'免费'},'Gamma':{net:'cn',price:'免费试用'},'Ollama':{net:'cn',price:'免费'},'Coze':{net:'cn',price:'免费'},'Dify':{net:'cn',price:'免费'},
@@ -1214,6 +1317,76 @@ const GH=[
 const gl=document.getElementById('gh-list');
 GH.forEach(g=>{const a=document.createElement('a');a.className='gh-item glass';a.href=g[4];a.target='_blank';a.innerHTML=`<div class="gh-rank">${g[0]}</div><div class="gh-info"><div class="gh-name">${g[1]}</div><div class="gh-desc">${g[2]}</div></div><div class="gh-star">&#9733;${g[3]}</div>`;gl.appendChild(a);});
 
+/* ===== 资讯社区：热点话题 ===== */
+const HOT_TOPICS=['AI短剧','方桃子','Qwen3.8-Max','MiniMax H3','Codex编程','AI Agent','商业信息图','AI PPT接单','AI解说','虚拟人变现'];
+const htr=document.getElementById('hot-topic-row');
+if(htr){HOT_TOPICS.forEach(t=>{const b=document.createElement('a');b.className='tag-chip';b.href=D(t);b.target='_blank';b.textContent='# '+t;htr.appendChild(b);});}
+
+/* ===== 资讯社区：爆款案例榜（带点赞） ===== */
+const CASE_FEED=[
+ {key:'c1',plat:'抖音',title:'AI短剧《被裁掉的女孩》播量破2亿',desc:'女主方桃子30天涨粉40万，60秒广告报价25.8万，贵过千万粉网红。',inc:'¥25.8万/60秒',likes:12846,url:'https://www.douyin.com/search/%E6%96%B9%E6%A1%83%E5%AD%90'},
+ {key:'c2',plat:'抖音',title:'素人AI内容一周涨粉163万',desc:'单月带货超千万，AI内容在抖音杀疯了，矩阵起号红利期。',inc:'月¥1000万+',likes:9862,url:'https://www.douyin.com/search/AI%E7%B4%A0%E4%BA%BA%E6%B6%A8%E7%B2%89'},
+ {key:'c3',plat:'抖音',title:'被淘汰的模特用AI手搓出2亿爆款',desc:'转型AI创作者，一条爆款播放破2亿，AI内容红利窗口期。',inc:'2亿播放',likes:8541,url:'https://www.douyin.com/search/AI%E6%A8%A1%E7%89%B9%E7%88%86%E6%AC%BE'},
+ {key:'c4',plat:'全网',title:'AI虚拟演员商单报价超真人网红',desc:'品牌青睐AI演员不塌房可复用，但爆款率不足0.5%需量产。',inc:'报价超25万',likes:7123,url:'https://www.douyin.com/search/AI%E8%99%9A%E6%8B%9F%E6%BC%94%E5%91%98'},
+ {key:'c5',plat:'微信',title:'半年AI爆款盘点：9条破亿视频',desc:'新号涨粉百万，AI内容进入爆发期，题材换新=新机会。',inc:'百万粉案例',likes:6358,url:'https://weixin.sogou.com/weixin?type=2&query=AI%E7%88%86%E6%AC%BE%E8%A7%86%E9%A2%91'},
+ {key:'c6',plat:'B站',title:'AI短剧分成，月入1.2万',desc:'可灵生成+剪映合成，无真人出镜，纯平台分成副业。',inc:'¥12k/月',likes:5290,url:'https://search.bilibili.com/all?keyword=AI%E7%9F%AD%E5%89%A7%E5%88%86%E6%88%90'},
+];
+const cf=document.getElementById('case-feed');
+if(cf){
+  const likes=JSON.parse(localStorage.getItem('zhifu_likes')||'{}');
+  CASE_FEED.forEach((cs,i)=>{
+    const c=document.createElement('div');c.className='case-card2 glass';c.style.transitionDelay=(i%3)*.06+'s';
+    const liked=likes[cs.key];
+    c.innerHTML=`<span class="cc-plat">${cs.plat}</span><h3>${cs.title}</h3><p>${cs.desc}</p><div class="cc-inc">${cs.inc}</div>
+    <div class="cc-foot"><a target="_blank" href="${cs.url}">看真实案例 →</a><button class="like-btn" data-key="${cs.key}" data-likes="${cs.likes}">&#128077; ${(cs.likes+(liked?1:0)).toLocaleString()}</button></div>`;
+    cf.appendChild(c);
+  });
+  cf.addEventListener('click',e=>{
+    const b=e.target.closest('.like-btn');if(!b)return;
+    const k=b.dataset.key;
+    const store=JSON.parse(localStorage.getItem('zhifu_likes')||'{}');
+    if(store[k]){delete store[k];b.classList.remove('liked');}
+    else{store[k]=1;b.classList.add('liked');}
+    localStorage.setItem('zhifu_likes',JSON.stringify(store));
+    const base=CASE_FEED.find(x=>x.key===k)?.likes||0;
+    b.innerHTML=`&#128077; ${(base+(store[k]?1:0)).toLocaleString()}`;
+  });
+}
+
+/* ===== 资讯社区：工具/模型动态 ===== */
+const TOOL_NEWS=[
+ {i:'&#127916;',bg:'#e11d48',name:'MiniMax H3 开源视频模型全球第一',desc:'全模态开源，视频生成质量登顶，AI视频副业新引擎。',tag:'HOT'},
+ {i:'&#129504;',bg:'#0071e3',name:'Qwen3.8-Max 开源 2.4万亿参数',desc:'成本降至1/8，国产开源旗舰，个人变现首选。',tag:'HOT'},
+ {i:'&#129302;',bg:'#10a37f',name:'OpenAI Codex 编程Agent',desc:'对话即编码，一个需求直接产出工程，接单效率革命。',tag:'新工具'},
+ {i:'&#9889;',bg:'#ff9500',name:'英伟达中国急寻AI基站供应商',desc:'AI算力产业链爆发，多只AI ETF交投活跃。',tag:'融资'},
+ {i:'&#128300;',bg:'#7c3aed',name:'OpenAI Astra 破解十项数学难题',desc:'AI推理再突破，数学辅导/教育副业新机会。',tag:'前沿'},
+];
+const tns=document.getElementById('tool-news');
+if(tns){TOOL_NEWS.forEach((t,i)=>{const c=document.createElement('div');c.className='tn-item glass';c.style.transitionDelay=(i%3)*.05+'s';c.innerHTML=`<span class="tn-ico" style="background:${t.bg};">${t.i}</span><div class="tn-info"><div class="tn-name">${t.name}</div><div class="tn-desc">${t.desc}</div></div><span class="tn-badge">${t.tag}</span>`;tns.appendChild(c);});}
+
+/* ===== 资讯社区：变现问答（折叠） ===== */
+const QA_LIST=[
+ {q:'新手第一个变现技能选什么？',a:'门槛最低选 AI简历优化/AI PPT定制（1天可上手）；起号最快选 AI解说号（1-2周）。去「数据排行→AI变现Skill精品榜」看完整对比。'},
+ {q:'完全不会编程能接编程单吗？',a:'可以。用 Codex/Cursor 对话式生成代码，从简单脚本/爬虫单切入，把需求描述清楚即可交付，AI 帮你写+调试。'},
+ {q:'AI短剧爆款率只有0.5%还要做吗？',a:'要做，但要量产测题材。爆款单条收益足以覆盖几十条成本，关键是先日更3条积累案例，再谈商单。'},
+ {q:'工具都要收费怎么办？',a:'先用国产免费组合跑通：DeepSeek(对话)+即梦(绘画)+可灵(视频)+剪映(剪辑)，赚钱后再升级付费工具。'},
+ {q:'怎么接第一单？',a:'选1个技能→做3个样品→挂闲鱼/小红书→首单不为钱为案例。跑通流程后复利放大。'},
+ {q:'AI内容会被平台限流吗？',a:'二创+人工润色可有效规避：换题材、加观点、改表达，别发纯AI无加工内容，同时关注平台AI内容政策。'},
+];
+const qal=document.getElementById('qa-list');
+if(qal){QA_LIST.forEach((q,i)=>{const c=document.createElement('div');c.className='qa-item glass';c.style.transitionDelay=(i%2)*.05+'s';c.innerHTML=`<div class="qa-q">${q.q}<span class="arrow">&#9654;</span></div><div class="qa-a"><p>${q.a}</p></div>`;c.onclick=()=>c.classList.toggle('open');qal.appendChild(c);});}
+
+/* ===== 资讯社区：每日金句 ===== */
+const QUOTES=[
+ {t:'AI不会淘汰人，会用AI的人会淘汰不会用AI的人。',s:'— 智富AI'},
+ {t:'先跑通1块钱的收入，再谈放大100倍。',s:'— 智富AI'},
+ {t:'变现的本质：把AI的边际成本优势，变成你的交付优势。',s:'— 智富AI'},
+ {t:'与其学100个技能，不如把一个技能变出钱。',s:'— 智富AI'},
+ {t:'先做案例，再谈商单；先有作品，再谈身价。',s:'— 智富AI'},
+];
+const qc=document.getElementById('quote-card');
+if(qc){const q=QUOTES[Math.floor(Math.random()*QUOTES.length)];qc.innerHTML=`<div class="q-mark">&#8220;</div><p>${q.t}</p><div class="q-src">${q.s}</div>`;}
+
 /* ===== AI 五维股票·ETF 实时排行（腾讯财经JSONP） ===== */
 const STOCKS=[
  {code:'sh512480',type:'ETF'},{code:'sz159813',type:'ETF'},{code:'sz159819',type:'ETF'},{code:'sh515070',type:'ETF'},{code:'sh515880',type:'ETF'},{code:'sh562500',type:'ETF'},
@@ -1306,16 +1479,16 @@ document.getElementById('skillrank-tbody').innerHTML=[...SKILL_RANK].sort((a,b)=
 
 /* ===== AI变现Skill 详细介绍 + 变现方式 ===== */
 const SKILL_DETAIL={
- s1:{t:'AI短剧·虚拟人IP',intro:'AI短剧《被裁掉的女孩》播量破2亿，女主方桃子30天涨粉40万、60秒广告报价25.8万。一人一剧组，虚拟演员不塌房、素材可复用，是当前AI变现天花板。',steps:[['学剧本结构','Kimi写60秒竖屏剧本：冲突钩子+2个反转+留悬念'],['生成画面','可灵/MiniMax H3按分镜出图出视频'],['配音合成','Fish/剪映配音+字幕+情绪BGM'],['起号接单','先日更3条做案例，再上星图/抖音接商单']],tools:['Kimi','可灵','MiniMax H3','剪映'],prompt:'你是AI短剧编剧。为【题材】写60秒竖屏剧本：前3秒冲突钩子，2个反转，结尾留悬念，角色情绪饱满。',tips:['爆款率不足0.5%，要量产+测题材','虚拟演员不塌房是最大卖点','先做案例再谈商单'],learn:['AI短剧全流程','虚拟人IP运营'],path:['品牌商单25万+/60秒','虚拟人代言','短剧平台分成'],avoid:['别侵权真人形象','别碰违禁题材'],income:'¥258k/60秒广告（方桃子案例）',ways:['品牌广告商单（60秒报价可达25万+）','虚拟人IP授权/代言','短剧平台分成+打赏'],links:[['抖音','方桃子'],['B站','AI短剧 被裁掉的女孩']]},
- s2:{t:'AI编程接单',intro:'用Cursor/Claude做编程外快，爬虫、脚本、小程序、自动化工具，效率是纯手写的3倍。技术门槛相对高，但客单价和天花板也是普通赛道数倍。',steps:[['练基础','先跑通1个小脚本/爬虫'],['接小单','闲鱼/程序员客栈接爬虫/脚本单'],['Cursor提效','AI辅助编码+异常处理'],['交付涨价','积累好评逐步提价']],tools:['Cursor','Claude','GitHub Copilot','Ollama'],prompt:'你是资深工程师。用Python写【需求】，含注释+异常处理+示例。',tips:['从爬虫/脚本单切入最稳','先收30-50%定金再开工','用Cursor把单子效率x3'],learn:['AI辅助编码','项目交付流程'],path:['外包接单','私有小工具SaaS','技术咨询'],avoid:['别碰灰色爬虫（隐私/违法数据）','别接不清需求的大单'],income:'¥500-5000/单，月入最高¥30k',ways:['闲鱼/程序员客栈/Upwork接单','做细分行业小工具售卖','企业自动化改造咨询'],links:[['B站','Cursor 接单'],['抖音','AI编程 变现']]},
- s3:{t:'AI解说号分成',intro:'Kimi写稿+可灵生画面+Fish配音+剪映合成，日更3条AI解说视频，吃平台分成+广告。零真人出镜、成本极低，是新手最快跑通的第一桶金。',steps:[['选题材','冷门历史/商业/科技差异化'],['Kimi写45秒口播','钩子+3信息点+引导关注'],['画面配音合成','可灵+Fish+剪映流水线'],['日更分发','抖音/B站/视频号同步']],tools:['Kimi','可灵','Fish Audio','剪映'],prompt:'你是百万粉解说编剧。为【主题】写45秒口播：前3秒悬念钩子，中间3个信息点，结尾引导关注，口语化。',tips:['日更3条起号快','冷门题材差异化打','完播率>播放量'],learn:['口播结构','AI视频流水线'],path:['平台分成','广告','教程带货'],avoid:['别抄原稿，换题材二创','别纯AI无润色'],income:'月入¥3k-15k（平台分成+广告）',ways:['抖音中视频/创作者分成','B站创作激励+花火广告','带货佣金+私域引流'],links:[['B站','AI视频解说 教程'],['抖音','AI解说 爆款']]},
- s4:{t:'AI Agent自动化',intro:'用Coze/Dify搭自动化智能体：客服、数据整理、内容批量生产。一次搭建、持续收益，是进阶高价值技能，可接企业自动化需求。',steps:[['学平台','Coze/Dify搭第一个Bot'],['做场景','客服/整理/批量生成'],['接需求','帮中小企业做自动化'],['产品化','把高频需求做成SaaS']],tools:['Coze','Dify','LangChain'],prompt:'用Coze搭一个【场景】智能体：输入→处理→输出，配置知识库+工作流。',tips:['从细分场景切入','企业付费意愿高于个人','工作流比单轮问答值钱'],learn:['Agent架构','工作流编排'],path:['自动化实施服务','智能体定制','SaaS小产品'],avoid:['别做大而全平台','别接无明确ROI的活'],income:'月入¥3k-20k（服务+SaaS）',ways:['企业Agent搭建服务（客单5k+）','模板/工作流售卖','订阅制SaaS产品'],links:[['B站','Coze 教程'],['抖音','AI Agent 应用']]},
- s5:{t:'商业信息图',intro:'用Qwen-Image做科技研报插画、商业信息图，B端客单200-2000元。AI短剧与AI研报双热，信息图是A股/券商/自媒体高频刚需。',steps:[['学风格','米黄做旧矢量+低饱和橙黑'],['写提示词','用方案库现成模板'],['批量出图','筛选最佳交付'],['接B端单','券商/财经号/企业']],tools:['Qwen-Image','Midjourney','通义万相'],prompt:'商业PPT信息图表，科技研报插画，主题【…】，米黄做旧纸张背景，简约矢量，低饱和橙黑配色，高清2K，无乱码，扁平化。',tips:['信息图客单价最高','聚焦CPO/算力/储能等热词','做系列图提高复购'],learn:['商业审美','提示词控图'],path:['B端商单','模板库售卖','接单平台'],avoid:['别做写实明星脸（侵权）','别接无版权确认的单'],income:'¥200-2000/单，月入¥1k-8k',ways:['券商/财经自媒体研报插画','闲鱼/猪八戒接单','模板+教程知识付费'],links:[['B站','AI信息图 教程'],['抖音','AI绘画 接单']]},
- s6:{t:'AI图文带货矩阵',intro:'即梦批量出商品场景图+Kimi种草文案，多账号矩阵分发挂链接赚佣金。选择高佣品类（家居/美妆），单账号跑通后复制放大。',steps:[['选品','家居/美妆等高佣类目'],['批量出图','即梦生成商品场景图'],['写文案','Kimi种草笔记'],['矩阵分发','多号+多平台挂链接']],tools:['即梦','Kimi','小红书','抖音'],prompt:'你是带货文案专家。为【商品】写3条种草笔记：痛点+场景+利益点+行动号召，带emoji。',tips:['一机一号防限流','先测品再放量','图文比视频起号快'],learn:['选品逻辑','矩阵运营'],path:['带货佣金','广告','私域复购'],avoid:['别夸大功效（违广告法）','别刷量'],income:'月入¥2k-12k（佣金+广告）',ways:['挂链接赚佣金','星图/蒲公英接广告','私域会员+复购'],links:[['抖音','AI图文 矩阵'],['微信','AI矩阵 变现']]},
- s7:{t:'AI PPT定制',intro:'Gamma一键生成+人工微调，闲鱼接单50-300元/单。答辩季/年终述职是旺季，一天可交付2-3单，几乎零成本。',steps:[['挂服务','闲鱼挂"AI PPT定制"'],['Gamma生成','大纲+页面自动生成'],['微调交付','改配色/补素材/对齐品牌'],['好评涨价','积累案例逐步提价']],tools:['Gamma','ChatGPT','Kimi PPT'],prompt:'为【主题】生成10页PPT大纲：标题+3要点+建议图表。结构：背景-问题-方案-案例-总结。',tips:['答辩季是旺季','先囤行业模板','交付快=复购多'],learn:['AI PPT工作流','客户沟通'],path:['闲鱼/淘宝接单','企业模板','课程'],avoid:['别用侵权图片','别接急单亏本'],income:'¥50-300/单，月入¥2k-10k',ways:['闲鱼/淘宝/小红书接单','企业年终述职批量单','PPT模板+教程售卖'],links:[['B站','Gamma PPT 教程'],['抖音','AI PPT 接单']]},
- s8:{t:'AI音乐版权',intro:'Suno批量做歌上传网易云/QQ音乐，赚播放版权分成+定制歌曲。一首歌生成成本几乎为零，长尾收益持续滚动。',steps:[['Suno生成','输入风格+歌词提示词'],['筛选精品','从10首里选1首'],['上传平台','网易/QQ音乐人上传'],['赚分成','播放版权费+定制单']],tools:['Suno','Udio'],prompt:'一首【治愈系】纯音乐，钢琴+弦乐，BPM80，适合学习/睡眠场景，时长2分钟。',tips:['批量+长尾收益','做BGM/白噪音专辑更稳','定制歌曲客单50-500元'],learn:['音乐提示词','音乐人入驻'],path:['版权分成','定制歌曲','影视/播客BGM'],avoid:['别侵权翻唱','别用真人歌手声线'],income:'月入¥1k-10k（分成+定制）',ways:['音乐平台播放版权分成','企业/个人定制歌曲','BGM素材库售卖'],links:[['B站','Suno 教程'],['抖音','AI音乐 变现']]},
- s9:{t:'AI头像定制',intro:'Midjourney/Qwen-Image出职业头像、情侣头像、系列IP，社交平台接单5-30元/张。起步最快、反馈最快，适合新手练手。',steps:[['建模板','做3套风格模板'],['挂服务','小红书/微信接单'],['批量交付','5-30元/张'],['做系列','情侣/职业/国风IP']],tools:['Midjourney','Qwen-Image','即梦'],prompt:'高级感职业头像，柔和棚拍光，浅灰背景，自信微笑，85mm镜头，浅景深，电影级调色。',tips:['做系列风格提高复购','头像走量5-30元/张','引流私域做会员'],learn:['人像提示词','交付流程'],path:['社交接单','壁纸号','系列IP'],avoid:['别做明星/真人脸','别接色情擦边'],income:'¥5-30/张，月入¥1k-8k',ways:['小红书/闲鱼/微信接单','壁纸号广告分成','私域定制会员'],links:[['B站','AI头像 教程'],['抖音','AI头像 接单']]},
- s10:{t:'AI简历优化',intro:'用Kimi帮求职者优化简历，闲鱼接单每单20-100元，30分钟交付。门槛最低、需求高频（金九银十/毕业季翻倍），适合第一次跑通收入。',steps:[['学写法','STAR法则+关键词优化'],['Kimi优化','输入原简历+目标岗位'],['人工润色','突出亮点量化成果'],['挂单交付','闲鱼+小红书引流']],tools:['Kimi','ChatGPT','秘塔写作猫'],prompt:'你是资深HR。为【岗位】优化以下简历：提炼亮点+量化成果+STAR化描述，控制在1页。',tips:['毕业季/跳槽季是旺季','简历+面试辅导打包客单更高','改一份30分钟'],learn:['简历优化','HR视角'],path:['闲鱼接单','求职套餐','写作单'],avoid:['别编造经历（害人害己）'],income:'¥20-100/单，月入¥1k-6k',ways:['闲鱼/淘宝接单','简历+面试辅导套餐','企业校招外包'],links:[['B站','AI写作 变现'],['微信','AI简历 优化']]},
+ s1:{t:'AI短剧·虚拟人IP',intro:'AI短剧《被裁掉的女孩》播量破2亿，女主方桃子30天涨粉40万、60秒广告报价25.8万。一人一剧组，虚拟演员不塌房、素材可复用，是当前AI变现天花板。',steps:[['学剧本结构','Kimi写60秒竖屏剧本：冲突钩子+2个反转+留悬念'],['生成画面','可灵/MiniMax H3按分镜出图出视频'],['配音合成','Fish/剪映配音+字幕+情绪BGM'],['起号接单','先日更3条做案例，再上星图/抖音接商单']],tools:['Kimi','可灵','MiniMax H3','剪映'],toolSkills:[{n:'Kimi',d:'Skill：剧本生成——喂题材直接出60秒竖屏剧本（钩子/反转/悬念）'},{n:'可灵 AI',d:'Skill：文生视频——按分镜生成人物动作画面，国产第一'},{n:'MiniMax H3',d:'Skill：开源视频模型——全模态生成，质量全球第一'},{n:'剪映 AI',d:'Skill：一键成片——字幕/配音/情绪BGM自动合成'}],prompt:'你是AI短剧编剧。为【题材】写60秒竖屏剧本：前3秒冲突钩子，2个反转，结尾留悬念，角色情绪饱满。',tips:['爆款率不足0.5%，要量产+测题材','虚拟演员不塌房是最大卖点','先做案例再谈商单'],learn:['AI短剧全流程','虚拟人IP运营'],path:['品牌商单25万+/60秒','虚拟人代言','短剧平台分成'],avoid:['别侵权真人形象','别碰违禁题材'],income:'¥258k/60秒广告（方桃子案例）',ways:['品牌广告商单（60秒报价可达25万+）','虚拟人IP授权/代言','短剧平台分成+打赏'],links:[['抖音','方桃子'],['B站','AI短剧 被裁掉的女孩']]},
+ s2:{t:'AI编程接单',intro:'用Cursor/Claude做编程外快，爬虫、脚本、小程序、自动化工具，效率是纯手写的3倍。技术门槛相对高，但客单价和天花板也是普通赛道数倍。',steps:[['练基础','先跑通1个小脚本/爬虫'],['接小单','闲鱼/程序员客栈接爬虫/脚本单'],['Cursor提效','AI辅助编码+异常处理'],['交付涨价','积累好评逐步提价']],tools:['Cursor','Claude','GitHub Copilot','Ollama'],toolSkills:[{n:'Codex',d:'Skill：对话式编程Agent——一个需求直接产出可运行工程，接单效率拉满'},{n:'Cursor',d:'Skill：IDE内AI补全+多文件重构——改代码/查Bug快10倍'},{n:'Claude',d:'Skill：长文代码推理——复杂逻辑/架构设计首选'}],prompt:'你是资深工程师。用Python写【需求】，含注释+异常处理+示例。',tips:['从爬虫/脚本单切入最稳','先收30-50%定金再开工','用Cursor把单子效率x3'],learn:['AI辅助编码','项目交付流程'],path:['外包接单','私有小工具SaaS','技术咨询'],avoid:['别碰灰色爬虫（隐私/违法数据）','别接不清需求的大单'],income:'¥500-5000/单，月入最高¥30k',ways:['闲鱼/程序员客栈/Upwork接单','做细分行业小工具售卖','企业自动化改造咨询'],links:[['B站','Cursor 接单'],['抖音','AI编程 变现']]},
+ s3:{t:'AI解说号分成',intro:'Kimi写稿+可灵生画面+Fish配音+剪映合成，日更3条AI解说视频，吃平台分成+广告。零真人出镜、成本极低，是新手最快跑通的第一桶金。',steps:[['选题材','冷门历史/商业/科技差异化'],['Kimi写45秒口播','钩子+3信息点+引导关注'],['画面配音合成','可灵+Fish+剪映流水线'],['日更分发','抖音/B站/视频号同步']],tools:['Kimi','可灵','Fish Audio','剪映'],toolSkills:[{n:'Kimi',d:'Skill：45秒口播文案——钩子+信息点+引导关注结构化输出'},{n:'可灵 AI',d:'Skill：按分镜生成画面素材'},{n:'Fish Audio',d:'Skill：免费声音克隆——选沉稳男声配音'},{n:'剪映 AI',d:'Skill：一键成片——字幕+转场+合成'}],prompt:'你是百万粉解说编剧。为【主题】写45秒口播：前3秒悬念钩子，中间3个信息点，结尾引导关注，口语化。',tips:['日更3条起号快','冷门题材差异化打','完播率>播放量'],learn:['口播结构','AI视频流水线'],path:['平台分成','广告','教程带货'],avoid:['别抄原稿，换题材二创','别纯AI无润色'],income:'月入¥3k-15k（平台分成+广告）',ways:['抖音中视频/创作者分成','B站创作激励+花火广告','带货佣金+私域引流'],links:[['B站','AI视频解说 教程'],['抖音','AI解说 爆款']]},
+ s4:{t:'AI Agent自动化',intro:'用Coze/Dify搭自动化智能体：客服、数据整理、内容批量生产。一次搭建、持续收益，是进阶高价值技能，可接企业自动化需求。',steps:[['学平台','Coze/Dify搭第一个Bot'],['做场景','客服/整理/批量生成'],['接需求','帮中小企业做自动化'],['产品化','把高频需求做成SaaS']],tools:['Coze','Dify','LangChain'],toolSkills:[{n:'WorkBuddy',d:'Skill：办公智能体——表格/文档/汇报自动化，打工人神器'},{n:'Coze',d:'Skill：拖拽搭Bot——知识库+工作流，不写代码'},{n:'Dify',d:'Skill：低代码AI应用——数据接入+Agent编排'}],prompt:'用Coze搭一个【场景】智能体：输入→处理→输出，配置知识库+工作流。',tips:['从细分场景切入','企业付费意愿高于个人','工作流比单轮问答值钱'],learn:['Agent架构','工作流编排'],path:['自动化实施服务','智能体定制','SaaS小产品'],avoid:['别做大而全平台','别接无明确ROI的活'],income:'月入¥3k-20k（服务+SaaS）',ways:['企业Agent搭建服务（客单5k+）','模板/工作流售卖','订阅制SaaS产品'],links:[['B站','Coze 教程'],['抖音','AI Agent 应用']]},
+ s5:{t:'商业信息图',intro:'用Qwen-Image做科技研报插画、商业信息图，B端客单200-2000元。AI短剧与AI研报双热，信息图是A股/券商/自媒体高频刚需。',steps:[['学风格','米黄做旧矢量+低饱和橙黑'],['写提示词','用方案库现成模板'],['批量出图','筛选最佳交付'],['接B端单','券商/财经号/企业']],tools:['Qwen-Image','Midjourney','通义万相'],toolSkills:[{n:'Qwen-Image',d:'Skill：中文信息图/研报插画——米黄做旧矢量风格，中文渲染稳'},{n:'通义万相',d:'Skill：批量电商图——免费批量出图'}],prompt:'商业PPT信息图表，科技研报插画，主题【…】，米黄做旧纸张背景，简约矢量，低饱和橙黑配色，高清2K，无乱码，扁平化。',tips:['信息图客单价最高','聚焦CPO/算力/储能等热词','做系列图提高复购'],learn:['商业审美','提示词控图'],path:['B端商单','模板库售卖','接单平台'],avoid:['别做写实明星脸（侵权）','别接无版权确认的单'],income:'¥200-2000/单，月入¥1k-8k',ways:['券商/财经自媒体研报插画','闲鱼/猪八戒接单','模板+教程知识付费'],links:[['B站','AI信息图 教程'],['抖音','AI绘画 接单']]},
+ s6:{t:'AI图文带货矩阵',intro:'即梦批量出商品场景图+Kimi种草文案，多账号矩阵分发挂链接赚佣金。选择高佣品类（家居/美妆），单账号跑通后复制放大。',steps:[['选品','家居/美妆等高佣类目'],['批量出图','即梦生成商品场景图'],['写文案','Kimi种草笔记'],['矩阵分发','多号+多平台挂链接']],tools:['即梦','Kimi','小红书','抖音'],toolSkills:[{n:'即梦 AI',d:'Skill：商品场景图——免费出高清卖点图'},{n:'Kimi',d:'Skill：种草文案——痛点+场景+利益点+行动号召'}],prompt:'你是带货文案专家。为【商品】写3条种草笔记：痛点+场景+利益点+行动号召，带emoji。',tips:['一机一号防限流','先测品再放量','图文比视频起号快'],learn:['选品逻辑','矩阵运营'],path:['带货佣金','广告','私域复购'],avoid:['别夸大功效（违广告法）','别刷量'],income:'月入¥2k-12k（佣金+广告）',ways:['挂链接赚佣金','星图/蒲公英接广告','私域会员+复购'],links:[['抖音','AI图文 矩阵'],['微信','AI矩阵 变现']]},
+ s7:{t:'AI PPT定制',intro:'Gamma一键生成+人工微调，闲鱼接单50-300元/单。答辩季/年终述职是旺季，一天可交付2-3单，几乎零成本。',steps:[['挂服务','闲鱼挂"AI PPT定制"'],['Gamma生成','大纲+页面自动生成'],['微调交付','改配色/补素材/对齐品牌'],['好评涨价','积累案例逐步提价']],tools:['Gamma','ChatGPT','Kimi PPT'],toolSkills:[{n:'Gamma',d:'Skill：PPT一键生成——颜值天花板，3分钟交付'},{n:'Kimi PPT',d:'Skill：长文转PPT——答辩/述职大纲直接生成'}],prompt:'为【主题】生成10页PPT大纲：标题+3要点+建议图表。结构：背景-问题-方案-案例-总结。',tips:['答辩季是旺季','先囤行业模板','交付快=复购多'],learn:['AI PPT工作流','客户沟通'],path:['闲鱼/淘宝接单','企业模板','课程'],avoid:['别用侵权图片','别接急单亏本'],income:'¥50-300/单，月入¥2k-10k',ways:['闲鱼/淘宝/小红书接单','企业年终述职批量单','PPT模板+教程售卖'],links:[['B站','Gamma PPT 教程'],['抖音','AI PPT 接单']]},
+ s8:{t:'AI音乐版权',intro:'Suno批量做歌上传网易云/QQ音乐，赚播放版权分成+定制歌曲。一首歌生成成本几乎为零，长尾收益持续滚动。',steps:[['Suno生成','输入风格+歌词提示词'],['筛选精品','从10首里选1首'],['上传平台','网易/QQ音乐人上传'],['赚分成','播放版权费+定制单']],tools:['Suno','Udio'],toolSkills:[{n:'Suno',d:'Skill：歌词+风格生成——输入提示词直接出歌'},{n:'Udio',d:'Skill：发烧级音质——质感更惊艳'}],prompt:'一首【治愈系】纯音乐，钢琴+弦乐，BPM80，适合学习/睡眠场景，时长2分钟。',tips:['批量+长尾收益','做BGM/白噪音专辑更稳','定制歌曲客单50-500元'],learn:['音乐提示词','音乐人入驻'],path:['版权分成','定制歌曲','影视/播客BGM'],avoid:['别侵权翻唱','别用真人歌手声线'],income:'月入¥1k-10k（分成+定制）',ways:['音乐平台播放版权分成','企业/个人定制歌曲','BGM素材库售卖'],links:[['B站','Suno 教程'],['抖音','AI音乐 变现']]},
+ s9:{t:'AI头像定制',intro:'Midjourney/Qwen-Image出职业头像、情侣头像、系列IP，社交平台接单5-30元/张。起步最快、反馈最快，适合新手练手。',steps:[['建模板','做3套风格模板'],['挂服务','小红书/微信接单'],['批量交付','5-30元/张'],['做系列','情侣/职业/国风IP']],tools:['Midjourney','Qwen-Image','即梦'],toolSkills:[{n:'Midjourney',d:'Skill：人像艺术风格——电影级调色'},{n:'Qwen-Image',d:'Skill：职业头像——中文提示词稳'}],prompt:'高级感职业头像，柔和棚拍光，浅灰背景，自信微笑，85mm镜头，浅景深，电影级调色。',tips:['做系列风格提高复购','头像走量5-30元/张','引流私域做会员'],learn:['人像提示词','交付流程'],path:['社交接单','壁纸号','系列IP'],avoid:['别做明星/真人脸','别接色情擦边'],income:'¥5-30/张，月入¥1k-8k',ways:['小红书/闲鱼/微信接单','壁纸号广告分成','私域定制会员'],links:[['B站','AI头像 教程'],['抖音','AI头像 接单']]},
+ s10:{t:'AI简历优化',intro:'用Kimi帮求职者优化简历，闲鱼接单每单20-100元，30分钟交付。门槛最低、需求高频（金九银十/毕业季翻倍），适合第一次跑通收入。',steps:[['学写法','STAR法则+关键词优化'],['Kimi优化','输入原简历+目标岗位'],['人工润色','突出亮点量化成果'],['挂单交付','闲鱼+小红书引流']],tools:['Kimi','ChatGPT','秘塔写作猫'],toolSkills:[{n:'Kimi',d:'Skill：简历改写——STAR法则+量化成果'},{n:'秘塔写作猫',d:'Skill：中文校对——错别字/语句通顺把关'}],prompt:'你是资深HR。为【岗位】优化以下简历：提炼亮点+量化成果+STAR化描述，控制在1页。',tips:['毕业季/跳槽季是旺季','简历+面试辅导打包客单更高','改一份30分钟'],learn:['简历优化','HR视角'],path:['闲鱼接单','求职套餐','写作单'],avoid:['别编造经历（害人害己）'],income:'¥20-100/单，月入¥1k-6k',ways:['闲鱼/淘宝接单','简历+面试辅导套餐','企业校招外包'],links:[['B站','AI写作 变现'],['微信','AI简历 优化']]},
 };
 
 /* search */
@@ -1347,7 +1520,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('.search-box'))drop.c
 
 addEventListener('scroll',()=>document.getElementById('main-nav').classList.toggle('scrolled',scrollY>30));
 const obs=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('visible');obs.unobserve(en.target);}});},{threshold:.05,rootMargin:'0px 0px -20px 0px'});
-function observeAll(){document.querySelectorAll('.card,.combo-card,.course-item,.news-card,.gh-item,.tool-card,.tl-item,.gloss-card,.wf-card,.case-card2').forEach((el,i)=>{if(!el.classList.contains('visible')){el.style.transitionDelay=(i%4)*.05+'s';obs.observe(el);}});}
+function observeAll(){document.querySelectorAll('.card,.combo-card,.course-item,.news-card,.gh-item,.tool-card,.tl-item,.gloss-card,.wf-card,.case-card2,.qa-item,.tn-item,.quote-card').forEach((el,i)=>{if(!el.classList.contains('visible')){el.style.transitionDelay=(i%4)*.05+'s';obs.observe(el);}});}
 observeAll();
 
 /* wechat qr login */
@@ -1439,6 +1612,7 @@ animNum(document.getElementById('stat-visit'),VISIT_BASE+_v,'+');
 animNum(document.getElementById('stat-plan'),PLAN_BASE,'+');
 updateStats();
 renderTree();
+renderSkillTree();
 loadQuotes();
 </script>
 </body>
