@@ -102,6 +102,7 @@ section{margin-bottom:44px;scroll-margin-top:80px;}
 .tree-tier{flex:1;display:flex;flex-direction:column;align-items:center;gap:14px;position:relative;z-index:1;}
 .tree-tier .tier-name{font-size:12px;font-weight:800;color:var(--tt);letter-spacing:2px;margin-bottom:6px;}
 #tree-svg{position:absolute;inset:0;z-index:0;pointer-events:none;}
+#skill-tree-svg{position:absolute;inset:0;z-index:0;pointer-events:none;}
 .tline{fill:none;stroke:rgba(0,0,0,.12);stroke-width:2;}
 .tline.lit{stroke:url(#lineGrad);stroke-width:2.5;filter:drop-shadow(0 0 4px rgba(0,113,227,.5));}
 .knode{width:88px;padding:12px 6px;border-radius:16px;text-align:center;cursor:pointer;transition:all .4s cubic-bezier(.16,1,.3,1);background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.7);position:relative;}
@@ -112,6 +113,13 @@ section{margin-bottom:44px;scroll-margin-top:80px;}
 .knode.lit .ki{filter:none;opacity:1;}
 .knode.lit .kn{color:var(--accent);}
 .knode.lit::after{content:'✓';position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;background:var(--green);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+/* 技能图谱：变现技能节点橙色高亮 + 变现目标绿色高亮 */
+.knode.skhot{border-color:rgba(255,149,0,.55);background:linear-gradient(145deg,rgba(255,149,0,.16),rgba(255,59,48,.12));box-shadow:0 0 16px rgba(255,149,0,.22);}
+.knode.skhot .ki{filter:none;opacity:1;}
+.knode.skhot .kn{color:#c77700;}
+.knode.skgold{border-color:rgba(48,177,78,.6);background:linear-gradient(145deg,rgba(48,177,78,.18),rgba(48,177,78,.08));box-shadow:0 0 16px rgba(48,177,78,.25);}
+.knode.skgold .ki{filter:none;opacity:1;}
+.knode.skgold .kn{color:var(--green);}
 
 /* cards grids */
 .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
@@ -897,7 +905,7 @@ const SKILL_TIERS=[
  {name:'变现技能',nodes:[{id:'s1',i:'&#127916;',n:'AI短剧',detail:'s1'},{id:'s2',i:'&#128187;',n:'编程接单',detail:'s2'},{id:'s3',i:'&#127908;',n:'AI解说',detail:'s3'},{id:'s4',i:'&#129302;',n:'Agent自动化',detail:'s4'},{id:'s5',i:'&#128200;',n:'信息图',detail:'s5'},{id:'s6',i:'&#128722;',n:'图文带货',detail:'s6'}]},
  {name:'变现目标',nodes:[{id:'sk-money',i:'&#128176;',n:'接单变现',detail:'money'}]},
 ];
-const SKILL_EDGES=[['sk-prompt','sk-video'],['sk-prompt','sk-writing'],['sk-prompt','sk-code'],['sk-deepseek','sk-writing'],['sk-deepseek','sk-video'],['sk-deepseek','sk-image'],['sk-codex','sk-code'],['sk-codex','sk-aigent'],['sk-workbuddy','sk-aigent'],['sk-workbuddy','sk-writing'],['sk-video','s1'],['sk-video','s3'],['sk-code','s2'],['sk-aigent','s4'],['sk-image','s5'],['sk-writing','s3'],['sk-writing','s6'],['sk-music','sk-money'],['s1','sk-money'],['s2','sk-money'],['s3','sk-money'],['s4','sk-money'],['s5','sk-money'],['s6','sk-money']];
+const SKILL_EDGES=[['sk-prompt','sk-video'],['sk-prompt','sk-writing'],['sk-prompt','sk-code'],['sk-deepseek','sk-writing'],['sk-deepseek','sk-video'],['sk-deepseek','sk-image'],['sk-codex','sk-code'],['sk-codex','sk-aigent'],['sk-workbuddy','sk-aigent'],['sk-workbuddy','sk-writing'],['sk-video','s1'],['sk-video','s3'],['sk-code','s2'],['sk-aigent','s4'],['sk-image','s5'],['sk-writing','s3'],['sk-writing','s6'],['s1','sk-money'],['s2','sk-money'],['s3','sk-money'],['s4','sk-money'],['s5','sk-money'],['s6','sk-money']];
 const skFlex=document.getElementById('skill-tree-flex');
 function renderSkillTree(){
   if(!skFlex)return;
@@ -906,7 +914,9 @@ function renderSkillTree(){
     const col=document.createElement('div');col.className='tree-tier';
     col.innerHTML=`<div class="tier-name">${tier.name}</div>`;
     tier.nodes.forEach(nd=>{
-      const k=document.createElement('div');k.className='knode';k.dataset.nodeId=nd.id;
+      const k=document.createElement('div');
+      const extra=(tier.name==='变现技能')?' skhot':(nd.id==='sk-money'?' skgold':'');
+      k.className='knode'+extra;k.dataset.nodeId=nd.id;
       k.innerHTML=`<span class="ki">${nd.i}</span><span class="kn">${nd.n}</span>`;
       k.onclick=()=>openDetail(nd.detail);
       col.appendChild(k);
