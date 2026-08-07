@@ -387,6 +387,14 @@ footer p{line-height:2;}
 .wf-step span{font-size:10px;color:var(--tt);}
 .wf-arrow{color:var(--accent3);font-weight:800;}
 .wf-card .wf-out{font-size:12px;color:var(--ts);}
+/* 工作流详细文档弹窗 */
+.wf-doc-steps{display:flex;flex-direction:column;gap:10px;}
+.wf-doc-step{display:flex;gap:12px;background:rgba(255,255,255,.5);border:1px solid rgba(0,113,227,.14);border-radius:14px;padding:12px 14px;}
+.wf-doc-step .wds-n{width:26px;height:26px;flex-shrink:0;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.wf-doc-step .wds-b{font-size:13px;font-weight:700;color:var(--accent);}
+.wf-doc-step .wds-d{font-size:12px;color:var(--ts);line-height:1.6;margin-top:2px;}
+.wf-case{background:linear-gradient(135deg,rgba(255,149,0,.1),rgba(255,59,48,.08));border:1px solid rgba(255,149,0,.25);border-radius:14px;padding:14px 16px;font-size:13px;line-height:1.7;color:var(--tp);}
+.wf-case b{color:#c77700;}
 /* real cases */
 .case-card2{padding:20px;transition:transform .5s,box-shadow .5s;opacity:0;transform:translateY(24px);display:flex;flex-direction:column;gap:8px;}
 .case-card2.visible{opacity:1;transform:translateY(0);}
@@ -895,7 +903,7 @@ function goRel(id){
   document.getElementById('detail-mask').classList.remove('show');
   const REL={prompt:'#l-tags',agent:'#l-tree',image:'#l-recipes',video:'#l-ec',writing:'#l-ec',audio:'#l-ec',avatar:'#l-recipes',matrix:'#l-ec',ppt:'#l-recipes',code:'#l-bloggers',music:'#l-recipes',money:'#l-bloggers'};
   const SKILL_REL={s1:'video',s2:'code',s3:'video',s4:'aigent',s5:'image',s6:'matrix',s7:'ppt',s8:'music',s9:'avatar',s10:'money'};
-  const sel=id[0]==='b'?'#l-bloggers':(REL[id]||REL[SKILL_REL[id]]||'#l-ec');
+  const sel=id[0]==='b'?'#l-bloggers':(id[0]==='w'?'#l-wf':(REL[id]||REL[SKILL_REL[id]]||'#l-ec'));
   switchView('learn');
   ensureLearnZone(sel.slice(1));
   setTimeout(()=>{const el=document.querySelector(sel);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},250);
@@ -1169,9 +1177,80 @@ if(wgl){WF_LIST.forEach((w,i)=>{
   const c=document.createElement('div');c.className='wf-card glass';c.style.transitionDelay=(i%2)*.08+'s';
   c.innerHTML=`<span class="wf-income">${w.income}</span><h3>${w.title}</h3><div class="wf-desc">${w.desc}</div>
   <div class="wf-pipe">${w.steps.map((s,j)=>`<span class="wf-step"><b>${s[0]}</b><span>${s[1]}</span></span>${j<w.steps.length-1?'<span class="wf-arrow">→</span>':''}`).join('')}</div>
-  <div class="wf-out">${w.out} · <button class="mini-btn mb-detail" data-detail="${w.node}">看图文详情</button></div>`;
+  <div class="wf-out">${w.out} · <button class="mini-btn mb-tut" data-wf="wf${i+1}">&#128214; 详细文档+案例</button> <button class="mini-btn mb-detail" data-detail="${w.node}">图文详情</button></div>`;
   wgl.appendChild(c);
 });}
+
+/* ===== 工作流详细文档（含完整步骤+真实案例+提示词） ===== */
+const WORKFLOW_DETAIL={
+ wf1:{t:'AI短剧流水线',goal:'月入¥10k-50k · 爆款单条收益可覆盖数十条成本',flow:[
+   {b:'Kimi / DeepSeek 写剧本',d:'喂题材生成60秒竖屏剧本：前3秒冲突钩子 + 2个反转 + 结尾留悬念。一部短剧拆8-12集，每集独立钩子。'},
+   {b:'可灵 / MiniMax H3 生成画面',d:'按分镜提示词逐段生成，人物保持同一形象（用参考图锁脸），动作+情绪要夸张才有戏剧张力。'},
+   {b:'Fish Audio / 剪映 配音合成',d:'Fish克隆音色或选沉稳女声，剪映自动加字幕、转场、情绪BGM，卡点剪辑。'},
+   {b:'平台分发 + 变现',d:'抖音短剧/视频号分发吃分成，粉丝破万上星图接品牌商单；AI演员不塌房是最大卖点。'}],
+   case:'AI短剧《被裁掉的女孩》全网播放破2亿，女主「方桃子」出道30天涨粉40万，60秒广告报价25.8万（超过千万粉真人网红）；B站素人用可灵+剪映做AI短剧，无真人出镜，月分成1.2万。',
+   prompt:'你是AI短剧编剧。为【题材】写60秒竖屏剧本：前3秒冲突钩子抓住观众，中间2个反转，结尾留悬念引导追更；角色情绪饱满、台词口语化，标注每个分镜的画面提示。',
+   output:'8-12集竖屏短剧 + 虚拟人IP形象 + 平台账号矩阵',
+   tips:['爆款率不足0.5%，靠量产+测题材（先发10条看数据）','同一人设系列化，提高追更率','先做案例再谈商单，别一上来就找品牌']},
+ wf2:{t:'AI电影解说号',goal:'月入¥10k-40k · 平台分成+花火广告',flow:[
+   {b:'选片定题材',d:'选有争议/有情怀的经典或冷门片（差异化），避开大热门红海。'},
+   {b:'Kimi 写45秒口播',d:'前3秒悬念钩子（"这部9分神片居然没人看过"）→ 3个信息点 → 结尾引导关注，口语化。'},
+   {b:'即梦/可灵 生成画面',d:'按口播分镜生成画面素材，电影感镜头+情绪BGM。'},
+   {b:'Fish 配音 + 剪映合成',d:'沉稳男声克隆配音，剪映一键成片，日更3条吃平台分成。'}],
+   case:'B站AI电影解说UP主实测：DeepSeek写稿+即梦画面+Fish配音，日更3条，单账号月入1.5万；抖音中视频计划对1分钟以上口播视频给分成+流量倾斜。',
+   prompt:'你是百万粉电影解说编剧。为【电影名】写45秒口播：前3秒悬念钩子，中间3个信息点（剧情反转/冷知识/名场面），结尾"关注我，下期更精彩"，口语化。',
+   output:'日更3条解说视频 + 平台分成流水',
+   tips:['完播率>播放量，前3秒决定生死','冷门题材差异化，别跟大号硬刚','二创不抄原稿，换角度换观点']},
+ wf3:{t:'商业信息图商单',goal:'¥1000-10000/单 · B端客单最高',flow:[
+   {b:'学风格定模板',d:'米黄做旧纸张+低饱和橙黑+矢量插画风格，做3套行业模板（CPO/算力/储能/医药）。'},
+   {b:'Qwen-Image 生成',d:'用商业信息图提示词批量生成，中文渲染稳、无乱码，一次出多版选最佳。'},
+   {b:'人工微调',d:'检查数据标注/排版/配色，用稿定/Canva微调，保证专业感。'},
+   {b:'B端交付',d:'对接券商研报/财经自媒体/企业市场部，按系列签单，客单200-2000元起。'}],
+   case:'小红书/公众号接单者用Qwen-Image做AI研报插画，单张客单200-2000元；券商、财经自媒体对CPO光模块/算力/储能类信息图需求持续上涨，系列单更稳。',
+   prompt:'商业PPT信息图表，科技研报插画，主题【CPO光模块对比】：上下硬件剖视+橙色数据流箭头+右侧柱状增长图，米黄做旧纸张背景，简约矢量，低饱和橙黑配色，带英文标签，高清2K，无乱码，扁平化。',
+   output:'研报信息图系列（可按月签约）',
+   tips:['聚焦热词（CPO/算力/储能）容易出爆款商单','做系列图提高复购，别做一次性单','不接无版权确认的单']},
+ wf4:{t:'编程接单流水线',goal:'¥500-5000/单 · 用AI把效率x3',flow:[
+   {b:'接单确认需求',d:'闲鱼/程序员客栈接爬虫、脚本、自动化小单；先确认需求边界，收30-50%定金。'},
+   {b:'Codex 生成代码',d:'对话式描述需求，Codex直接产出可运行工程；复杂功能拆小步生成。'},
+   {b:'Cursor 调试完善',d:'本地跑通、修Bug、加注释和异常处理；Ollama本地模型辅助自查。'},
+   {b:'交付收款',d:'交付可运行版本+使用说明，好评积累后提价，转型细分行业工具SaaS。'}],
+   case:'程序员用Cursor接爬虫/脚本单实测：原本1周的活2天交付，单量×3；闲鱼"AI代写脚本"客单500-5000元，程序员客栈长期缺人。',
+   prompt:'你是资深工程师。用Python写【需求】：包含完整注释、异常处理、示例调用；优先用requests/BeautifulSoup等成熟库，输出可直接运行的代码。',
+   output:'可运行脚本/小工具 + 使用文档',
+   tips:['不碰灰色爬虫（隐私/违法数据）','先定金后开工，需求写进合同','不会编程也能干：需求描述清楚，AI帮你写']},
+ wf5:{t:'AI PPT 接单',goal:'¥300-2000/单 · 答辩季翻倍',flow:[
+   {b:'挂服务',d:'闲鱼/淘宝/小红书挂"AI PPT定制"，配3个案例图（答辩/述职/路演模板）。'},
+   {b:'Kimi 写大纲',d:'输入主题生成10-20页大纲：背景-问题-方案-案例-总结结构。'},
+   {b:'Gamma 生成+微调',d:'Gamma一键生成高颜值页面，人工改配色/补数据图/对齐客户品牌。'},
+   {b:'交付好评',d:'48小时内交付，好评攒案例，旺季（答辩季/年终述职）提价到300-2000元。'}],
+   case:'闲鱼AI PPT定制实测：普通单50-300元，答辩季/毕业季订单翻倍，熟练后一天交付2-3单；企业年终述职批量单客单更高。',
+   prompt:'为【主题】生成10页PPT大纲：封面+痛点+方案+案例+金句结尾；每页给出标题、3个要点、建议配图/图表类型。',
+   output:'10-30页精美PPT（可反复复用模板）',
+   tips:['旺季前囤好行业模板（财务/考研/医疗）','交付快=复购多，先冲好评','别用版权不明的图片素材']},
+ wf6:{t:'AI音乐版权',goal:'月入¥5k-30k · 长尾版权分成',flow:[
+   {b:'Suno 批量生成',d:'输入风格+歌词提示词批量做歌，一次生成10首候选。'},
+   {b:'筛选精品',d:'从10首里选1首精品（旋律/歌词/混音），批量做BGM/白噪音专辑更稳。'},
+   {b:'上传音乐平台',d:'入驻网易云音乐人/QQ音乐人/汽水音乐，上传原创专辑。'},
+   {b:'赚分成+定制',d:'播放版权分成长尾滚动；接企业/个人定制歌（50-500元/首）+影视播客BGM授权。'}],
+   case:'Suno做治愈系BGM上传网易/QQ实测：白噪音+学习BGM专辑月播放稳定，分成持续滚动；定制歌曲客单50-500元/首，企业年会/BGM需求多。',
+   prompt:'一首【治愈系】纯音乐，钢琴+弦乐，BPM80，时长2分钟，适合学习/睡眠场景；带情绪起伏（平静-温暖-平静），结尾渐弱。',
+   output:'原创歌曲/BGM专辑（长期分成资产）',
+   tips:['批量+长尾收益，做系列专辑更稳','别侵权翻唱、别用真人歌手声线','版权分成慢热但持续，坚持上传']},
+};
+function openWorkflow(id){
+  const w=WORKFLOW_DETAIL[id];if(!w)return;
+  const box=document.getElementById('detail-box');
+  box.innerHTML=`<button class="detail-close" onclick="document.getElementById('detail-mask').classList.remove('show')">&#10005;</button>
+  <span class="d-tag">工作流详细文档 · 含真实案例</span><h2>${w.t}</h2><div class="d-intro">一条链跑通变现闭环 · 预期收益：${w.goal}</div>
+  <div class="d-block"><div class="db-t">&#127919; 完整操作流程</div><div class="wf-doc-steps">${w.flow.map((s,i)=>`<div class="wf-doc-step"><div class="wds-n">${i+1}</div><div><div class="wds-b">${s.b}</div><div class="wds-d">${s.d}</div></div></div>`).join('')}</div></div>
+  <div class="d-block"><div class="db-t">&#128293; 真实案例</div><div class="wf-case">${w.case}</div></div>
+  <div class="d-block"><div class="db-t">&#128172; 现成提示词（直接复制）</div><div class="d-prompt">${w.prompt}</div></div>
+  <div class="d-block"><div class="db-t">&#128230; 交付物</div><ul class="d-tips"><li>${w.output}</li></ul></div>
+  <div class="d-block"><div class="db-t">&#9888;&#65039; 避坑指南</div><ul class="d-tips">${w.tips.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+  <div class="d-foot"><button class="mini-btn mb-copy" data-copy="${w.prompt.replace(/"/g,'&quot;')}">&#128279; 复制提示词</button><button class="mini-btn mb-tut" onclick="goRel('${id}')">前往相关学习</button></div>`;
+  document.getElementById('detail-mask').classList.add('show');
+}
 
 /* ===== 热门AI博主排行 ===== */
 const BLOGGERS=[
@@ -1221,6 +1300,7 @@ GLOSS.forEach((g,i)=>{
 
 /* copy+detail delegate */
 document.addEventListener('click',e=>{
+  const w=e.target.closest('[data-wf]');if(w){openWorkflow(w.dataset.wf);return;}
   const d=e.target.closest('[data-detail]');if(d){openDetail(d.dataset.detail);return;}
   const b=e.target.closest('[data-copy]');if(!b)return;
   navigator.clipboard.writeText(b.dataset.copy).then(()=>{const t=b.textContent;b.textContent='已复制✓';setTimeout(()=>b.textContent=t,1400);});
