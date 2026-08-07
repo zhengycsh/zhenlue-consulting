@@ -81,6 +81,17 @@ section{margin-bottom:44px;scroll-margin-top:80px;}
 .learn-subnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
 .learn-subnav a{padding:7px 18px;border-radius:100px;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.7);font-size:13px;color:var(--ts);text-decoration:none;}
 .learn-subnav a:hover{color:var(--accent);}
+/* 学习中心三分区 */
+.learn-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.learn-tab{padding:9px 24px;border-radius:100px;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.5);font-size:14px;font-weight:700;color:var(--ts);cursor:pointer;font-family:inherit;transition:all .3s;}
+.learn-tab:hover{color:var(--accent);transform:translateY(-1px);}
+.learn-tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;box-shadow:0 4px 16px rgba(0,113,227,.3);}
+.learn-zone{display:none;}
+.learn-zone.show{display:block;animation:fadeUp .5s both;}
+.zone-head{display:flex;align-items:center;gap:14px;padding:16px 22px;margin-bottom:20px;border-radius:18px;background:linear-gradient(135deg,rgba(0,113,227,.1),rgba(175,82,222,.1));border:1px solid rgba(255,255,255,.65);}
+.zone-head .zh-emoji{font-size:28px;flex-shrink:0;}
+.zone-head .zh-t{font-size:16px;font-weight:800;}
+.zone-head .zh-d{font-size:12px;color:var(--ts);margin-top:2px;}
 
 /* knowledge tree */
 .tree-hero{padding:24px;display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin-bottom:18px;}
@@ -522,62 +533,91 @@ footer p{line-height:2;}
     <span class="lb-emoji">&#127795;</span>
     <div style="flex:1;min-width:220px;"><h2>AI 学习中心</h2><p>打怪升级式学习：看详情→学完点亮知识树→从AI小白到变现大师。内容只选抖音/B站/微信高质量爆款。</p></div>
   </div>
-  <div class="learn-subnav">
-    <a href="#l-newbie">新手入门</a><a href="#l-tree">知识图谱</a><a href="#l-daily">每日一课</a><a href="#l-tags">标签学习</a><a href="#l-ec">二创工坊</a><a href="#l-recipes">图文方案</a><a href="#l-bloggers">博主排行</a>
+  <div class="learn-tabs">
+    <button class="learn-tab active" data-zone="base">&#128218; 基础学习</button>
+    <button class="learn-tab" data-zone="advance">&#128176; 高阶变现</button>
+    <button class="learn-tab" data-zone="tools">&#129520; 工具套装实践</button>
   </div>
 
-  <section id="l-newbie">
-    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128105;&#8205;&#127891;</span>新手三步走 <span class="hot-flag">零基础</span></div><div class="sec-sub">完全不懂AI？跟着这三步，7天跑通第一单</div></div></div>
-    <div class="newbie">
-      <div class="nb glass"><div class="nbn">1</div><h4>选个免费工具</h4><p>从"性价比之王"里选一个国内直连免费工具（如DeepSeek/即梦），先玩熟。</p></div>
-      <div class="nb glass"><div class="nbn">2</div><h4>学一个技能</h4><p>点知识树任一节点，看本站图文详情，学会一个能变现的技能。</p></div>
-      <div class="nb glass"><div class="nbn">3</div><h4>接第一单</h4><p>做3个样品挂闲鱼/小红书，跑通首单，再放大。</p></div>
-    </div>
-    <div class="sec-head" style="margin-top:22px;"><div><div class="sec-title"><span class="emoji">&#128214;</span>名词解释 · 秒懂</div><div class="sec-sub">把AI黑话翻译成人话</div></div></div>
-    <div class="gloss-grid" id="gloss-grid"></div>
-  </section>
+  <!-- 分区一：基础学习（含Skill学习） -->
+  <div class="learn-zone show" id="zone-base">
+    <div class="zone-head"><span class="zh-emoji">&#128218;</span><div><div class="zh-t">基础学习 · 从0到会用AI</div><div class="zh-d">新手三步走 → Skill学习(官方实操课) → 知识图谱点亮 → 每日一课 → 标签定向学习</div></div></div>
+    <section id="l-newbie">
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128105;&#8205;&#127891;</span>新手三步走 <span class="hot-flag">零基础</span></div><div class="sec-sub">完全不懂AI？跟着这三步，7天跑通第一单</div></div></div>
+      <div class="newbie">
+        <div class="nb glass"><div class="nbn">1</div><h4>选个免费工具</h4><p>从"性价比之王"里选一个国内直连免费工具（如DeepSeek/即梦），先玩熟。</p></div>
+        <div class="nb glass"><div class="nbn">2</div><h4>学一个技能</h4><p>点知识树任一节点，看本站图文详情，学会一个能变现的技能。</p></div>
+        <div class="nb glass"><div class="nbn">3</div><h4>接第一单</h4><p>做3个样品挂闲鱼/小红书，跑通首单，再放大。</p></div>
+      </div>
+      <div class="sec-head" style="margin-top:22px;"><div><div class="sec-title"><span class="emoji">&#128214;</span>名词解释 · 秒懂</div><div class="sec-sub">把AI黑话翻译成人话</div></div></div>
+      <div class="gloss-grid" id="gloss-grid"></div>
+    </section>
 
-  <section id="l-tree">
-    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127795;</span>AI 知识图谱 · 打怪升级 <span class="hot-flag">核心</span></div><div class="sec-sub">点节点看图文详情→学完"标为已学习"→点亮升级</div></div></div>
-    <div class="tree-hero glass">
-      <div class="tree-ring"><svg width="96" height="96"><circle class="ring-bg" cx="48" cy="48" r="40"/><circle class="ring-fg" id="ring-fg" cx="48" cy="48" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"/></svg><div class="ring-txt"><b id="ring-num">0</b><span>已点亮</span></div></div>
-      <div class="tree-meta"><div class="lv-name" id="lv-name">Lv.0 AI小白</div><div class="lv-desc" id="lv-desc">点击任意节点，开始打怪升级。</div><div class="tree-badges" id="tree-badges"></div></div>
-      <div style="text-align:right;flex-shrink:0;"><div id="tree-interact" style="font-size:22px;font-weight:800;color:var(--accent3);font-variant-numeric:tabular-nums;">0</div><div style="font-size:11px;color:var(--tt);">累计学习互动</div></div>
-    </div>
-    <div class="tree-wrap glass"><div class="tree-flex" id="tree-flex"><svg id="tree-svg"></svg></div></div>
-  </section>
+    <section id="l-skills">
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127919;</span>Skill 学习 · 官方/免费实操课 <span class="hot-flag">必学</span></div><div class="sec-sub">Skill=可复用的操作技能包（如GitHub Skills官方实操课），先把工具技能学扎实再谈变现</div></div></div>
+      <div class="grid-3" id="skill-res-grid"></div>
+    </section>
 
-  <section id="l-skilltree">
-    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127919;</span>变现技能图谱 · 从工具Skill到赚钱 <span class="hot-flag">Skill</span></div>
-    <div class="sec-sub">工具Skill(Codex/WorkBuddy/DeepSeek)→核心技能→变现技能→接单变现 · 点节点看详情+工具Skill组合</div></div></div>
-    <div class="tree-wrap glass"><div class="tree-flex" id="skill-tree-flex"><svg id="skill-tree-svg"></svg></div></div>
-  </section>
+    <section id="l-tree">
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127795;</span>AI 知识图谱 · 打怪升级 <span class="hot-flag">核心</span></div><div class="sec-sub">点节点看图文详情→学完"标为已学习"→点亮升级</div></div></div>
+      <div class="tree-hero glass">
+        <div class="tree-ring"><svg width="96" height="96"><circle class="ring-bg" cx="48" cy="48" r="40"/><circle class="ring-fg" id="ring-fg" cx="48" cy="48" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"/></svg><div class="ring-txt"><b id="ring-num">0</b><span>已点亮</span></div></div>
+        <div class="tree-meta"><div class="lv-name" id="lv-name">Lv.0 AI小白</div><div class="lv-desc" id="lv-desc">点击任意节点，开始打怪升级。</div><div class="tree-badges" id="tree-badges"></div></div>
+        <div style="text-align:right;flex-shrink:0;"><div id="tree-interact" style="font-size:22px;font-weight:800;color:var(--accent3);font-variant-numeric:tabular-nums;">0</div><div style="font-size:11px;color:var(--tt);">累计学习互动</div></div>
+      </div>
+      <div class="tree-wrap glass"><div class="tree-flex" id="tree-flex"><svg id="tree-svg"></svg></div></div>
+    </section>
 
-  <section id="l-daily">
-    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127793;</span>每日一课</div><div class="sec-sub">每天3分钟，点"本站详情"看完整图文</div></div></div>
-    <div class="grid-3" id="daily-grid"></div>
-  </section>
+    <section id="l-daily">
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127793;</span>每日一课</div><div class="sec-sub">每天3分钟，点"本站详情"看完整图文</div></div></div>
+      <div class="grid-3" id="daily-grid"></div>
+    </section>
 
-  <section id="l-tags">
-    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127991;&#65039;</span>标签学习</div><div class="sec-sub">点标签→高质量内容(抖音/B站/微信)+本站详情</div></div></div>
-    <div class="tag-row" id="tag-row"></div>
-    <div class="tag-panel glass" id="tag-panel"></div>
-  </section>
+    <section id="l-tags">
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127991;&#65039;</span>标签学习</div><div class="sec-sub">点标签→高质量内容(抖音/B站/微信)+本站详情</div></div></div>
+      <div class="tag-row" id="tag-row"></div>
+      <div class="tag-panel glass" id="tag-panel"></div>
+    </section>
+  </div>
 
-  <section id="l-ec">
-    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128293;</span>爆款二创工坊</div><div class="sec-sub">站在大佬肩膀上：分析+二创方向+工具+文案</div></div></div>
-    <div class="grid-2" id="ec-grid"></div>
-  </section>
+  <!-- 分区二：高阶变现 -->
+  <div class="learn-zone" id="zone-advance">
+    <div class="zone-head"><span class="zh-emoji">&#128176;</span><div><div class="zh-t">高阶变现 · 把技能变成钱</div><div class="zh-d">变现技能图谱 → 爆款二创拆解 → 跟头部博主学变现打法</div></div></div>
+    <section id="l-skilltree">
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127919;</span>变现技能图谱 · 从工具Skill到赚钱 <span class="hot-flag">Skill</span></div>
+      <div class="sec-sub">工具Skill(Codex/WorkBuddy/DeepSeek)→核心技能→变现技能→接单变现 · 点节点看详情+工具Skill组合</div></div></div>
+      <div class="tree-wrap glass"><div class="tree-flex" id="skill-tree-flex"><svg id="skill-tree-svg"></svg></div></div>
+    </section>
 
-  <section id="l-recipes">
-    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128218;</span>图文方案库 <span class="hot-flag">抄作业</span></div><div class="sec-sub">最成熟性价比方案：工具组合+现成提示词</div></div></div>
-    <div class="grid-2" id="recipe-grid"></div>
-  </section>
+    <section id="l-ec">
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128293;</span>爆款二创工坊</div><div class="sec-sub">站在大佬肩膀上：分析+二创方向+工具+文案</div></div></div>
+      <div class="grid-2" id="ec-grid"></div>
+    </section>
 
-  <section id="l-bloggers">
-    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127775;</span>热门AI博主排行 <span class="hot-flag">接地气</span></div><div class="sec-sub">抖音/B站/微信真实大佬：能学什么+变现工具+变现方式+二创方向，直接跟他们学</div></div></div>
-    <div class="grid-2" id="blogger-grid"></div>
-  </section>
+    <section id="l-bloggers">
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127775;</span>热门AI博主排行 <span class="hot-flag">接地气</span></div><div class="sec-sub">抖音/B站/微信真实大佬：能学什么+变现工具+变现方式+二创方向，直接跟他们学</div></div></div>
+      <div class="grid-2" id="blogger-grid"></div>
+    </section>
+  </div>
+
+  <!-- 分区三：工具套装实践 -->
+  <div class="learn-zone" id="zone-tools">
+    <div class="zone-head"><span class="zh-emoji">&#129520;</span><div><div class="zh-t">工具套装实践 · 一条链跑通一个闭环</div><div class="zh-d">套装组合 → 工作流流水线 → 图文方案库抄作业</div></div></div>
+    <section id="l-toolkit">
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#129520;</span>工具套装组合 <span class="hot-flag">按需选</span></div><div class="sec-sub">按场景配好工具链，直接开干</div></div></div>
+      <div class="grid-2" id="toolkit-grid"></div>
+    </section>
+
+    <section id="l-wf">
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128640;</span>工作流实践 <span class="hot-flag">照着做</span></div><div class="sec-sub">一条工具链跑通一个变现闭环，点卡片看图文详情</div></div></div>
+      <div class="wf-grid" id="wf-grid-learn"></div>
+    </section>
+
+    <section id="l-recipes">
+      <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#128218;</span>图文方案库 <span class="hot-flag">抄作业</span></div><div class="sec-sub">最成熟性价比方案：工具组合+现成提示词</div></div></div>
+      <div class="grid-2" id="recipe-grid"></div>
+    </section>
+  </div>
 </div>
 
 <!-- ============ TOOLS ============ -->
@@ -857,7 +897,8 @@ function goRel(id){
   const SKILL_REL={s1:'video',s2:'code',s3:'video',s4:'aigent',s5:'image',s6:'matrix',s7:'ppt',s8:'music',s9:'avatar',s10:'money'};
   const sel=id[0]==='b'?'#l-bloggers':(REL[id]||REL[SKILL_REL[id]]||'#l-ec');
   switchView('learn');
-  setTimeout(()=>{const el=document.querySelector(sel);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},200);
+  ensureLearnZone(sel.slice(1));
+  setTimeout(()=>{const el=document.querySelector(sel);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},250);
 }
 
 /* tree render */
@@ -1072,6 +1113,65 @@ RECIPES.forEach((r,i)=>{
   <div class="c-actions"><button class="mini-btn mb-detail" data-detail="${r.node}">本站图文详情</button><button class="mini-btn mb-copy" data-copy="${r.prompt.replace(/"/g,'&quot;')}">复制提示词</button><button class="mini-btn learn-btn" data-node="${r.node}">标为已学习</button></div>`;
   rg.appendChild(c);
 });
+
+/* ===== 学习中心三分区切换 ===== */
+function switchLearnZone(zone){
+  document.querySelectorAll('.learn-zone').forEach(z=>z.classList.toggle('show',z.id==='zone-'+zone));
+  document.querySelectorAll('.learn-tab').forEach(t=>t.classList.toggle('active',t.dataset.zone===zone));
+  requestAnimationFrame(()=>{drawTreeLines();drawSkillTreeLines();});
+  requestAnimationFrame(observeAll);
+}
+document.querySelectorAll('.learn-tab').forEach(t=>t.addEventListener('click',()=>switchLearnZone(t.dataset.zone)));
+const LEARN_ZONE={'l-newbie':'base','l-skills':'base','l-tree':'base','l-daily':'base','l-tags':'base','l-skilltree':'advance','l-ec':'advance','l-bloggers':'advance','l-recipes':'tools','l-wf':'tools','l-toolkit':'tools'};
+function ensureLearnZone(anchor){const z=LEARN_ZONE[anchor];if(z)switchLearnZone(z);}
+
+/* ===== 基础学习：Skill 学习资源（含 GitHub Skills） ===== */
+const SKILL_RESOURCES=[
+ {n:'GitHub Skills',d:'GitHub 官方实操课：从 Git 基础到 AI 编程 Skill，跟着做一遍就学会',plat:'官方实操',u:'https://skills.github.com',i:'&#128187;',bg:'#24292f',tag:'官方'},
+ {n:'微软 AI-For-Beginners',d:'12 周 AI 入门：提示词→Agent 全体系，免费开源中文友好',plat:'GitHub',u:'https://github.com/microsoft/AI-For-Beginners',i:'&#127891;',bg:'#2563eb',tag:'免费'},
+ {n:'Prompt Guide',d:'提示词工程圣经：角色/结构/示例四段式，中文免费',plat:'官网',u:'https://www.promptingguide.ai/zh',i:'&#128172;',bg:'#0d9488',tag:'免费'},
+ {n:'DeepLearning.AI',d:'吴恩达亲授：ChatGPT 提示词/Agent 系列短课，每个 1 小时',plat:'课程',u:'https://www.deeplearning.ai',i:'&#129504;',bg:'#c2410c',tag:'名师'},
+ {n:'李宏毅 ML',d:'最有趣的机器学习课，中文友好，AI 概念入门首选',plat:'课程',u:'https://speech.ee.ntu.edu.tw/~hylee/ml/2024-spring.html',i:'&#128218;',bg:'#7c3aed',tag:'中文'},
+ {n:'Codecademy AI',d:'交互式学 Python+AI，边写代码边练 Skill，动手能力强推',plat:'课程',u:'https://www.codecademy.com',i:'&#128296;',bg:'#1e40af',tag:'交互'},
+];
+const srg=document.getElementById('skill-res-grid');
+if(srg){SKILL_RESOURCES.forEach((s,i)=>{
+  const c=document.createElement('div');c.className='card glass';c.style.transitionDelay=(i%3)*.06+'s';
+  c.innerHTML=`<div class="c-top"><span class="c-ava" style="background:${s.bg};">${s.i}</span><div style="min-width:0;flex:1;"><h3>${s.n}</h3><div class="c-sub">${s.plat} · ${s.tag}</div></div></div><div class="c-row">${s.d}</div><div class="c-actions"><a class="mini-btn mb-tut" target="_blank" href="${s.u}">&#128279; 去学习</a></div>`;
+  srg.appendChild(c);
+});}
+
+/* ===== 工具套装实践：套装组合 ===== */
+const TOOLKIT=[
+ {name:'新手零成本套装',cost:'¥0',tools:['DeepSeek','即梦 AI','剪映 AI'],desc:'对话+绘画+剪辑全免费，7天玩熟工具再学变现',scene:'第一次接触AI',best:1},
+ {name:'视频变现套装',cost:'¥0-30/月',tools:['Kimi','可灵 AI','Fish Audio','剪映 AI'],desc:'写稿→画面→配音→合成一条龙，日更3条吃分成',scene:'AI解说/短剧起号'},
+ {name:'编程接单套装',cost:'¥60-300/月',tools:['Codex','Cursor','Ollama'],desc:'对话式编码+本地模型，接单效率x3',scene:'爬虫/脚本/小工具'},
+ {name:'办公提效套装',cost:'¥0',tools:['WorkBuddy','Qoder Work','Gamma','WPS AI'],desc:'表格/文档/PPT全自动，早下班多接单',scene:'打工人日常提效'},
+];
+const tkg=document.getElementById('toolkit-grid');
+if(tkg){TOOLKIT.forEach((t,i)=>{
+  const c=document.createElement('div');c.className='combo-card glass'+(t.best?' best':'');c.style.transitionDelay=(i%2)*.08+'s';
+  c.innerHTML=`${t.best?'<span class="best-flag">&#11088; 首选</span>':''}<div class="c-cost">${t.cost}</div><h3>${t.name}</h3><div class="c-tools">${t.tools.map(x=>`<span>${x}</span>`).join('')}</div><div class="c-use">${t.desc}</div><div style="margin-top:8px;font-size:11.5px;color:var(--tt);">适用：${t.scene}</div>`;
+  tkg.appendChild(c);
+});}
+
+/* ===== 工具套装实践：工作流流水线 ===== */
+const WF_LIST=[
+ {title:'AI短剧流水线',income:'月入¥10k-50k',desc:'一条链跑通短剧变现闭环',steps:[['Kimi','写剧本'],['可灵/MiniMax','生成画面'],['剪映AI','合成短剧'],['平台','分成变现']],out:'适合：有耐心日更者',node:'video'},
+ {title:'AI电影解说号',income:'月入¥10k-40k',desc:'解说类最稳的变现模型',steps:[['Kimi','解说词'],['可灵','生成画面'],['Fish','配音'],['剪映','合成']],out:'适合：喜欢影视者',node:'video'},
+ {title:'商业信息图商单',income:'¥1000-10000/单',desc:'B端客单最高',steps:[['Qwen-Image','生成信息图'],['人工','微调'],['交付','B端客户']],out:'适合：有审美者',node:'image'},
+ {title:'编程接单流水线',income:'¥500-5000/单',desc:'Codex/Cursor 接单效率x3',steps:[['Codex','生成代码'],['Cursor','调试完善'],['交付','收款']],out:'适合：会写需求者',node:'code'},
+ {title:'AI PPT 接单',income:'¥300-2000/单',desc:'答辩季是旺季',steps:[['Kimi','大纲'],['Gamma','生成'],['微调','交付']],out:'适合：学生/职场',node:'ppt'},
+ {title:'AI音乐版权',income:'月入¥5k-30k',desc:'长尾版权分成',steps:[['Suno','批量做歌'],['上传','音乐平台'],['分成','长尾收益']],out:'适合：音乐爱好者',node:'music'},
+];
+const wgl=document.getElementById('wf-grid-learn');
+if(wgl){WF_LIST.forEach((w,i)=>{
+  const c=document.createElement('div');c.className='wf-card glass';c.style.transitionDelay=(i%2)*.08+'s';
+  c.innerHTML=`<span class="wf-income">${w.income}</span><h3>${w.title}</h3><div class="wf-desc">${w.desc}</div>
+  <div class="wf-pipe">${w.steps.map((s,j)=>`<span class="wf-step"><b>${s[0]}</b><span>${s[1]}</span></span>${j<w.steps.length-1?'<span class="wf-arrow">→</span>':''}`).join('')}</div>
+  <div class="wf-out">${w.out} · <button class="mini-btn mb-detail" data-detail="${w.node}">看图文详情</button></div>`;
+  wgl.appendChild(c);
+});}
 
 /* ===== 热门AI博主排行 ===== */
 const BLOGGERS=[
@@ -1520,7 +1620,7 @@ function showDrop(q){
   const res=SEARCH_IDX.filter(x=>(x.name+x.desc).toLowerCase().includes(q.toLowerCase())).slice(0,8);
   drop.innerHTML=res.length?res.map((r,i)=>`<div class="sd-item" data-i="${i}"><span class="sd-type">${r.type}</span><div style="min-width:0;"><div class="sd-name">${r.name}</div><div class="sd-desc">${r.desc}</div></div></div>`).join(''):`<div class="sd-empty">未找到"${q}"，试试换个关键词</div>`;
   drop.classList.add('show');
-  drop.querySelectorAll('.sd-item').forEach(el=>{el.onclick=()=>{const r=res[+el.dataset.i];drop.classList.remove('show');switchView(r.view);setTimeout(()=>{const a=document.getElementById(r.anchor);if(a)a.scrollIntoView({behavior:'smooth',block:'start'});},200);};});
+  drop.querySelectorAll('.sd-item').forEach(el=>{el.onclick=()=>{const r=res[+el.dataset.i];drop.classList.remove('show');switchView(r.view);ensureLearnZone(r.anchor);setTimeout(()=>{const a=document.getElementById(r.anchor);if(a)a.scrollIntoView({behavior:'smooth',block:'start'});},250);};});
 }
 document.getElementById('search-input').addEventListener('input',e=>{if(engine==='site')showDrop(e.target.value.trim());});
 function doSearch(){const q=document.getElementById('search-input').value.trim();if(!q)return;const urls={baidu:'https://www.baidu.com/s?wd=',google:'https://www.google.com/search?q=',bing:'https://www.bing.com/search?q='};if(engine==='site'){showDrop(q);}else window.open(urls[engine]+encodeURIComponent(q),'_blank');}
