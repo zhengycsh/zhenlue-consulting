@@ -625,6 +625,16 @@ footer p{line-height:2;}
     </table></div>
     <div class="table-note">* 收入为公开案例区间，实际因人而异 · 不构成收益承诺</div>
   </section>
+
+  <section id="skillrank">
+    <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#127919;</span>AI变现Skill精品榜 <span class="hot-flag">精品</span></div>
+    <div class="sec-sub">综合热度+收入+上手度打分排序 · 点「详情」看完整介绍+变现方式 · 每日更新</div></div></div>
+    <div class="table-wrap glass"><table>
+      <thead><tr><th>#</th><th>技能</th><th>上手难度</th><th>上手速度</th><th>收入天花板</th><th>热度</th><th>变现方式</th><th>操作</th></tr></thead>
+      <tbody id="skillrank-tbody"></tbody>
+    </table></div>
+    <div class="table-note">* 评分=热度40%+收入30%+上手度30% · 收入为公开案例区间，不构成收益承诺</div>
+  </section>
 </div>
 
 <!-- ============ NEWS ============ -->
@@ -754,7 +764,7 @@ const BDETAIL={
 };
 
 function openDetail(id){
-  const base=DETAIL[id]||BDETAIL[id];if(!base)return;
+  const base=DETAIL[id]||BDETAIL[id]||SKILL_DETAIL[id];if(!base)return;
   const d=Object.assign({},base,EXTRA[id]||{});
   const box=document.getElementById('detail-box');
   box.innerHTML=`<button class="detail-close" onclick="document.getElementById('detail-mask').classList.remove('show')">&#10005;</button>
@@ -766,7 +776,8 @@ function openDetail(id){
   ${d.learn?`<div class="d-block"><div class="db-t">&#127919; 能学到什么</div><ul class="d-tips">${d.learn.map(t=>`<li>${t}</li>`).join('')}</ul></div>`:''}
   ${d.path?`<div class="d-block"><div class="db-t">&#128640; 二创变现路径</div><ul class="d-tips">${d.path.map(t=>`<li>${t}</li>`).join('')}</ul></div>`:''}
   ${d.avoid?`<div class="d-block"><div class="db-t">&#9888;&#65039; 避坑指南</div><ul class="d-tips">${d.avoid.map(t=>`<li>${t}</li>`).join('')}</ul></div>`:''}
-  <div class="d-block"><div class="db-t">&#128176; 收益预期：${d.income}</div></div>
+  ${d.ways?`<div class="d-block"><div class="db-t">&#128176; 变现方式</div><ul class="d-tips">${d.ways.map(t=>`<li>${t}</li>`).join('')}</ul></div>`:''}
+  <div class="d-block"><div class="db-t">&#128181; 收益预期：${d.income}</div></div>
   <div class="d-foot">${d.links.map(l=>`<a class="mini-btn ${l[0]==='B站'?'mb-tut':l[0]==='抖音'?'mb-case':'mb-copy'}" target="_blank" href="${l[0]==='B站'?B(l[1]):l[0]==='抖音'?D(l[1]):W(l[1])}"><span class="plat ${l[0]==='B站'?'plat-b':l[0]==='抖音'?'plat-d':'plat-w'}">${l[0]}</span>${l[1]}</a>`).join('')}<button class="mini-btn mb-tut" onclick="goRel('${id}')">&#128279; 前往相关内容</button><button class="mini-btn learn-btn" data-node="${id}">标为已学习</button></div>`;
   document.getElementById('detail-mask').classList.add('show');
   updateTreeMeta();
@@ -776,7 +787,8 @@ document.getElementById('detail-mask').addEventListener('click',e=>{if(e.target.
 function goRel(id){
   document.getElementById('detail-mask').classList.remove('show');
   const REL={prompt:'#l-tags',agent:'#l-tree',image:'#l-recipes',video:'#l-ec',writing:'#l-ec',audio:'#l-ec',avatar:'#l-recipes',matrix:'#l-ec',ppt:'#l-recipes',code:'#l-bloggers',music:'#l-recipes',money:'#l-bloggers'};
-  const sel=id[0]==='b'?'#l-bloggers':(REL[id]||'#l-ec');
+  const SKILL_REL={s1:'video',s2:'code',s3:'video',s4:'aigent',s5:'image',s6:'matrix',s7:'ppt',s8:'music',s9:'avatar',s10:'money'};
+  const sel=id[0]==='b'?'#l-bloggers':(REL[id]||REL[SKILL_REL[id]]||'#l-ec');
   switchView('learn');
   setTimeout(()=>{const el=document.querySelector(sel);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},200);
 }
@@ -1276,6 +1288,36 @@ const SIDE_INC=[
 document.getElementById('sideincome-tbody').innerHTML=[...SIDE_INC].sort((a,b)=>b.max-a.max).map((s,i)=>
  `<tr><td class="rank-num">${i+1}</td><td><div class="cell-name"><div class="n">${s.n}</div></div></td><td>${s.unit}</td><td style="color:var(--green);font-weight:800;">¥${(s.max/1000).toFixed(0)}k+/月</td><td>${s.diff}</td><td><button class="mini-btn mb-detail" data-detail="${s.node}">看怎么接单</button></td></tr>`).join('');
 
+/* ===== AI变现Skill精品榜（排行榜+详情+变现方式） ===== */
+const SKILL_RANK=[
+ {id:'s1',name:'AI短剧·虚拟人IP',emo:'&#127916;',bg:'#e11d48',diff:'★★★',speed:'1个月',inc:'¥258k/60秒广告',score:98,hot:5,ways:'品牌商单·虚拟人代言·短剧分成',node:'video'},
+ {id:'s2',name:'AI编程接单',emo:'&#128187;',bg:'#374151',diff:'★★★★',speed:'2-3个月',inc:'¥30k/月',score:95,hot:5,ways:'外包接单·私有工具·技术咨询',node:'code'},
+ {id:'s3',name:'AI解说号分成',emo:'&#127909;',bg:'#0284c7',diff:'★★',speed:'1-2周',inc:'¥15k/月',score:93,hot:5,ways:'平台分成·广告·教程带货',node:'video'},
+ {id:'s4',name:'AI Agent自动化',emo:'&#129302;',bg:'#6d28d9',diff:'★★★★',speed:'2个月',inc:'¥20k/月',score:91,hot:4,ways:'自动化服务·智能体定制·SaaS',node:'aigent'},
+ {id:'s5',name:'商业信息图',emo:'&#128200;',bg:'#7c3aed',diff:'★★★',speed:'2-3周',inc:'¥2k/单',score:89,hot:4,ways:'B端商单·模板售卖·接单平台',node:'image'},
+ {id:'s6',name:'AI图文带货矩阵',emo:'&#128722;',bg:'#c2410c',diff:'★★',speed:'1-2周',inc:'¥12k/月',score:87,hot:4,ways:'带货佣金·广告·私域',node:'matrix'},
+ {id:'s7',name:'AI PPT定制',emo:'&#128202;',bg:'#15803d',diff:'★',speed:'3天',inc:'¥10k/月',score:86,hot:4,ways:'闲鱼接单·企业模板·课程',node:'ppt'},
+ {id:'s8',name:'AI音乐版权',emo:'&#127925;',bg:'#db2777',diff:'★',speed:'1周',inc:'¥10k/月',score:83,hot:3,ways:'版权分成·定制歌曲',node:'music'},
+ {id:'s9',name:'AI头像定制',emo:'&#127912;',bg:'#0d9488',diff:'★',speed:'2-3天',inc:'¥8k/月',score:81,hot:3,ways:'社交接单·壁纸号·系列IP',node:'avatar'},
+ {id:'s10',name:'AI简历优化',emo:'&#128220;',bg:'#0ea5e9',diff:'★',speed:'1天',inc:'¥6k/月',score:78,hot:3,ways:'闲鱼接单·求职服务·写作单',node:'money'},
+];
+document.getElementById('skillrank-tbody').innerHTML=[...SKILL_RANK].sort((a,b)=>b.score-a.score).map((s,i)=>
+ `<tr><td class="rank-num">${i+1}</td><td><div class="cell-name"><span class="cell-logo" style="background:${s.bg};">${s.emo}</span><div><div class="n">${s.name}</div></div></div></td><td>${s.diff}</td><td>${s.speed}</td><td style="color:var(--accent);font-weight:700;">${s.inc}</td><td style="color:#ff9500;font-weight:800;">${'★'.repeat(s.hot)}</td><td class="note-cell">${s.ways}</td><td><button class="mini-btn mb-detail" data-detail="${s.id}">详情+变现</button></td></tr>`).join('');
+
+/* ===== AI变现Skill 详细介绍 + 变现方式 ===== */
+const SKILL_DETAIL={
+ s1:{t:'AI短剧·虚拟人IP',intro:'AI短剧《被裁掉的女孩》播量破2亿，女主方桃子30天涨粉40万、60秒广告报价25.8万。一人一剧组，虚拟演员不塌房、素材可复用，是当前AI变现天花板。',steps:[['学剧本结构','Kimi写60秒竖屏剧本：冲突钩子+2个反转+留悬念'],['生成画面','可灵/MiniMax H3按分镜出图出视频'],['配音合成','Fish/剪映配音+字幕+情绪BGM'],['起号接单','先日更3条做案例，再上星图/抖音接商单']],tools:['Kimi','可灵','MiniMax H3','剪映'],prompt:'你是AI短剧编剧。为【题材】写60秒竖屏剧本：前3秒冲突钩子，2个反转，结尾留悬念，角色情绪饱满。',tips:['爆款率不足0.5%，要量产+测题材','虚拟演员不塌房是最大卖点','先做案例再谈商单'],learn:['AI短剧全流程','虚拟人IP运营'],path:['品牌商单25万+/60秒','虚拟人代言','短剧平台分成'],avoid:['别侵权真人形象','别碰违禁题材'],income:'¥258k/60秒广告（方桃子案例）',ways:['品牌广告商单（60秒报价可达25万+）','虚拟人IP授权/代言','短剧平台分成+打赏'],links:[['抖音','方桃子'],['B站','AI短剧 被裁掉的女孩']]},
+ s2:{t:'AI编程接单',intro:'用Cursor/Claude做编程外快，爬虫、脚本、小程序、自动化工具，效率是纯手写的3倍。技术门槛相对高，但客单价和天花板也是普通赛道数倍。',steps:[['练基础','先跑通1个小脚本/爬虫'],['接小单','闲鱼/程序员客栈接爬虫/脚本单'],['Cursor提效','AI辅助编码+异常处理'],['交付涨价','积累好评逐步提价']],tools:['Cursor','Claude','GitHub Copilot','Ollama'],prompt:'你是资深工程师。用Python写【需求】，含注释+异常处理+示例。',tips:['从爬虫/脚本单切入最稳','先收30-50%定金再开工','用Cursor把单子效率x3'],learn:['AI辅助编码','项目交付流程'],path:['外包接单','私有小工具SaaS','技术咨询'],avoid:['别碰灰色爬虫（隐私/违法数据）','别接不清需求的大单'],income:'¥500-5000/单，月入最高¥30k',ways:['闲鱼/程序员客栈/Upwork接单','做细分行业小工具售卖','企业自动化改造咨询'],links:[['B站','Cursor 接单'],['抖音','AI编程 变现']]},
+ s3:{t:'AI解说号分成',intro:'Kimi写稿+可灵生画面+Fish配音+剪映合成，日更3条AI解说视频，吃平台分成+广告。零真人出镜、成本极低，是新手最快跑通的第一桶金。',steps:[['选题材','冷门历史/商业/科技差异化'],['Kimi写45秒口播','钩子+3信息点+引导关注'],['画面配音合成','可灵+Fish+剪映流水线'],['日更分发','抖音/B站/视频号同步']],tools:['Kimi','可灵','Fish Audio','剪映'],prompt:'你是百万粉解说编剧。为【主题】写45秒口播：前3秒悬念钩子，中间3个信息点，结尾引导关注，口语化。',tips:['日更3条起号快','冷门题材差异化打','完播率>播放量'],learn:['口播结构','AI视频流水线'],path:['平台分成','广告','教程带货'],avoid:['别抄原稿，换题材二创','别纯AI无润色'],income:'月入¥3k-15k（平台分成+广告）',ways:['抖音中视频/创作者分成','B站创作激励+花火广告','带货佣金+私域引流'],links:[['B站','AI视频解说 教程'],['抖音','AI解说 爆款']]},
+ s4:{t:'AI Agent自动化',intro:'用Coze/Dify搭自动化智能体：客服、数据整理、内容批量生产。一次搭建、持续收益，是进阶高价值技能，可接企业自动化需求。',steps:[['学平台','Coze/Dify搭第一个Bot'],['做场景','客服/整理/批量生成'],['接需求','帮中小企业做自动化'],['产品化','把高频需求做成SaaS']],tools:['Coze','Dify','LangChain'],prompt:'用Coze搭一个【场景】智能体：输入→处理→输出，配置知识库+工作流。',tips:['从细分场景切入','企业付费意愿高于个人','工作流比单轮问答值钱'],learn:['Agent架构','工作流编排'],path:['自动化实施服务','智能体定制','SaaS小产品'],avoid:['别做大而全平台','别接无明确ROI的活'],income:'月入¥3k-20k（服务+SaaS）',ways:['企业Agent搭建服务（客单5k+）','模板/工作流售卖','订阅制SaaS产品'],links:[['B站','Coze 教程'],['抖音','AI Agent 应用']]},
+ s5:{t:'商业信息图',intro:'用Qwen-Image做科技研报插画、商业信息图，B端客单200-2000元。AI短剧与AI研报双热，信息图是A股/券商/自媒体高频刚需。',steps:[['学风格','米黄做旧矢量+低饱和橙黑'],['写提示词','用方案库现成模板'],['批量出图','筛选最佳交付'],['接B端单','券商/财经号/企业']],tools:['Qwen-Image','Midjourney','通义万相'],prompt:'商业PPT信息图表，科技研报插画，主题【…】，米黄做旧纸张背景，简约矢量，低饱和橙黑配色，高清2K，无乱码，扁平化。',tips:['信息图客单价最高','聚焦CPO/算力/储能等热词','做系列图提高复购'],learn:['商业审美','提示词控图'],path:['B端商单','模板库售卖','接单平台'],avoid:['别做写实明星脸（侵权）','别接无版权确认的单'],income:'¥200-2000/单，月入¥1k-8k',ways:['券商/财经自媒体研报插画','闲鱼/猪八戒接单','模板+教程知识付费'],links:[['B站','AI信息图 教程'],['抖音','AI绘画 接单']]},
+ s6:{t:'AI图文带货矩阵',intro:'即梦批量出商品场景图+Kimi种草文案，多账号矩阵分发挂链接赚佣金。选择高佣品类（家居/美妆），单账号跑通后复制放大。',steps:[['选品','家居/美妆等高佣类目'],['批量出图','即梦生成商品场景图'],['写文案','Kimi种草笔记'],['矩阵分发','多号+多平台挂链接']],tools:['即梦','Kimi','小红书','抖音'],prompt:'你是带货文案专家。为【商品】写3条种草笔记：痛点+场景+利益点+行动号召，带emoji。',tips:['一机一号防限流','先测品再放量','图文比视频起号快'],learn:['选品逻辑','矩阵运营'],path:['带货佣金','广告','私域复购'],avoid:['别夸大功效（违广告法）','别刷量'],income:'月入¥2k-12k（佣金+广告）',ways:['挂链接赚佣金','星图/蒲公英接广告','私域会员+复购'],links:[['抖音','AI图文 矩阵'],['微信','AI矩阵 变现']]},
+ s7:{t:'AI PPT定制',intro:'Gamma一键生成+人工微调，闲鱼接单50-300元/单。答辩季/年终述职是旺季，一天可交付2-3单，几乎零成本。',steps:[['挂服务','闲鱼挂"AI PPT定制"'],['Gamma生成','大纲+页面自动生成'],['微调交付','改配色/补素材/对齐品牌'],['好评涨价','积累案例逐步提价']],tools:['Gamma','ChatGPT','Kimi PPT'],prompt:'为【主题】生成10页PPT大纲：标题+3要点+建议图表。结构：背景-问题-方案-案例-总结。',tips:['答辩季是旺季','先囤行业模板','交付快=复购多'],learn:['AI PPT工作流','客户沟通'],path:['闲鱼/淘宝接单','企业模板','课程'],avoid:['别用侵权图片','别接急单亏本'],income:'¥50-300/单，月入¥2k-10k',ways:['闲鱼/淘宝/小红书接单','企业年终述职批量单','PPT模板+教程售卖'],links:[['B站','Gamma PPT 教程'],['抖音','AI PPT 接单']]},
+ s8:{t:'AI音乐版权',intro:'Suno批量做歌上传网易云/QQ音乐，赚播放版权分成+定制歌曲。一首歌生成成本几乎为零，长尾收益持续滚动。',steps:[['Suno生成','输入风格+歌词提示词'],['筛选精品','从10首里选1首'],['上传平台','网易/QQ音乐人上传'],['赚分成','播放版权费+定制单']],tools:['Suno','Udio'],prompt:'一首【治愈系】纯音乐，钢琴+弦乐，BPM80，适合学习/睡眠场景，时长2分钟。',tips:['批量+长尾收益','做BGM/白噪音专辑更稳','定制歌曲客单50-500元'],learn:['音乐提示词','音乐人入驻'],path:['版权分成','定制歌曲','影视/播客BGM'],avoid:['别侵权翻唱','别用真人歌手声线'],income:'月入¥1k-10k（分成+定制）',ways:['音乐平台播放版权分成','企业/个人定制歌曲','BGM素材库售卖'],links:[['B站','Suno 教程'],['抖音','AI音乐 变现']]},
+ s9:{t:'AI头像定制',intro:'Midjourney/Qwen-Image出职业头像、情侣头像、系列IP，社交平台接单5-30元/张。起步最快、反馈最快，适合新手练手。',steps:[['建模板','做3套风格模板'],['挂服务','小红书/微信接单'],['批量交付','5-30元/张'],['做系列','情侣/职业/国风IP']],tools:['Midjourney','Qwen-Image','即梦'],prompt:'高级感职业头像，柔和棚拍光，浅灰背景，自信微笑，85mm镜头，浅景深，电影级调色。',tips:['做系列风格提高复购','头像走量5-30元/张','引流私域做会员'],learn:['人像提示词','交付流程'],path:['社交接单','壁纸号','系列IP'],avoid:['别做明星/真人脸','别接色情擦边'],income:'¥5-30/张，月入¥1k-8k',ways:['小红书/闲鱼/微信接单','壁纸号广告分成','私域定制会员'],links:[['B站','AI头像 教程'],['抖音','AI头像 接单']]},
+ s10:{t:'AI简历优化',intro:'用Kimi帮求职者优化简历，闲鱼接单每单20-100元，30分钟交付。门槛最低、需求高频（金九银十/毕业季翻倍），适合第一次跑通收入。',steps:[['学写法','STAR法则+关键词优化'],['Kimi优化','输入原简历+目标岗位'],['人工润色','突出亮点量化成果'],['挂单交付','闲鱼+小红书引流']],tools:['Kimi','ChatGPT','秘塔写作猫'],prompt:'你是资深HR。为【岗位】优化以下简历：提炼亮点+量化成果+STAR化描述，控制在1页。',tips:['毕业季/跳槽季是旺季','简历+面试辅导打包客单更高','改一份30分钟'],learn:['简历优化','HR视角'],path:['闲鱼接单','求职套餐','写作单'],avoid:['别编造经历（害人害己）'],income:'¥20-100/单，月入¥1k-6k',ways:['闲鱼/淘宝接单','简历+面试辅导套餐','企业校招外包'],links:[['B站','AI写作 变现'],['微信','AI简历 优化']]},
+};
+
 /* search */
 let engine='site';
 document.querySelectorAll('.engine-tab').forEach(t=>{t.addEventListener('click',()=>{document.querySelectorAll('.engine-tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');engine=t.dataset.e;});});
@@ -1285,6 +1327,7 @@ function buildIndex(){
   BLOGGERS.forEach(b=>idx.push({type:'博主',name:b.name,desc:b.learn,view:'learn',anchor:'l-bloggers'}));
   RECIPES.forEach(r=>idx.push({type:'方案',name:r.name,desc:r.combo,view:'learn',anchor:'l-recipes'}));
   EC.forEach(e=>idx.push({type:'二创',name:e.name,desc:e.an,view:'learn',anchor:'l-ec'}));
+  SKILL_RANK.forEach(s=>idx.push({type:'变现技能',name:s.name,desc:s.ways+' · '+s.inc,view:'data',anchor:'skillrank'}));
   return idx;
 }
 const SEARCH_IDX=buildIndex();
