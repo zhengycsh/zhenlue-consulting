@@ -663,7 +663,7 @@ footer p{line-height:2;}
         <tr><td class="rank-num">10</td><td><div class="cell-name"><span class="cell-logo" style="background:#4d6bfe;">DS</span><div><div class="n">DeepSeek-V4 Pro</div><div class="v">深度求索</div></div></div></td><td class="arena-score">1584</td><td class="price-out">$0.9</td><td><span class="ptag t-cheap">极致低价</span></td><td><span class="rec-tag rec-strong">强力推荐</span></td><td class="note-cell">8月13日更新·MIT开源性价比王</td></tr>
       </tbody>
     </table></div>
-    <div class="table-note">* Arena分来源 arena.ai/leaderboard/code（2026-08-17实时）· 亚马逊500亿投资OpenAI·豆包Token调用破180万亿·学习练手认准"强力推荐"</div>
+    <div class="table-note">* Arena分来源 arena.ai/leaderboard/code（2026-08-25实时）· 国产双雄首破编程榜前3（Kimi K3 Max 1673.94 / Qwen3.8 Max）· OpenRouter周调用75.3万亿Token前5全是中国模型·学习练手认准"强力推荐"</div>
   </section>
   <section id="gpu">
     <div class="sec-head"><div><div class="sec-title"><span class="emoji">&#9889;</span>GPU算力价格对比</div></div><a class="sec-more" href="https://www.computeunion.net/zh/gpu" target="_blank">实时报价 →</a></div>
@@ -1604,16 +1604,16 @@ function loadQuotes(){
 
 /* ===== AI 工具热度榜 ===== */
 const TOOL_HEAT=[
- {n:'Claude Opus 5 Max',cat:'对话/代码',heat:99,fund:'Anthropic·Arena 1692登顶·冲刺2万亿美元IPO'},
- {n:'Kimi K3 Max',cat:'对话/代码',heat:98,fund:'月之暗面·Arena 1674第二·国产代码之光·冲刺港股IPO'},
- {n:'Qwen3.8-Max',cat:'对话/多模态',heat:97,fund:'阿里·Arena 1667第三·苹果合作+27B开源家用显卡可跑'},
- {n:'Grok-4.6',cat:'对话',heat:95,fund:'xAI·Arena 1631·实时数据+视频理解·Agent即岗位'},
- {n:'DeepSeek V4 Pro',cat:'对话/Agent',heat:94,fund:'深度求索·8月13日更新·MIT开源·$0.9性价比王'},
- {n:'GLM-5.2',cat:'对话/代码',heat:93,fund:'智谱·MIT开源Arena 1585·开源模型最高分·$4.4'},
- {n:'豆包大模型',cat:'对话/Agent',heat:92,fund:'字节·日均Token调用180万亿·火山引擎MaaS份额49.5%'},
- {n:'MiniMax H3',cat:'视频/多模态',heat:91,fund:'MiniMax·开源视频模型全球第一·AI短剧首选'},
- {n:'可灵 AI',cat:'视频',heat:90,fund:'快手·国产视频之光·AI短剧出海标配'},
- {n:'GPT-5.6 Sol',cat:'对话',heat:89,fund:'OpenAI·亚马逊500亿入局·Cerebras提速14倍'},
+ {n:'Claude Opus 5 Max',cat:'对话/代码',heat:99,fund:'Anthropic·Q2营收115亿美元同比14倍·首度盈利·年化650亿反超OpenAI'},
+ {n:'Kimi K3 Max',cat:'对话/代码',heat:98,fund:'月之暗面·Arena 1673.94第二·国产双雄首破编程榜前3·冲刺港股IPO'},
+ {n:'Qwen3.8-Max',cat:'对话/多模态',heat:97,fund:'阿里·Arena第三·苹果合作+27B开源·OpenRouter周调用前5全是中国模型'},
+ {n:'DeepSeek V4 Pro',cat:'对话/Agent',heat:95,fund:'深度求索·OpenRouter全球周调用75.3万亿Token·国产性价比王'},
+ {n:'GPT-5.6 Sol',cat:'对话',heat:94,fund:'OpenAI·Q2营收67亿·秘密提交IPO·模型全线降价80%'},
+ {n:'豆包大模型',cat:'对话/Agent',heat:93,fund:'字节·豆包工作Agent发布打通飞书·特斯拉车载·日均Token 180万亿'},
+ {n:'GLM-5.2',cat:'对话/代码',heat:92,fund:'智谱·HY3正式版Elo 1457·MIT开源最高分·$4.4'},
+ {n:'Grok-4.6',cat:'对话',heat:91,fund:'xAI·实时数据+视频理解·Agent即岗位'},
+ {n:'MiniMax H3',cat:'视频/多模态',heat:90,fund:'MiniMax·开源视频模型全球第一·AI短剧首选'},
+ {n:'可灵 AI',cat:'视频',heat:89,fund:'快手·国产视频之光·AI短剧出海标配'},
 ];
 document.getElementById('toolheat-tbody').innerHTML=[...TOOL_HEAT].sort((a,b)=>b.heat-a.heat).map((t,i)=>
  `<tr><td class="rank-num">${i+1}</td><td><div class="cell-name"><div class="n">${t.n}</div></div></td><td><span class="ptag t-mid">${t.cat}</span></td><td><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:800;color:var(--accent);">${t.heat}</span><span style="flex:1;max-width:120px;height:6px;background:rgba(0,0,0,.07);border-radius:3px;overflow:hidden;"><span style="display:block;height:100%;width:${t.heat}%;background:linear-gradient(90deg,var(--accent),var(--accent2));"></span></span></div></td><td class="note-cell">${t.fund}</td></tr>`).join('');
@@ -1637,11 +1637,12 @@ const SIDE_INC=[
  {n:'AI短剧商单',unit:'25万+/60秒',max:258000,diff:'★★★',node:'video'},
  {n:'AI头像SaaS',unit:'$100K MRR',max:720000,diff:'★★★★',node:'avatar'},
  {n:'AI SaaS产品',unit:'订阅制MRR',max:700000,diff:'★★★★',node:'code'},
+ {n:'AI短剧量产',unit:'月入7万案例',max:70000,diff:'★★★',node:'video'},
  {n:'AI出海短视频',unit:'海外流量分成',max:360000,diff:'★★★',node:'video'},
  {n:'AI YouTube频道',unit:'AdSense分成',max:130000,diff:'★★★',node:'video'},
  {n:'AI编程接单',unit:'¥500-5000/单',max:30000,diff:'★★★',node:'code'},
- {n:'AI解说号分成',unit:'平台分成',max:15000,diff:'★★',node:'video'},
  {n:'AI宠物短剧',unit:'¥20k/月',max:20000,diff:'★★',node:'video'},
+ {n:'AI解说号分成',unit:'平台分成',max:15000,diff:'★★',node:'video'},
 ];
 document.getElementById('sideincome-tbody').innerHTML=[...SIDE_INC].sort((a,b)=>b.max-a.max).map((s,i)=>
  `<tr><td class="rank-num">${i+1}</td><td><div class="cell-name"><div class="n">${s.n}</div></div></td><td>${s.unit}</td><td style="color:var(--green);font-weight:800;">¥${(s.max/1000).toFixed(0)}k+/月</td><td>${s.diff}</td><td><button class="mini-btn mb-detail" data-detail="${s.node}">看怎么接单</button></td></tr>`).join('');
