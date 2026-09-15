@@ -61,6 +61,25 @@
 .pp-run img{width:100%;border-radius:14px;margin-top:12px;}
 .pp-run .note{font-size:12px;color:var(--ts);line-height:1.7;}
 
+/* 做同款：卡片快捷钮 + 原图/生成图对比 */
+.pp-same{position:absolute;top:8px;right:44px;width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,.82);backdrop-filter:blur(8px);cursor:pointer;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center;opacity:0;transition:.2s;color:var(--accent);}
+.pp-card:hover .pp-same{opacity:1;}
+.pp-same:hover{background:var(--accent);color:#fff;}
+.pp-cmp{margin-top:14px;}
+.pp-cmp-track{position:relative;width:100%;aspect-ratio:1/1;border-radius:18px;overflow:hidden;cursor:ew-resize;background:rgba(31,38,135,.06);touch-action:none;}
+.pp-cmp-track img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;user-select:none;}
+.pp-cmp-top{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--pos)) 0 0);}
+.pp-cmp-handle{position:absolute;top:0;bottom:0;left:var(--pos);width:3px;margin-left:-1.5px;background:rgba(255,255,255,.95);box-shadow:0 0 14px rgba(0,0,0,.45);}
+.pp-cmp-handle::after{content:"\2194";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.95);color:#1d1d1f;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.3);}
+.pp-cmp-tag{position:absolute;bottom:10px;font-size:11px;font-weight:700;padding:4px 11px;border-radius:100px;background:rgba(0,0,0,.55);color:#fff;backdrop-filter:blur(6px);pointer-events:none;}
+.pp-cmp-tag.l{left:10px;}
+.pp-cmp-tag.r{right:10px;}
+.pp-cmp-foot{margin-top:9px;font-size:12px;color:var(--ts);}
+.pp-cmp-foot a{color:var(--accent);text-decoration:none;}
+.pp-wait{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ts);}
+.pp-spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(0,113,227,.25);border-top-color:var(--accent);animation:ppspin .8s linear infinite;flex-shrink:0;}
+@keyframes ppspin{to{transform:rotate(360deg);}}
+
 /* 轻提示 */
 #pp-toast{position:fixed;left:50%;bottom:40px;transform:translate(-50%,20px);background:rgba(29,29,31,.9);color:#fff;padding:11px 22px;border-radius:100px;font-size:13px;opacity:0;pointer-events:none;transition:.3s;z-index:400;backdrop-filter:blur(10px);}
 #pp-toast.show{opacity:1;transform:translate(-50%,0);}

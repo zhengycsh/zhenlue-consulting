@@ -96,6 +96,7 @@
       (r.sc || []).slice(0, 1).map(function (x) { return '<i class="scene">' + esc(x) + "</i>"; }).join("");
     return '<div class="pp-card glass" data-id="' + r.id + '">' +
       (r.f ? '<span class="pp-flag">精选</span>' : "") +
+      '<button class="pp-same" data-same="' + r.id + '" title="用这条提示词免费生成一张">&#9889;</button>' +
       '<button class="pp-fav' + (favs.has(r.id) ? " on" : "") + '" data-fav="' + r.id + '" title="收藏">&#9733;</button>' +
       '<img class="pp-thumb" loading="lazy" decoding="async" src="' + esc(r.img) + '" data-fb="' + esc(CDN + r.oj) + '" onerror="ppImgFallback(this)" alt="' + esc(r.t) + '">' +
       '<div class="pp-body"><div class="pp-title">' + esc(r.t) + "</div>" +
@@ -142,8 +143,13 @@
       '<div class="pp-prompt" id="pp-prompt">' + markVars(r.p) + "</div>" +
       '<div class="pp-actions">' +
       '<button class="pp-btn pri" data-copy="' + r.id + '">&#128203; 复制提示词</button>' +
-      '<button class="pp-btn gho" data-run="' + r.id + '">&#9889; 在线试跑</button></div>' +
-      '<div id="pp-run-box"></div></div></div>';
+      '<button class="pp-btn pri" data-run="' + r.id + '">&#9889; 做同款</button></div></div></div>' +
+      '<div id="pp-run-box"></div>';
+    if (!showResult(document.getElementById("pp-run-box"), r)) {
+      document.getElementById("pp-run-box").innerHTML =
+        '<div class="pp-run"><div class="note">点「做同款」用这条提示词让免费 Agnes 重画一张，出图后可拖动竖线与原图对比。每个 IP 每分钟一张。</div></div>';
+    }
+    tickCool();
     mask.classList.add("show");
     document.body.style.overflow = "hidden";
     if (history.replaceState) history.replaceState(null, "", "#p" + r.id);
@@ -177,86 +183,104 @@
     if (st.fav) renderGrid();
   }
 
-  /* ---- 在线试跑：默认浏览器直连上游（Key 只存本机），被跨域挡住才回退代理 ---- */
-  var CFG_KEY = "zhifu_img_cfg";
-  function cfg() { try { return JSON.parse(localStorage.getItem(CFG_KEY) || "{}"); } catch (e) { return {}; } }
-  function saveCfg(c) { localStorage.setItem(CFG_KEY, JSON.stringify(c)); }
+  /* ---- 一键做同款：密钥在代理服务端，前端只发 prompt ---- */
+  var COOL_KEY = "zhifu_pp_next";
+  var COOL_SEC = 60;
+  var genCache = {};
+  var coolTimer = null;
 
-  function pickImg(j) {
-    var it = j && j.data && j.data[0];
-    if (!it) return "";
-    return it.url || (it.b64_json ? "data:image/png;base64," + it.b64_json : "");
+  function remain() { return Math.max(0, Math.ceil(((+localStorage.getItem(COOL_KEY) || 0) - Date.now()) / 1000)); }
+  function startCooldown(sec) { localStorage.setItem(COOL_KEY, String(Date.now() + sec * 1000)); tickCool(); }
+  function tickCool() {
+    var left = remain();
+    document.querySelectorAll("[data-run]").forEach(function (b) {
+      b.disabled = left > 0;
+      b.innerHTML = left > 0 ? "&#9203; " + left + " 秒后可再做" : "&#9889; 做同款";
+    });
+    if (left > 0 && !coolTimer) {
+      coolTimer = setInterval(function () {
+        tickCool();
+        if (remain() <= 0) { clearInterval(coolTimer); coolTimer = null; }
+      }, 1000);
+    }
   }
-  /* OpenAI 兼容直连：厂商放开跨域时最省事，Key 不经过任何第三方 */
-  function directCall(base, key, model, prompt) {
-    return fetch(base + "/images/generations", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: "Bearer " + key },
-      body: JSON.stringify({ model: model, prompt: prompt, n: 1 })
-    }).then(function (res) {
-      return res.text().then(function (t) {
-        var j = null; try { j = JSON.parse(t); } catch (e) {}
-        return { status: res.status, j: j, t: t };
+
+  function compareHtml(r, url) {
+    return '<div class="pp-cmp"><div class="pp-cmp-track" style="--pos:50%">' +
+      '<img class="pp-cmp-base" src="' + esc(r.img) + '" data-fb="' + esc(CDN + r.oj) + '" onerror="ppImgFallback(this)" alt="原图">' +
+      '<div class="pp-cmp-top"><img src="' + esc(url) + '" alt="AI 同款"></div>' +
+      '<div class="pp-cmp-handle"></div>' +
+      '<span class="pp-cmp-tag l">原图</span><span class="pp-cmp-tag r">AI 同款</span></div>' +
+      '<div class="pp-cmp-foot">按住竖线左右拖动对比 · <a href="' + esc(url) + '" target="_blank" rel="noopener">下载 / 查看大图</a></div></div>';
+  }
+
+  function bindCmp(root) {
+    root.querySelectorAll(".pp-cmp-track").forEach(function (track) {
+      var base = track.querySelector(".pp-cmp-base");
+      if (base && !base.dataset.ar) {
+        var fit = function () { base.dataset.ar = "1"; if (base.naturalWidth) track.style.aspectRatio = base.naturalWidth + " / " + base.naturalHeight; };
+        if (base.complete) fit(); else base.addEventListener("load", fit);
+      }
+      function set(x) {
+        var rect = track.getBoundingClientRect();
+        track.style.setProperty("--pos", Math.max(0, Math.min(100, ((x - rect.left) / rect.width) * 100)) + "%");
+      }
+      track.addEventListener("pointerdown", function (e) {
+        e.preventDefault();
+        set(e.clientX);
+        var mv = function (ev) { set(ev.clientX); };
+        var up = function () {
+          window.removeEventListener("pointermove", mv);
+          window.removeEventListener("pointerup", up);
+        };
+        window.addEventListener("pointermove", mv);
+        window.addEventListener("pointerup", up);
       });
-    }).then(function (r) {
-      var url = pickImg(r.j);
-      if (url) return { url: url };
-      var e = r.j && (r.j.error ? (r.j.error.message || r.j.error.code) : r.j.message);
-      return { error: e || ("HTTP " + r.status + " " + String(r.t).replace(/\s+/g, " ").slice(0, 120)) };
     });
   }
-  /* 代理回退：解决不支持跨域的厂商 */
-  function proxyCall(base, key, model, prompt) {
-    return fetch(PP_API + "/generate", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt: prompt, base: base, key: key, model: model })
-    }).then(function (res) {
-      return res.json().catch(function () { return { error: "代理 HTTP " + res.status }; });
-    });
+
+  function showResult(host, r) {
+    var g = genCache[r.id];
+    if (!g) return false;
+    host.innerHTML = compareHtml(r, g.url);
+    bindCmp(host);
+    return true;
   }
 
   function runIt(id) {
     var host = document.getElementById("pp-run-box");
     var r = ALL.filter(function (x) { return x.id === id; })[0];
-    var c = cfg();
-    host.innerHTML = '<div class="pp-run">' +
-      '<div class="pp-run-cols">' +
-      '<label>Base URL<input id="pp-base" placeholder="https://open.bigmodel.cn/api/paas/v4" value="' + esc(c.base || "") + '"></label>' +
-      '<label>API Key<input id="pp-key" type="password" placeholder="只存你本机浏览器" value="' + esc(c.key || "") + '"></label>' +
-      '<label>模型<input id="pp-model" placeholder="cogview-3-flash / gpt-image-2" value="' + esc(c.model || "") + '"></label>' +
-      "</div>" +
-      '<input id="pp-extra" placeholder="可选：追加主体 / 配色 / 比例，拼在提示词后面">' +
-      '<div class="pp-run-foot"><button class="pp-btn pri" id="pp-go">开始生成</button>' +
-      '<span class="note" id="pp-note">Key 只存在你本机浏览器，默认直连厂商；厂商不放开跨域时自动改走代理。</span></div>' +
-      '<div id="pp-out"></div></div>';
-
-    document.getElementById("pp-go").onclick = function () {
-      var btn = this, note = document.getElementById("pp-note"), out = document.getElementById("pp-out");
-      var base = document.getElementById("pp-base").value.trim().replace(/\/+$/, "");
-      var key = document.getElementById("pp-key").value.trim();
-      var model = document.getElementById("pp-model").value.trim();
-      var extra = document.getElementById("pp-extra").value.trim();
-      if (!base || !key) { note.textContent = "先填 Base URL 和 API Key"; return; }
-      saveCfg({ base: base, key: key, model: model });
-      var prompt = r.p + (extra ? "\n" + extra : "");
-      btn.disabled = true;
-      note.textContent = "直连生成中，通常 10-60 秒，请勿关闭页面…";
-      directCall(base, key, model, prompt).catch(function (e) {
-        // fetch 抛错基本是 CORS 预检被拒或网络被拦
-        if (!PP_API) throw e;
-        note.textContent = "该厂商不允许浏览器跨域直连，改走代理重试…";
-        return proxyCall(base, key, model, prompt);
-      }).then(function (d) {
-        if (d && d.url) {
-          note.textContent = "完成 · 可继续复制或换措辞再来一次";
-          out.innerHTML = '<img src="' + esc(d.url) + '" alt="生成结果" loading="lazy">';
-        } else {
-          note.textContent = "失败：" + ((d && d.error) || "未知错误");
-        }
-      }).catch(function (e) {
-        note.textContent = "失败：直连被跨域拦截、代理也没通。建议换成支持浏览器直连的厂商（如智谱 BigModel），或检查 Base URL 是否写对";
-      }).then(function () { btn.disabled = false; });
-    };
+    if (!r || !host) return;
+    if (showResult(host, r)) return;
+    if (!PP_API) {
+      host.innerHTML = '<div class="pp-run"><div class="note">生图代理未配置。</div></div>';
+      return;
+    }
+    if (remain() > 0) {
+      host.innerHTML = '<div class="pp-run"><div class="note">免费额度每分钟只跑一张，' + remain() + ' 秒后自动可以再点。</div></div>';
+      return;
+    }
+    host.innerHTML = '<div class="pp-run"><div class="pp-wait"><span class="pp-spin"></span>正在让 Agnes 出图，通常 10-40 秒…</div></div>';
+    startCooldown(COOL_SEC);
+    fetch(PP_API + "/generate", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: r.p })
+    }).then(function (res) {
+      return res.json().catch(function () { return { error: "代理返回异常 HTTP " + res.status }; });
+    }).then(function (d) {
+      if (d.url) {
+        genCache[r.id] = { url: d.url };
+        showResult(host, r);
+        var cmp = host.querySelector(".pp-cmp");
+        if (cmp && cmp.scrollIntoView) cmp.scrollIntoView({ behavior: "smooth", block: "center" });
+        toast("出图完成 · 拖动竖线看原图对比");
+      } else {
+        host.innerHTML = '<div class="pp-run"><div class="note">失败：' + esc(d.error || "未知错误") + '</div></div>';
+        if (d.retryAfter) startCooldown(d.retryAfter);
+      }
+    }).catch(function (e) {
+      host.innerHTML = '<div class="pp-run"><div class="note">连不上生图服务：' + esc(e.message) + '</div></div>';
+    });
   }
 
   /* ---- 事件 ---- */
@@ -274,6 +298,8 @@
   grid.addEventListener("click", function (e) {
     var f = e.target.closest("[data-fav]");
     if (f) { e.stopPropagation(); toggleFav(+f.dataset.fav); return; }
+    var s = e.target.closest("[data-same]");
+    if (s) { e.stopPropagation(); var sid = +s.dataset.same; openDetail(sid); runIt(sid); return; }
     var c = e.target.closest(".pp-card");
     if (c) openDetail(+c.dataset.id);
   });
@@ -296,6 +322,7 @@
 
   renderSide();
   renderGrid();
+  tickCool();
   if (!fromHash()) {
     var obs = new IntersectionObserver(function (es) {
       if (es.some(function (x) { return x.isIntersecting; }) && st.shown < filtered().length) {
