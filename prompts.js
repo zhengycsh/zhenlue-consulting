@@ -1,9 +1,10 @@
 /* ===== 提示词库交互层 =====
    数据来自 data/prompts.js 的 window.PROMPTS（源：awesome-gpt-image-2，MIT）
-   生图代理地址写在 PP_API（Cloudflare Worker / 国内云函数），留空则按钮只提示不请求。 */
+   生图走 PP_API 指向的代理（QW Pages 上的 Node 服务）：解决跨域 + 统一 OpenAI 兼容格式。
+   密钥为「用户自带」模式：Key 只存在用户浏览器 localStorage，随请求发给代理转发上游，代理不落库不计费。 */
 (function () {
   var ALL = window.PROMPTS || [];
-  var PP_API = ""; // 例：'https://zhifu-pp.<account>.workers.dev'
+  var PP_API = "https://zzmeq5c4.qwenwork.host"; // 生图代理；留空则「在线试跑」只提示不请求
   var FAV_KEY = "zhifu_fav_prompts";
   var CHUNK = 48;
 
@@ -176,29 +177,85 @@
     if (st.fav) renderGrid();
   }
 
-  /* ---- 在线试跑（走自建代理，Key 不进前端） ---- */
+  /* ---- 在线试跑：默认浏览器直连上游（Key 只存本机），被跨域挡住才回退代理 ---- */
+  var CFG_KEY = "zhifu_img_cfg";
+  function cfg() { try { return JSON.parse(localStorage.getItem(CFG_KEY) || "{}"); } catch (e) { return {}; } }
+  function saveCfg(c) { localStorage.setItem(CFG_KEY, JSON.stringify(c)); }
+
+  function pickImg(j) {
+    var it = j && j.data && j.data[0];
+    if (!it) return "";
+    return it.url || (it.b64_json ? "data:image/png;base64," + it.b64_json : "");
+  }
+  /* OpenAI 兼容直连：厂商放开跨域时最省事，Key 不经过任何第三方 */
+  function directCall(base, key, model, prompt) {
+    return fetch(base + "/images/generations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + key },
+      body: JSON.stringify({ model: model, prompt: prompt, n: 1 })
+    }).then(function (res) {
+      return res.text().then(function (t) {
+        var j = null; try { j = JSON.parse(t); } catch (e) {}
+        return { status: res.status, j: j, t: t };
+      });
+    }).then(function (r) {
+      var url = pickImg(r.j);
+      if (url) return { url: url };
+      var e = r.j && (r.j.error ? (r.j.error.message || r.j.error.code) : r.j.message);
+      return { error: e || ("HTTP " + r.status + " " + String(r.t).replace(/\s+/g, " ").slice(0, 120)) };
+    });
+  }
+  /* 代理回退：解决不支持跨域的厂商 */
+  function proxyCall(base, key, model, prompt) {
+    return fetch(PP_API + "/generate", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: prompt, base: base, key: key, model: model })
+    }).then(function (res) {
+      return res.json().catch(function () { return { error: "代理 HTTP " + res.status }; });
+    });
+  }
+
   function runIt(id) {
     var host = document.getElementById("pp-run-box");
-    if (!PP_API) {
-      host.innerHTML = '<div class="pp-run"><div class="note"><b>生图代理还没接上。</b><br>纯静态站不能放 API Key（view-source 就能拿走），需要一个极薄的服务端代理：Cloudflare Workers 免费额度 10 万次/天，或国内云函数。仓库里 <code>worker/index.js</code> 已写好，部署后把地址填进 <code>prompts.js</code> 顶部的 PP_API 即可。</div></div>';
-      return;
-    }
     var r = ALL.filter(function (x) { return x.id === id; })[0];
-    host.innerHTML = '<div class="pp-run"><input id="pp-extra" placeholder="可选：追加你的主体/配色，拼在提示词后面"><button class="pp-btn pri" id="pp-go">开始生成</button><div class="note" id="pp-note">生成需要十几秒到一分钟，请勿关闭页面。</div></div>';
+    var c = cfg();
+    host.innerHTML = '<div class="pp-run">' +
+      '<div class="pp-run-cols">' +
+      '<label>Base URL<input id="pp-base" placeholder="https://open.bigmodel.cn/api/paas/v4" value="' + esc(c.base || "") + '"></label>' +
+      '<label>API Key<input id="pp-key" type="password" placeholder="只存你本机浏览器" value="' + esc(c.key || "") + '"></label>' +
+      '<label>模型<input id="pp-model" placeholder="cogview-3-flash / gpt-image-2" value="' + esc(c.model || "") + '"></label>' +
+      "</div>" +
+      '<input id="pp-extra" placeholder="可选：追加主体 / 配色 / 比例，拼在提示词后面">' +
+      '<div class="pp-run-foot"><button class="pp-btn pri" id="pp-go">开始生成</button>' +
+      '<span class="note" id="pp-note">Key 只存在你本机浏览器，默认直连厂商；厂商不放开跨域时自动改走代理。</span></div>' +
+      '<div id="pp-out"></div></div>';
+
     document.getElementById("pp-go").onclick = function () {
+      var btn = this, note = document.getElementById("pp-note"), out = document.getElementById("pp-out");
+      var base = document.getElementById("pp-base").value.trim().replace(/\/+$/, "");
+      var key = document.getElementById("pp-key").value.trim();
+      var model = document.getElementById("pp-model").value.trim();
       var extra = document.getElementById("pp-extra").value.trim();
-      document.getElementById("pp-note").textContent = "生成中…";
-      fetch(PP_API + "/generate", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: r.p + (extra ? "\n" + extra : "") })
-      }).then(function (res) { return res.json(); }).then(function (d) {
+      if (!base || !key) { note.textContent = "先填 Base URL 和 API Key"; return; }
+      saveCfg({ base: base, key: key, model: model });
+      var prompt = r.p + (extra ? "\n" + extra : "");
+      btn.disabled = true;
+      note.textContent = "直连生成中，通常 10-60 秒，请勿关闭页面…";
+      directCall(base, key, model, prompt).catch(function (e) {
+        // fetch 抛错基本是 CORS 预检被拒或网络被拦
+        if (!PP_API) throw e;
+        note.textContent = "该厂商不允许浏览器跨域直连，改走代理重试…";
+        return proxyCall(base, key, model, prompt);
+      }).then(function (d) {
         if (d && d.url) {
-          document.getElementById("pp-note").textContent = "完成";
-          host.querySelector(".pp-run").insertAdjacentHTML("beforeend", '<img src="' + esc(d.url) + '" alt="生成结果">');
+          note.textContent = "完成 · 可继续复制或换措辞再来一次";
+          out.innerHTML = '<img src="' + esc(d.url) + '" alt="生成结果" loading="lazy">';
         } else {
-          document.getElementById("pp-note").textContent = "失败：" + ((d && d.error) || "未知错误");
+          note.textContent = "失败：" + ((d && d.error) || "未知错误");
         }
-      }).catch(function (e) { document.getElementById("pp-note").textContent = "请求失败：" + e.message; });
+      }).catch(function (e) {
+        note.textContent = "失败：直连被跨域拦截、代理也没通。建议换成支持浏览器直连的厂商（如智谱 BigModel），或检查 Base URL 是否写对";
+      }).then(function () { btn.disabled = false; });
     };
   }
 
