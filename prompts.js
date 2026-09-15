@@ -147,7 +147,7 @@
       '<div id="pp-run-box"></div>';
     if (!showResult(document.getElementById("pp-run-box"), r)) {
       document.getElementById("pp-run-box").innerHTML =
-        '<div class="pp-run"><div class="note">点「做同款」用这条提示词让免费 Agnes 重画一张，出图后可拖动竖线与原图对比。每个 IP 每分钟一张。</div></div>';
+        '<div class="pp-run"><div class="note">点「做同款」用这条提示词让免费智谱 CogView 重画一张（限流时自动切 Agnes），出图后可拖动竖线与原图对比。每个 IP 每分钟一张。</div></div>';
     }
     tickCool();
     mask.classList.add("show");
@@ -205,13 +205,14 @@
     }
   }
 
-  function compareHtml(r, url) {
+  function compareHtml(r, url, via) {
     return '<div class="pp-cmp"><div class="pp-cmp-track" style="--pos:50%">' +
       '<img class="pp-cmp-base" src="' + esc(r.img) + '" data-fb="' + esc(CDN + r.oj) + '" onerror="ppImgFallback(this)" alt="原图">' +
       '<div class="pp-cmp-top"><img src="' + esc(url) + '" alt="AI 同款"></div>' +
       '<div class="pp-cmp-handle"></div>' +
       '<span class="pp-cmp-tag l">原图</span><span class="pp-cmp-tag r">AI 同款</span></div>' +
-      '<div class="pp-cmp-foot">按住竖线左右拖动对比 · <a href="' + esc(url) + '" target="_blank" rel="noopener">下载 / 查看大图</a></div></div>';
+      '<div class="pp-cmp-foot">按住竖线左右拖动对比 · <a href="' + esc(url) + '" target="_blank" rel="noopener">下载 / 查看大图</a>' +
+      (via ? ' · 由 <b>' + esc(via) + '</b> 生成' : '') + '</div></div>';
   }
 
   function bindCmp(root) {
@@ -242,7 +243,7 @@
   function showResult(host, r) {
     var g = genCache[r.id];
     if (!g) return false;
-    host.innerHTML = compareHtml(r, g.url);
+    host.innerHTML = compareHtml(r, g.url, g.via);
     bindCmp(host);
     return true;
   }
@@ -260,7 +261,7 @@
       host.innerHTML = '<div class="pp-run"><div class="note">免费额度每分钟只跑一张，' + remain() + ' 秒后自动可以再点。</div></div>';
       return;
     }
-    host.innerHTML = '<div class="pp-run"><div class="pp-wait"><span class="pp-spin"></span>正在让 Agnes 出图，通常 10-40 秒…</div></div>';
+    host.innerHTML = '<div class="pp-run"><div class="pp-wait"><span class="pp-spin"></span>正在让智谱 CogView 出图，通常 10-40 秒…</div></div>';
     startCooldown(COOL_SEC);
     fetch(PP_API + "/generate", {
       method: "POST", headers: { "Content-Type": "application/json" },
@@ -269,13 +270,14 @@
       return res.json().catch(function () { return { error: "代理返回异常 HTTP " + res.status }; });
     }).then(function (d) {
       if (d.url) {
-        genCache[r.id] = { url: d.url };
+        genCache[r.id] = { url: d.url, via: d.via };
         showResult(host, r);
         var cmp = host.querySelector(".pp-cmp");
         if (cmp && cmp.scrollIntoView) cmp.scrollIntoView({ behavior: "smooth", block: "center" });
         toast("出图完成 · 拖动竖线看原图对比");
       } else {
-        host.innerHTML = '<div class="pp-run"><div class="note">失败：' + esc(d.error || "未知错误") + '</div></div>';
+        host.innerHTML = '<div class="pp-run"><div class="note">失败：' + esc(d.error || "未知错误") +
+          (d.tried && d.tried.length ? '<br>通道轨迹：' + esc(d.tried.join(" | ")) : "") + '</div></div>';
         if (d.retryAfter) startCooldown(d.retryAfter);
       }
     }).catch(function (e) {
