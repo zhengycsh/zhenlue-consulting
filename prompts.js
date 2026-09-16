@@ -4,12 +4,11 @@
    页面：#view-prompts 列表 / #view-same 做同款独立页（hash #p<id> 详情、#same<id> 做同款） */
 (function () {
   var ALL = window.PROMPTS || [];
-  var PP_API = "https://zzmeq5c4.qwenwork.host";
   /* 端点降级链：依次尝试，某个端点连不上/报错时自动换下一个。
      顺序 = 自有优先。 tunnel 地址变了只改这里第一行。 */
   var PP_APIS = [
     "https://carpet-arthur-valium-snow.trycloudflare.com", // 自有：本机 server.js（cloudflared 快速隧道）
-    "https://zzmeq5c4.qwenwork.host"                      // 兑底：千问办公 Pages 实例
+    "https://zzmeq5c4.qwenwork.host"                      // 兜底：千问办公 Pages 实例
   ];
   var PP_ACTIVE = 0; // 当前生效端点下标（失败后自动前移）
   var FAV_KEY = "zhifu_fav_prompts";
@@ -287,8 +286,9 @@
           if (i !== PP_ACTIVE) { PP_ACTIVE = i; } // 记住这次成功的端点，下次直连
           return d;
         }
-        /* 业务层失败（429/额度/空回复）不换端点——各端点共享同一上游额度 */
-        if (d && d.error && i + 1 < PP_APIS.length && /不可达|异常|所有/.test(d.error)) {
+        /* 降级判定：网络层失败("通道不可达"/解析异常)或端点额度耗尽("额度已用完")才换下一个；
+           retryAfter(每分钟限速)不换——两端共享同一上游节奏，切了也一样。 */
+        if (d && d.error && i + 1 < PP_APIS.length && (/不可达|异常|所有/.test(d.error) || /额度已用完/.test(d.error))) {
           return tryEndpoints(i + 1);
         }
         return d;
