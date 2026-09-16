@@ -1,5 +1,5 @@
 /* ===== 提示词库交互层 =====
-   数据：data/prompts.js 的 window.PROMPTS（三源合并，见 ../README.md）
+   数据：data/prompts.js 的 window.PROMPTS（五源合并，见 ../README.md）
    生图：PP_API 指向的服务端代理，密钥在代理侧，前端只发 {prompt}
    页面：#view-prompts 列表 / #view-same 做同款独立页（hash #p<id> 详情、#same<id> 做同款） */
 (function () {
@@ -12,7 +12,8 @@
   var genCache = {};
   var coolTimer = null;
 
-  var SRC_NAME = { gpt: "GPT Image 2 精选", ym: "YouMind 主仓", nb: "Nano Banana 玩法" };
+  var SRC_NAME = { gpt: "GPT Image 2 精选", ym: "YouMind 主仓", nb: "Nano Banana 玩法",
+                   g4o: "GPT-4o 图像提示词集", bq: "Banana Quicker", evo: "EvoLink GPT Image 2" };
   var st = { q: "", src: "", cat: "", style: "", scene: "", feat: false, fav: false, sort: "rank", shown: CHUNK };
 
   var grid = document.getElementById("pp-grid");
