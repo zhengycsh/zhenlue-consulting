@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>智富AI · 541 条 AI 图片提示词库 | GPT Image/即梦/可灵/Midjourney 直接复制</title>
-<meta name="description" content="541 条带真实出图效果的 AI 图片提示词库，按场景/风格/题材筛选，一键复制即用；附 75 款精选 AI 工具导航。">
+<title>智富AI · 632 条 AI 图片提示词库 | GPT Image/即梦/可灵/Midjourney 直接复制</title>
+<meta name="description" content="632 条带真实出图效果的 AI 图片提示词库，按场景/风格/题材筛选，一键复制即用；附 75 款精选 AI 工具导航。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%230071e3'/%3E%3Cstop offset='1' stop-color='%23af52de'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='44' font-size='32' font-weight='700' text-anchor='middle' fill='white' font-family='sans-serif'%3E%E6%99%BA%3C/text%3E%3C/svg%3E">
 <style>
 :root{
@@ -473,37 +473,33 @@ footer p{line-height:2;}
   <div class="nav-tabs">
     <button class="nav-tab hl active" data-view="prompts">&#127912; 提示词库</button>
     <button class="nav-tab" data-view="tools">&#129520; AI工具箱</button>
-    <button class="nav-tab hl" data-nav="chat" onclick="location.href='chat.html'" style="cursor:pointer;">&#128172; AI 聊天</button>
   </div>
   <button class="login-btn" id="login-btn">&#128172; 微信扫码登录</button>
 </nav>
 
 <!-- ============ PROMPTS ============ -->
 <div class="view show" id="view-prompts">
-  <div class="learn-banner glass">
-    <span class="lb-emoji">&#127912;</span>
-    <div style="flex:1;min-width:220px;"><h2>AI 图片提示词库 · 541 条精选</h2><p>每条都配真实出图效果 · 点卡片看完整提示词 · 一键复制直接贴进 GPT Image / 即梦 / 可灵 / Midjourney</p></div>
-  </div>
-  <div class="search-box pp-search">
-    <div class="search-bar"><input id="pp-q" placeholder="搜索 541 条图片提示词（海报 / 信息图 / 电商主图 / 摄影 / 3D…）"/></div>
-  </div>
-  <div class="pp-layout">
-    <aside class="pp-side glass" id="pp-side"></aside>
-    <div class="pp-main">
-      <div class="pp-bar" id="pp-count"></div>
-      <div class="pp-grid" id="pp-grid"></div>
-      <div id="pp-sentinel"></div>
-      <button class="pp-more" id="pp-more">加载更多</button>
+  <div class="pp-top">
+    <h1 class="pp-h1">AI 图片提示词库 <em><span data-total>632</span> 条 · 全部带真实出图效果 · 点卡片看完整提示词</em></h1>
+    <div class="search-box pp-search">
+      <div class="search-bar"><input id="pp-q" placeholder="搜索提示词（海报 / 信息图 / 电商主图 / 摄影 / 图生图…）"/></div>
     </div>
   </div>
+  <div class="pp-filters" id="pp-filters"></div>
+  <div class="pp-bar" id="pp-count"></div>
+  <div class="pp-grid" id="pp-grid"></div>
+  <div id="pp-sentinel"></div>
+  <button class="pp-more" id="pp-more">加载更多</button>
+</div>
+
+<!-- ============ MAKE SAME ============ -->
+<div class="view" id="view-same">
+  <div id="ps-body"></div>
 </div>
 
 <!-- ============ TOOLS ============ -->
 <div class="view" id="view-tools">
-  <div class="learn-banner glass">
-    <span class="lb-emoji">&#129520;</span>
-    <div style="flex:1;min-width:220px;"><h2>AI 工具箱 · <span data-tool-total>130+</span> 款精选</h2><p>橙标=个人神器 · 标签=实时福利/特性 · 全部带丰富简介，新手友好。</p></div>
-  </div>
+  <div class="pp-top"><h1 class="pp-h1">AI 工具箱 <em><span data-tool-total>75</span> 款精选 · 橙标=个人神器 · 标签=福利/特性</em></h1></div>
   <div class="search-box tools-search">
     <div class="search-bar"><input id="search-input" placeholder="搜索 AI 工具（名称 / 用途 / 标签）…"/><button class="search-btn" id="search-btn">搜索</button></div>
     <div class="search-drop" id="search-drop"></div>
