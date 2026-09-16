@@ -5,6 +5,13 @@
 (function () {
   var ALL = window.PROMPTS || [];
   var PP_API = "https://zzmeq5c4.qwenwork.host";
+  /* 端点降级链：依次尝试，某个端点连不上/报错时自动换下一个。
+     顺序 = 自有优先。 tunnel 地址变了只改这里第一行。 */
+  var PP_APIS = [
+    "https://carpet-arthur-valium-snow.trycloudflare.com", // 自有：本机 server.js（cloudflared 快速隧道）
+    "https://zzmeq5c4.qwenwork.host"                      // 兑底：千问办公 Pages 实例
+  ];
+  var PP_ACTIVE = 0; // 当前生效端点下标（失败后自动前移）
   var FAV_KEY = "zhifu_fav_prompts";
   var COOL_KEY = "zhifu_pp_next";
   var COOL_SEC = 60;
@@ -262,11 +269,32 @@
     }
     out.innerHTML = '<div class="ps-note"><span class="ps-spin"></span>正在让智谱 CogView 出图，通常 10-40 秒…</div>';
     startCooldown(COOL_SEC);
-    fetch(PP_API + "/generate", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt: r.p })
-    }).then(function (res) { return res.json().catch(function () { return { error: "代理返回异常 HTTP " + res.status }; }); })
-      .then(function (d) {
+    /* 多端点降级：从 PP_ACTIVE 起逐个尝试，全部失败才报错 */
+    function tryEndpoints(i) {
+      if (i >= PP_APIS.length) {
+        return Promise.resolve({ error: "所有生图通道都不可用，请稍后再试" });
+      }
+      return fetch(PP_APIS[i] + "/generate", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: r.p })
+      }).then(function (res) {
+        return res.json().catch(function () { return { error: "代理返回异常 HTTP " + res.status };
+        });
+      }, function () {
+        return { error: "通道不可达" }; // 网络层失败 → 试下一个端点
+      }).then(function (d) {
+        if (d && d.url) {
+          if (i !== PP_ACTIVE) { PP_ACTIVE = i; } // 记住这次成功的端点，下次直连
+          return d;
+        }
+        /* 业务层失败（429/额度/空回复）不换端点——各端点共享同一上游额度 */
+        if (d && d.error && i + 1 < PP_APIS.length && /不可达|异常|所有/.test(d.error)) {
+          return tryEndpoints(i + 1);
+        }
+        return d;
+      });
+    }
+    tryEndpoints(PP_ACTIVE).then(function (d) {
         if (d.url) {
           genCache[r.id] = { url: d.url, via: d.via };
           out.innerHTML = cmpHtml(r, d.url, d.via);
