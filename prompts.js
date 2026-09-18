@@ -6,7 +6,22 @@
    页面：#view-prompts 列表 / #view-same 做同款页；hash #p<id> 详情、#same<id> 做同款 */
 (function () {
   var IDX = window.PIDX || [];
-  var PP_API = "https://zzmeq5c4.qwenwork.host";
+  var PP_APIS = [
+    "https://merger-legends-campbell-eating.trycloudflare.com",
+    "https://zzmeq5c4.qwenwork.host"
+  ];
+  var PP_ACTIVE = 0;
+  function tryGenerate(i, payload) {
+    if (i >= PP_APIS.length) return Promise.resolve({ error: "所有生图通道都不可用，请稍后再试" });
+    return fetch(PP_APIS[i] + "/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
+      .then(function (res) { return res.json().catch(function () { return { error: "代理返回异常 HTTP " + res.status }; }); },
+            function () { return { error: "通道不可达" }; })
+      .then(function (d) {
+        if (d && d.url) { PP_ACTIVE = i; return d; }
+        if (d && d.error && i + 1 < PP_APIS.length && (/不可达|异常|所有/.test(d.error) || /额度已用完/.test(d.error))) return tryGenerate(i + 1, payload);
+        return d;
+      });
+  }
   var GZH = "马银成企业咨询";
   var FAV_KEY = "zhifu_fav_prompts", COOL_KEY = "zhifu_pp_next", WORK_KEY = "zhifu_works";
   var COOL_SEC = 60, CHUNK = 60;
@@ -312,7 +327,7 @@
       out.innerHTML = '<div class="ps-note"><span class="ps-spin"></span>正在让智谱 CogView 出图，通常 10-40 秒…</div>';
       startCooldown(COOL_SEC);
       logEvent("same", r.id);
-      fetch(PP_API + "/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: b.p }) })
+      tryGenerate(PP_ACTIVE, { prompt: b.p })
         .then(function (res) { return res.json().catch(function () { return { error: "代理返回异常 HTTP " + res.status }; }); })
         .then(function (d) {
           if (d.url) {
