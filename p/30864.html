@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>穿越时空的滤镜-老照片修复 · AI 图片提示词 | 智富AI</title><meta name="description" content="对提供的照片，根据提示词生成图片，滤镜采用大滤镜，使用彩色呈现。 { &quot;type&quot;: &quot;augmented_reality_filter_synthesis&quot;, &quot;aspect_ratio&quot;: &quot;16:9&quot;, &quot;inst…"><link rel="canonical" href="https://jackcats.xyz/p/30864.html"><meta property="og:title" content="穿越时空的滤镜-老照片修复 · AI 图片提示词 | 智富AI"><meta property="og:description" content="对提供的照片，根据提示词生成图片，滤镜采用大滤镜，使用彩色呈现。 { &quot;type&quot;: &quot;augmented_reality_filter_synthesis&quot;, &quot;aspect_ratio&quot;: &quot;16:9&quot;, &quot;inst…"><meta property="og:url" content="https://jackcats.xyz/p/30864.html"><meta property="og:type" content="article"><meta property="og:site_name" content="智富AI 提示词库"><meta property="og:image" content="https://jackcats.xyz/img/d864.webp"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://jackcats.xyz/img/d864.webp"><link rel="stylesheet" href="https://jackcats.xyz/prompts.css"><style>
+:root{--ink:#1d1d1f;--sub:#5f6066;--tt:#8e8f96;--ac:#0071e3;--ac2:#af52de;--bg:#eef0f6}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font:15px/1.75 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);padding:26px 18px 60px}
+.wrap{max-width:1080px;margin:0 auto}
+a{color:var(--ac);text-decoration:none}
+.crumb{font-size:13px;color:var(--tt);margin-bottom:14px}
+h1{font-size:26px;font-weight:800;letter-spacing:-.3px;margin-bottom:8px}
+.meta{font-size:13px;color:var(--sub);margin-bottom:18px}
+.card{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);border-radius:18px;padding:18px;box-shadow:0 8px 32px rgba(31,38,135,.08);margin-bottom:16px}
+img{max-width:100%;border-radius:14px;display:block}
+pre{white-space:pre-wrap;word-break:break-word;font:12.5px/1.8 ui-monospace,Consolas,monospace;background:rgba(31,38,135,.05);border-radius:14px;padding:16px;max-height:60vh;overflow:auto}
+.btn{display:inline-block;margin:12px 0;padding:10px 22px;border:none;border-radius:100px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.lead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 18px;border-radius:16px;background:linear-gradient(135deg,rgba(0,113,227,.1),rgba(175,82,222,.12));font-size:13.5px;margin:18px 0}
+.lead b{font-size:14.5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.item{background:rgba(255,255,255,.7);border-radius:14px;padding:12px;font-size:14px;line-height:1.5}
+footer{margin-top:34px;text-align:center;font-size:12.5px;color:var(--tt);line-height:2}
+.tiny{font-size:11px;max-width:820px;margin:8px auto 0}
+</style></head><body><div class="wrap"><div class="crumb"><a href="https://jackcats.xyz/">提示词库</a> › <a href="https://jackcats.xyz/c/arch.html">建筑与空间</a> › GPT-4o 图像提示词集</div><h1>穿越时空的滤镜-老照片修复</h1><div class="meta">分类 建筑与空间 ｜ 来源 GPT-4o 图像提示词集 ｜ 编号 #30864 ｜ 风格 interior/pixel/建筑与空间</div><div class="card"><img src="https://jackcats.xyz/img/d864.webp" alt="穿越时空的滤镜-老照片修复" loading="lazy"></div><div class="card"><div class="meta">提示词（3329 字符）</div><pre id="pp">对提供的照片，根据提示词生成图片，滤镜采用大滤镜，使用彩色呈现。
+{
+  &quot;type&quot;: &quot;augmented_reality_filter_synthesis&quot;,
+  &quot;aspect_ratio&quot;: &quot;16:9&quot;,
+  &quot;instruction&quot;: &quot;CRITICAL: This is an IMAGE-TO-IMAGE task, not a text-to-image generation. You must strictly preserve the pixels of the {{UPLOADED_IMAGE_FILE}} as the background. Do not generate a new scene based on description. Only the area INSIDE the glass filter is allowed to change.&quot;,
+
+  &quot;global_constraints&quot;: {
+    &quot;source_fidelity&quot;: &quot;The background outside the filter must be an EXACT pixel-match to {{UPLOADED_IMAGE_FILE}}. Do not alter, crop, expand, or &#x27;reimagine&#x27; the background context.&quot;,
+    &quot;context_isolation&quot;: &quot;Ignore all previous images or conversation topics. Focus EXCLUSIVELY on the current uploaded file.&quot;,
+    &quot;modification_scope&quot;: &quot;modifications are STRICTLY limited to the area inside the glass filter lens.&quot;
+  },
+
+  &quot;dynamic_analysis_module&quot;: {
+    &quot;step_1_focal_point_extraction&quot;: {
+      &quot;task&quot;: &quot;Identify the coordinates of the main subject (Face/Object) in the current file to position the filter.&quot;,
+      &quot;output_variable&quot;: &quot;[TARGET_COORDINATES]&quot;,
+      &quot;logic&quot;: &quot;Find the center of interest solely within the provided image.&quot;
+    },
+    &quot;step_2_filter_specs&quot;: {
+      &quot;task&quot;: &quot;Determine filter parameters based on the subject.&quot;,
+      &quot;output_variable_shape&quot;: &quot;[FILTER_SHAPE]&quot;,
+      &quot;output_variable_style&quot;: &quot;[HD_RESTORATION_STYLE]&quot;,
+      &quot;logic&quot;: &quot;Face -&gt; Circular/Oval + Skin Restoration. Building -&gt; Rectangular + Structure Sharpening.&quot;
+    }
+  },
+
+  &quot;system_prompt_logic&quot;: {
+    &quot;main_premise&quot;: &quot;A first-person view of a hand holding a [FILTER_SHAPE] glass lens over the actual physical print of {{UPLOADED_IMAGE_FILE}}.&quot;,
+
+    &quot;layer_definition_logic&quot;: {
+      &quot;layer_1_background_immutable&quot;: {
+        &quot;z_index&quot;: &quot;Background (The Original Image)&quot;,
+        &quot;content&quot;: &quot;The original {{UPLOADED_IMAGE_FILE}} displayed as a large physical print or wall projection.&quot;,
+        &quot;strict_rules&quot;: {
+          &quot;NO_GENERATION&quot;: &quot;Do not generate new scenery. Use the uploaded image as a fixed texture map.&quot;,
+          &quot;NO_EXPANSION&quot;: &quot;Do not attempt to extend the image borders. Show the image exactly as provided, framing it to fill the background.&quot;,
+          &quot;visual_state&quot;: &quot;Must retain all original artifacts: noise, blur, scratches, B&amp;W tone, and low resolution. This is the &#x27;Before&#x27; state.&quot;
+        }
+      },
+      
+      &quot;layer_2_foreground_hand&quot;: {
+        &quot;z_index&quot;: &quot;Foreground (Overlay)&quot;,
+        &quot;content&quot;: &quot;A realistic human hand holding a [FILTER_SHAPE] optical glass lens.&quot;,
+        &quot;positioning&quot;: &quot;The hand enters from the edge (unobtrusive). The glass lens is positioned directly over [TARGET_COORDINATES].&quot;,
+        &quot;lighting&quot;: &quot;The hand casts a subtle shadow onto the background print to create depth.&quot;
+      },
+
+      &quot;layer_3_filter_throughput&quot;: {
+        &quot;z_index&quot;: &quot;Lens Interior (The Transformation)&quot;,
+        &quot;content&quot;: &quot;The specific pixels visible *through* the glass lens.&quot;,
+        &quot;visual_transformation&quot;: {
+          &quot;action&quot;: &quot;Upscale and colorize ONLY the pixels inside the lens boundary.&quot;,
+          &quot;style&quot;: &quot;[HD_RESTORATION_STYLE] (4K resolution, realistic textures, vibrant lighting).&quot;,
+          &quot;contrast_lock&quot;: &quot;The separation is absolute. Outside the line = Old/Blurry. Inside the line = New/Sharp. No fading gradients.&quot;
+        }
+      }
+    }
+  }
+}</pre><button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('pp').innerText)">复制提示词</button><a class="btn" style="background:rgba(0,0,0,.06);color:#1d1d1f" href="https://jackcats.xyz/#p30864">在做同款里对比原图</a></div><div class="lead"><b>想要同款提示词包？</b><span>关注公众号 <b>马银成企业咨询</b>，回复「提示词」拿分类整理版 + 每周新增</span></div><div class="meta">原出处：<a href="https://x.com/AztecaAlpaca/status/2000853838073618726" rel="noopener nofollow" target="_blank">@AztecaAlpaca</a></div><footer><p>智富AI · AI 图片提示词库 · 内容来自开源社区，版权归原作者，已按 MIT/Apache-2.0/CC BY 许可署名</p><p>联系邮箱：<a href="mailto:a951814898@163.com">a951814898@163.com</a> · <a href="https://beian.miit.gov.cn" rel="noopener">豫ICP备19018042号</a></p><p class="tiny">免责声明：本站内容仅供学习参考，不构成任何投资、理财或收益建议；AI 生成结果受模型与提示词影响，请自行核验。</p></footer></div></body></html>
