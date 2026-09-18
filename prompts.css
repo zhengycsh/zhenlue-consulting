@@ -108,3 +108,14 @@
   .detail-box{padding:20px;}
   .pp-top{align-items:stretch;}
 }
+
+/* 留资窄条 + 我的生成记录 */
+.pp-lead{margin-top:18px;padding:13px 16px;border-radius:14px;font-size:13px;color:var(--ts);line-height:1.7;
+  background:linear-gradient(135deg,rgba(0,113,227,.09),rgba(175,82,222,.11));border:1px solid rgba(255,255,255,.8);}
+.pp-lead b{color:var(--tp);}
+.ps-works{margin-top:22px;}
+.ps-works-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;}
+.ps-work{display:block;background:rgba(255,255,255,.6);border-radius:12px;overflow:hidden;text-decoration:none;color:var(--ts);}
+.ps-work img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
+.ps-work span{display:block;padding:6px 8px;font-size:11px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ps-work:hover{box-shadow:var(--shadow-hover);}
