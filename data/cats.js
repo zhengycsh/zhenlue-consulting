@@ -1,0 +1,1 @@
+window.PCATS={"图表与信息图":"chart","产品与电商":"shop","海报与字体":"poster","文档与出版":"doc","插画与艺术":"art","场景与叙事":"story","摄影与写实":"photo","角色与人物":"char","品牌与Logo":"brand","建筑与空间":"arch","界面与UI":"ui","历史与古典":"hist","其他用法":"other"};
