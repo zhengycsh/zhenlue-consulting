@@ -22,7 +22,7 @@
         return d;
       });
   }
-  var GZH = "马银成企业咨询";
+  var GZH = "香蕉学派";
   var FAV_KEY = "zhifu_fav_prompts", COOL_KEY = "zhifu_pp_next", WORK_KEY = "zhifu_works";
   var COOL_SEC = 60, CHUNK = 60;
   var body = {}, loaded = {}, genCache = {}, coolTimer = null;
