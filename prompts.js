@@ -28,6 +28,7 @@
   var body = {}, loaded = {}, genCache = {}, coolTimer = null;
 
   var SRC_NAME = { gpt: "GPT Image 2 精选", nb: "Nano Banana 玩法", g4o: "GPT-4o 图像提示词集", bq: "Banana Quicker", evo: "EvoLink GPT Image 2" };
+  var BASE = "https://jackcats.xyz";
   var SYN = { "海报": ["poster", "传单", "banner"], "信息图": ["infographic", "图表", "图解"], "头像": ["portrait", "肖像"], "电商": ["shop", "产品", "主图"], "漫画": ["comic", "动漫", "anime"], "界面": ["ui", "app", "网页"] };
   var st = { q: "", src: "", cat: "", style: "", scene: "", feat: false, fav: false, sort: "rank", shown: CHUNK };
 
@@ -155,6 +156,7 @@
       '<div class="pp-frow"><span class="pp-flabel">快捷</span><div class="pp-fchips">' +
       '<button class="pp-chip' + (st.feat ? " on" : "") + '" data-t="feat">&#11088; 只看精选</button>' +
       '<button class="pp-chip' + (st.fav ? " on fav" : "") + '" data-t="fav">&#9829; 我的收藏 ' + favs.size + "</button>" +
+      (favs.size ? '<button class="pp-chip" data-exportfav>&#11015; 导出收藏</button>' : "") +
       '<span class="pp-sortwrap">排序</span>' +
       ["rank:推荐", "new:最新", "title:标题"].map(function (s) {
         var p = s.split(":");
@@ -312,26 +314,38 @@
     });
   }
 
-  function gen(r, force) {
+  var RATIOS = [["1:1", "1:1"], ["9:16", "9:16 竖"], ["16:9", "16:9 横"], ["3:4", "3:4 竖"], ["4:3", "4:3 横"]];
+  var sameCtx = { list: [], pos: -1 };   // 当前分类内的翻页序列
+
+  function ratioChips(cur) {
+    return RATIOS.map(function (p) {
+      return '<button class="pp-chip' + (cur === p[0] ? " on" : "") + '" data-ratio="' + p[0] + '">' + p[1] + "</button>";
+    }).join("");
+  }
+
+  function gen(r, force, opts) {
     var out = document.getElementById("ps-out");
     if (!out) return;
+    opts = opts || {};
     ensureBody(r, function (b) {
       if (!b) return;
+      var prompt = (opts.prompt != null ? opts.prompt : b.p).trim() || b.p;
+      var useRatio = opts.ratio || (function () { try { return localStorage.getItem("zhifu_ratio") || "1:1"; } catch (e) { return "1:1"; } })();
       var g = genCache[r.id];
-      if (g && !force) { out.innerHTML = cmpHtml(r, b, g.url, g.via) + worksHtml(); bindCmp(out); tickCool(); return; }
+      if (g && !force && g.prompt === prompt && g.ratio === useRatio) { out.innerHTML = cmpHtml(r, b, g.url, g.via) + worksHtml(); bindCmp(out); tickCool(); return; }
       if (remain() > 0) {
         out.innerHTML = '<div class="ps-note">免费通道每分钟只跑一张，<b>' + remain() + "</b> 秒后自动继续…</div>";
-        setTimeout(function () { gen(r, true); }, Math.min(remain() * 1000 + 400, 61000));
+        setTimeout(function () { gen(r, true, { prompt: prompt, ratio: useRatio }); }, Math.min(remain() * 1000 + 400, 61000));
         return;
       }
       out.innerHTML = '<div class="ps-note"><span class="ps-spin"></span>正在让智谱 CogView 出图，通常 10-40 秒…</div>';
       startCooldown(COOL_SEC);
       logEvent("same", r.id);
-      tryGenerate(PP_ACTIVE, { prompt: b.p })
+      tryGenerate(PP_ACTIVE, { prompt: prompt, ratio: useRatio })
         .then(function (res) { return res.json().catch(function () { return { error: "代理返回异常 HTTP " + res.status }; }); })
         .then(function (d) {
           if (d.url) {
-            genCache[r.id] = { url: d.url, via: d.via };
+            genCache[r.id] = { url: d.url, via: d.via, prompt: prompt, ratio: useRatio };
             saveWork(r, d.url, d.via);
             out.innerHTML = cmpHtml(r, b, d.url, d.via) + worksHtml();
             bindCmp(out);
@@ -340,7 +354,7 @@
           } else if (d.retryAfter) {
             startCooldown(d.retryAfter);
             out.innerHTML = '<div class="ps-note">免费通道每分钟只跑一张，<b>' + d.retryAfter + "</b> 秒后自动继续…</div>";
-            setTimeout(function () { gen(r, true); }, d.retryAfter * 1000 + 400);
+            setTimeout(function () { gen(r, true, { prompt: prompt, ratio: useRatio }); }, d.retryAfter * 1000 + 400);
           } else {
             out.innerHTML = '<div class="ps-note ps-bad">失败：' + esc(d.error || "未知错误") +
               (d.tried && d.tried.length ? "<br>通道轨迹：" + esc(d.tried.join(" | ")) : "") + "</div>";
@@ -351,25 +365,83 @@
     });
   }
 
+  /* 反推：本地图片压缩到 768px → 代理 → 视觉模型输出提示词 */
+  function reverseImage(file, ta, note) {
+    if (!/^image\//.test(file.type)) { note.textContent = "请选择图片文件"; return; }
+    note.textContent = "反推中…";
+    var fr = new FileReader();
+    fr.onload = function () {
+      var im = new Image();
+      im.onload = function () {
+        var w = im.width, h = im.height, k = Math.min(1, 768 / Math.max(w, h));
+        var c = document.createElement("canvas");
+        c.width = Math.round(w * k); c.height = Math.round(h * k);
+        c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
+        var dataURL = c.toDataURL("image/jpeg", 0.85);
+        fetch(PP_API + "/reverse", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: dataURL }) })
+          .then(function (res) { return res.json().catch(function () { return { error: "代理返回异常 HTTP " + res.status }; }); })
+          .then(function (d) {
+            if (d.text) {
+              ta.value = d.text;
+              note.textContent = "反推完成（由 " + (d.via || "glm-4.6v-flash") + " 生成）· 可直接编辑后生成";
+              logEvent("reverse", "ok");
+            } else if (d.retryAfter) {
+              note.textContent = "视觉模型忙，" + d.retryAfter + " 秒后自动重试…";
+              setTimeout(function () { reverseImage(file, ta, note); }, d.retryAfter * 1000 + 400);
+            } else {
+              note.textContent = "反推失败：" + (d.error || "未知错误");
+            }
+          })
+          .catch(function (e) { note.textContent = "反推请求失败：" + e.message; });
+      };
+      im.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  }
+
+  function similarHtml(r) {
+    var pool = IDX.filter(function (x) { return x.cn === r.cn && x.id !== r.id; }).slice(0, 40);
+    if (!pool.length) return "";
+    var picks = [];
+    while (picks.length < 3 && pool.length) picks.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+    return '<div class="ps-similar"><div class="pp-plabel">同场景再试这几条</div><div class="ps-sim-grid">' +
+      picks.map(function (x) { return '<button class="ps-sim" data-goto="' + x.id + '">&#9889; ' + esc(x.t.slice(0, 18)) + "</button>"; }).join("") +
+      "</div></div>";
+  }
+
   function openSame(id) {
     var r = byId(id); if (!r) return;
     closeDetail(); showPage("same");
     if (history.replaceState) history.replaceState(null, "", "#same" + r.id);
     ensureBody(r, function (b) {
       if (!b) return;
+      var cur = (function () { try { return localStorage.getItem("zhifu_ratio") || "1:1"; } catch (e) { return "1:1"; } })();
+      sameCtx.list = IDX.filter(function (x) { return x.cn === r.cn; }).map(function (x) { return x.id; });
+      sameCtx.pos = sameCtx.list.indexOf(r.id);
+      var nav = sameCtx.pos > 0 ? '<button class="pp-chip" data-samenav="-1">&#8592; 上一张</button>' : "";
+      nav += sameCtx.pos < sameCtx.list.length - 1 ? '<button class="pp-chip" data-samenav="1">下一张 &#8594;</button>' : "";
       document.getElementById("ps-body").innerHTML =
         '<button class="ps-back" id="ps-back">&#8592; 返回提示词库</button>' +
         '<h1 class="ps-h1">' + esc(r.t) + "</h1>" +
         '<div class="ps-meta">' + esc(r.cn) + " · " + esc(SRC_NAME[r.src] || r.src) +
         (b.su ? ' · 出处 <a href="' + esc(b.su) + '" target="_blank" rel="noopener nofollow">' + esc(b.sl || "原帖") + "</a>" : "") + "</div>" +
-        '<div class="ps-prompt">' + markVars(b.p) + "</div>" +
-        '<div class="ps-acts"><button class="pp-btn pri" data-copy="' + r.id + '">&#128203; 复制提示词</button>' +
-        '<button class="pp-btn gho" data-gen="' + r.id + '">&#9889; 重新生成一张</button></div>' +
-        '<div id="ps-out"></div>' + leadHtml() + worksHtml();
+        '<div class="ps-meta">提示词可直接编辑（#p' + r.id + '）</div>' +
+        '<textarea class="ps-edit" id="ps-edit" rows="7">' + esc(b.p) + "</textarea>" +
+        '<div class="ps-rrow"><span class="pp-flabel">画幅</span><div class="pp-fchips">' + ratioChips(cur) + "</div>" +
+        '<span class="pp-flabel" style="flex:none;margin-left:14px">反推</span>' +
+        '<label class="ps-upfile">&#128247; 选图片反推<input type="file" id="ps-rev" accept="image/*"></label>' +
+        '<span class="ps-note-inline" id="ps-revnote"></span></div>' +
+        '<div class="ps-acts"><button class="pp-btn pri" data-gen="' + r.id + '">&#9889; 生成这张</button>' +
+        '<button class="pp-btn gho" data-copy="' + r.id + '">&#128203; 复制原版</button>' +
+        nav + "</div>" +
+        '<div id="ps-out"></div>' + similarHtml(r) + leadHtml() + worksHtml();
       document.getElementById("ps-back").onclick = function () {
         showPage("prompts");
         if (history.replaceState) history.replaceState(null, "", location.pathname + location.search);
       };
+      document.getElementById("ps-rev").addEventListener("change", function () {
+        if (this.files && this.files[0]) reverseImage(this.files[0], document.getElementById("ps-edit"), document.getElementById("ps-revnote"));
+      });
       gen(r);
     });
   }
@@ -400,19 +472,82 @@
   function anywhere(e) {
     var cp = e.target.closest("[data-copy]"); if (cp) { copyPrompt(+cp.dataset.copy); return true; }
     var gt = e.target.closest("[data-goto]"); if (gt) { openSame(+gt.dataset.goto); return true; }
-    var gn = e.target.closest("[data-gen]"); if (gn) { gen(byId(+gn.dataset.gen), true); return true; }
+    var gn = e.target.closest("[data-gen]");
+    if (gn) {
+      var rr = byId(+gn.dataset.gen), ed = document.getElementById("ps-edit");
+      if (rr && ed && ed.value.trim() && ed.value.trim() !== rr.p) gen(rr, true, { prompt: ed.value.trim() });
+      else gen(rr, true);
+      return true;
+    }
     var fv = e.target.closest("[data-fav]"); if (fv) { toggleFav(+fv.dataset.fav); return true; }
+    var rt = e.target.closest("[data-ratio]");
+    if (rt) {
+      localStorage.setItem("zhifu_ratio", rt.dataset.ratio);
+      document.querySelectorAll("[data-ratio]").forEach(function (x) { x.classList.toggle("on", x.dataset.ratio === rt.dataset.ratio); });
+      return true;
+    }
+    var sn = e.target.closest("[data-samenav]");
+    if (sn) {
+      var np = sameCtx.pos + (+sn.dataset.samenav);
+      if (np >= 0 && np < sameCtx.list.length) openSame(sameCtx.list[np]);
+      return true;
+    }
+    var ex = e.target.closest("[data-exportfav]"); if (ex) { exportFavs(); return true; }
     return false;
+  }
+  function exportFavs() {
+    var picks = IDX.filter(function (r) { return favs.has(r.id); });
+    if (!picks.length) { toast("还没有收藏，先点亮卡片右上角的 ★"); return; }
+    var missing = picks.filter(function (r) { return !body[r.id]; });
+    if (!missing.length) return doExport(picks);
+    toast("正在打包收藏…");
+    var n = 0;
+    missing.forEach(function (r) {
+      ensureBody(r, function () { if (++n === missing.length) doExport(picks); });
+    });
+  }
+  function doExport(picks) {
+    var stamp = new Date().toISOString().slice(0, 10);
+    var md = "# 我的收藏 · " + picks.length + " 条\n\n" + picks.map(function (r) {
+      return "## " + r.t + "\n\n> 分类 " + r.cn + " · " + (SRC_NAME[r.src] || r.src) + " · " + BASE.replace(/https?:\/\//, "") + "/p/" + r.id + ".html\n\n```\n" + ((body[r.id] || {}).p || "") + "\n```\n";
+    }).join("\n");
+    var zip = JSON.stringify(picks.map(function (r) { var b = body[r.id] || {}; return { id: r.id, title: r.t, category: r.cn, prompt: b.p || "", image: BASE + "/" + r.im, source: b.su || "" }; }), null, 1);
+    dl("zhifu-favs-" + stamp + ".md", md, "text/markdown");
+    setTimeout(function () { dl("zhifu-favs-" + stamp + ".json", zip, "application/json"); }, 300);
+    toast("收藏已导出：Markdown + JSON 各一份");
+  }
+  function bodyById(id) { return body[id] || null; }
+  function dl(name, content, type) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([content], { type: type }));
+    a.download = name;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
   }
   mask.addEventListener("click", function (e) {
     if (e.target === mask || e.target.closest("[data-close]")) { closeDetail(); return; }
     anywhere(e);
   });
   document.getElementById("view-same").addEventListener("click", anywhere);
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && mask.classList.contains("show")) closeDetail(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && mask.classList.contains("show")) { closeDetail(); return; }
+    if (document.getElementById("view-same").classList.contains("show") && (e.key === "ArrowLeft" || e.key === "ArrowRight") && !/TEXTAREA|INPUT/.test(document.activeElement.tagName)) {
+      var np = sameCtx.pos + (e.key === "ArrowRight" ? 1 : -1);
+      if (np >= 0 && np < sameCtx.list.length) openSame(sameCtx.list[np]);
+    }
+  });
   document.getElementById("pp-more").onclick = function () { st.shown += CHUNK; renderGrid(); };
 
   /* ---- 启动 ---- */
+  var toTop = document.createElement("button");
+  toTop.id = "to-top";
+  toTop.innerHTML = "&#8679; 顶部";
+  toTop.onclick = function () { window.scrollTo({ top: 0, behavior: "smooth" }); };
+  document.body.appendChild(toTop);
+  window.addEventListener("scroll", function () {
+    toTop.classList.toggle("show", window.scrollY > 600);
+  }, { passive: true });
+
   document.querySelectorAll("[data-total]").forEach(function (el) { el.textContent = IDX.length; });
   refresh();
   tickCool();

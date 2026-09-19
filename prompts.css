@@ -119,3 +119,26 @@
 .ps-work img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
 .ps-work span{display:block;padding:6px 8px;font-size:11px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .ps-work:hover{box-shadow:var(--shadow-hover);}
+
+/* 可编辑提示词 + 画幅/反推行 + 相似推荐 + 回到顶部 */
+.ps-edit{width:100%;font:12.5px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace;background:rgba(31,38,135,.05);
+  border:1px solid rgba(255,255,255,.7);border-radius:16px;padding:14px 16px;color:var(--ink);
+  resize:vertical;min-height:150px;outline:none;font-family:inherit;}
+.ps-edit:focus{border-color:var(--ac,#0071e3);box-shadow:0 0 0 3px rgba(0,113,227,.12);}
+.ps-rrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;}
+.ps-rrow .pp-flabel{flex:none;}
+.ps-upfile{position:relative;display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;
+  border:1px solid rgba(0,0,0,.1);background:rgba(255,255,255,.6);font-size:12px;color:var(--ts);cursor:pointer;}
+.ps-upfile input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.ps-upfile:hover{border-color:var(--ac,#0071e3);color:var(--ac,#0071e3);}
+.ps-note-inline{font-size:12px;color:var(--ts);}
+.ps-similar{margin-top:20px;}
+.ps-sim-grid{display:flex;gap:8px;flex-wrap:wrap;}
+.ps-sim{padding:8px 14px;border-radius:100px;border:1px solid rgba(0,0,0,.08);background:rgba(255,255,255,.6);
+  font-size:12px;color:var(--ts);cursor:pointer;font-family:inherit;}
+.ps-sim:hover{border-color:var(--ac,#0071e3);color:var(--ac,#0071e3);}
+#to-top{position:fixed;right:26px;bottom:26px;z-index:120;padding:9px 15px;border-radius:100px;border:1px solid rgba(255,255,255,.9);
+  background:rgba(255,255,255,.75);backdrop-filter:blur(14px);color:var(--tp);font-size:12.5px;font-weight:700;cursor:pointer;
+  font-family:inherit;opacity:0;pointer-events:none;transition:.25s;box-shadow:0 8px 26px rgba(31,38,135,.14);}
+#to-top.show{opacity:1;pointer-events:auto;}
+@media (max-width:640px){.ps-rrow{align-items:stretch;flex-direction:column;}}
