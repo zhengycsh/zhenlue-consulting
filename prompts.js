@@ -7,10 +7,14 @@
 (function () {
   var IDX = window.PIDX || [];
   var PP_APIS = [
-    "https://merger-legends-campbell-eating.trycloudflare.com",
+    "https://flashing-interviews-vessel-varieties.trycloudflare.com",
     "https://zzmeq5c4.qwenwork.host"
   ];
   var PP_ACTIVE = 0;
+  // 生成走 PP_APIS 降级链；/match /leaderboard /log 这类稳定接口固定用链尾的 QW Pages 域名（隧道地址会变）
+  var PP_API = PP_APIS[PP_APIS.length - 1];
+  // 页面由合并服务自己托管时（QW 镜像/本地预览）走同源；只有纯静态的 jackcats.xyz 才打远端代理
+  var API_BASE = location.hostname === "jackcats.xyz" ? PP_API : "";
   function tryGenerate(i, payload) {
     if (i >= PP_APIS.length) return Promise.resolve({ error: "所有生图通道都不可用，请稍后再试" });
     return fetch(PP_APIS[i] + "/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
@@ -23,6 +27,7 @@
       });
   }
   var GZH = "香蕉学派";
+  var ASSET_BASE = location.hostname === "jackcats.xyz" ? "img/" : "https://cdn.jsdelivr.net/gh/zhengycsh/zhenlue-consulting@main/img/";
   var FAV_KEY = "zhifu_fav_prompts", COOL_KEY = "zhifu_pp_next", WORK_KEY = "zhifu_works";
   var COOL_SEC = 60, CHUNK = 60;
   var body = {}, loaded = {}, genCache = {}, coolTimer = null;
@@ -55,7 +60,7 @@
   /* 埋点：搜索词 / 复制 / 做同款。失败静默，绝不影响主流程 */
   function logEvent(e, v) {
     try {
-      var u = PP_API + "/log?e=" + encodeURIComponent(e) + "&v=" + encodeURIComponent(v || "");
+      var u = API_BASE + "/log?e=" + encodeURIComponent(e) + "&v=" + encodeURIComponent(v || "");
       if (navigator.sendBeacon) navigator.sendBeacon(u); else new Image().src = u;
     } catch (x) { }
   }
@@ -175,8 +180,9 @@
       d.innerHTML = (r.f ? '<span class="pp-flag">精选</span>' : "") +
         '<button class="pp-same" data-same="' + r.id + '" title="一键做同款">&#9889;</button>' +
         '<button class="pp-fav' + (favs.has(r.id) ? " on" : "") + '" data-fav="' + r.id + '" title="收藏">&#9733;</button>' +
-        '<img class="pp-thumb" loading="lazy" decoding="async" src="img/' + esc(r.im) + '" alt="' + esc(r.t) + '">' +
+        '<img class="pp-thumb" loading="lazy" decoding="async" src="' + ASSET_BASE + esc(r.im) + '" alt="' + esc(r.t) + '">' +
         '<div class="pp-body"><div class="pp-title">' + esc(r.t) + '</div><div class="pp-desc">' + esc(r.dp) + "…</div>" +
+        (r.ph && r.ph.length ? '<div class="pp-ph">改这' + Math.min(r.ph.length, 2) + '个词就是你的：' + r.ph.slice(0, 2).map(function (x) { return "<b>" + esc(x) + "</b>"; }).join(" / ") + "</div>" : "") +
         '<div class="pp-tags"><i class="src">' + esc(SRC_NAME[r.src] || r.src) + "</i>" +
         (r.s || []).slice(0, 2).map(function (x) { return "<i>" + esc(x) + "</i>"; }).join("") +
         (r.sc || []).slice(0, 1).map(function (x) { return '<i class="scene">' + esc(x) + "</i>"; }).join("") +
@@ -218,11 +224,16 @@
         '<span class="d-tag">' + esc(r.cn) + "</span>" +
         '<div class="pp-d-head"><h2>' + esc(r.t) + "</h2>" +
         '<button class="pp-fav' + (favs.has(r.id) ? " on" : "") + '" style="position:static;opacity:1;border:1px solid rgba(0,0,0,.08)" data-fav="' + r.id + '">&#9733; 收藏</button></div>' +
-        '<div class="pp-d-grid"><div><img class="pp-d-img" src="' + esc(b.img) + '" data-fb="' + esc(b.oj) + '" onerror="ppImgFallback(this)" alt="' + esc(r.t) + '" loading="lazy">' +
-        (b.in ? '<img class="pp-d-img pp-d-in" src="' + esc(b.in) + '" alt="输入图" loading="lazy"><div class="pp-d-meta">↑ 图生图玩法：原效果是拿这张输入图做的；只做文生图会更接近风格而非同一主体</div>' : "") +
+        '<div class="pp-d-grid"><div><img class="pp-d-img" src="' + ASSET_BASE + esc(b.img) + '" data-fb="' + esc(b.oj) + '" onerror="ppImgFallback(this)" alt="' + esc(r.t) + '" loading="lazy">' +
+        (b.in ? '<img class="pp-d-img pp-d-in" src="' + ASSET_BASE + esc(b.in) + '" alt="输入图" loading="lazy"><div class="pp-d-meta">↑ 图生图玩法：原效果是拿这张输入图做的；只做文生图会更接近风格而非同一主体</div>' : "") +
         '<div class="pp-d-meta">编号 #' + r.id + " · " + esc(SRC_NAME[r.src] || r.src) +
         (b.su ? ' · 出处 <a href="' + esc(b.su) + '" target="_blank" rel="noopener nofollow">' + esc(b.sl || "原帖") + "</a>" : "") + "</div></div>" +
-        '<div><div class="pp-plabel">提示词（' + b.p.length + ' 字符）</div><div class="pp-prompt">' + markVars(b.p) + "</div>" +
+        '<div>' + (b.gd ? '<div class="pp-guide">' +
+          '<div class="pp-g-row"><span>在干什么</span>' + esc(b.gd.what) + "</div>" +
+          '<div class="pp-g-row"><span>改哪个词</span>' + esc(b.gd.swap) + "</div>" +
+          '<div class="pp-g-row"><span>踩坑提醒</span>' + esc(b.gd.tip) + "</div></div>" : "") +
+        (b.ph && b.ph.length ? '<div class="pp-phs">可替换：' + b.ph.map(function (x) { return "<b>" + esc(x) + "</b>"; }).join(" / ") + "</div>" : "") +
+        '<div class="pp-plabel">提示词（' + b.p.length + ' 字符）</div><div class="pp-prompt">' + markVars(b.p) + "</div>" +
         '<div class="pp-actions"><button class="pp-btn pri" data-copy="' + r.id + '">&#128203; 复制提示词</button>' +
         '<button class="pp-btn gho" data-goto="' + r.id + '">&#9889; 做同款看对比</button></div></div></div>' + leadHtml();
       mask.classList.add("show");
@@ -288,7 +299,7 @@
   /* ---- 对比 ---- */
   function cmpHtml(r, b, url, via) {
     return '<div class="ps-cmp"><div class="ps-track" style="--pos:50%">' +
-      '<img class="ps-base" src="' + esc(b.img) + '" data-fb="' + esc(b.oj) + '" onerror="ppImgFallback(this)" alt="原图">' +
+      '<img class="ps-base" src="' + ASSET_BASE + esc(b.img) + '" data-fb="' + esc(b.oj) + '" onerror="ppImgFallback(this)" alt="原图">' +
       '<div class="ps-top"><img src="' + esc(url) + '" alt="AI 同款"></div>' +
       '<div class="ps-handle"></div><span class="ps-tag l">原图</span><span class="ps-tag r">AI 同款</span></div>' +
       '<div class="ps-foot">按住中间竖线左右拖动对比 · <a href="' + esc(url) + '" target="_blank" rel="noopener">下载 / 查看大图</a>' +
@@ -323,6 +334,96 @@
     }).join("");
   }
 
+  /* AI 提示词改写：走网关 /refine（服务端持共享令牌，站点免登录可用）。
+     失败静默降级返回原文，绝不阻塞生图主流程。 */
+  function refinePrompt(rawPrompt, note) {
+    return fetch(GATEWAY + "/refine", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: rawPrompt, note: note || "" })
+    }).then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    }).then(function (j) {
+      return (j.refined && j.refined.trim()) ? j.refined.trim() : rawPrompt;
+    }).catch(function () { return rawPrompt; });
+  }
+
+  /* ── AI 优化提示词面板 ─────────────────────────────────
+     左：原始提示词（只读）。右：改写结果（可编辑）。底部按钮：
+     [AI 优化提示词] [直接用右侧提示词生图] [跳过优化直接生图] */
+  function renderGenPanel(r, b, prompt, ratio) {
+    var pid = "rf-" + r.id;
+    return '<div class="ps-panel">' +
+      '<div class="ps-row"><div class="ps-col"><div class="ps-cap">原始提示词</div>' +
+      '<textarea id="' + pid + '-src" class="ps-ta" rows="8" readonly>' + esc(prompt) + '</textarea></div>' +
+      '<div class="ps-col"><div class="ps-cap">适配当前模型的提示词 <span class="ps-sub">（AI 改写 · 可编辑）</span></div>' +
+      '<textarea id="' + pid + '-dst" class="ps-ta" rows="8" placeholder="点击下方按钮，AI 将改写出适配当前生图模型的提示词；也可以直接在此编辑">' + esc(prompt) + '</textarea></div></div>' +
+      '<div class="ps-act">' +
+      '<button type="button" class="btn" id="' + pid + '-refine">AI 优化提示词</button>' +
+      '<button type="button" class="btn hl" id="' + pid + '-gen2">用右侧提示词生图</button>' +
+      '<button type="button" class="btn" id="' + pid + '-raw">跳过优化直接生图</button>' +
+      '</div>' +
+      '<div id="' + pid + '-st" class="ps-note">点「AI 优化提示词」开始；改写完成后点「用右侧提示词生图」。</div>' +
+      '</div>' + panelCss();
+  }
+  function panelCss() {
+    return '<style>' +
+      '.ps-panel{background:var(--surface,#fff);border:1px solid var(--border,#e8e6dc);border-radius:12px;padding:16px;margin:8px 0}' +
+      '.ps-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}' +
+      '@media(max-width:760px){.ps-row{grid-template-columns:1fr}}' +
+      '.ps-col{min-width:0}' +
+      '.ps-cap{font-weight:700;font-size:13px;margin-bottom:6px}' +
+      '.ps-sub{font-weight:400;color:var(--tt,#87867f);font-size:11px}' +
+      '.ps-ta{width:100%;box-sizing:border-box;background:var(--bg,#f5f4ed);border:1px solid var(--border,#e8e6dc);border-radius:8px;padding:10px;font:inherit;font-size:13px;line-height:1.6;resize:vertical}' +
+      '.ps-ta:focus{outline:2px solid rgba(201,100,66,.25);border-color:var(--accent,#c96442)}' +
+      '.ps-act{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}' +
+      '</style>';
+  }
+  function startRefineFlow(r, b, prompt, ratio) {
+    var pid = "rf-" + r.id;
+    var src = document.getElementById(pid + "-src");
+    var dst = document.getElementById(pid + "-dst");
+    var st = document.getElementById(pid + "-st");
+    var btnR = document.getElementById(pid + "-refine");
+    var btnG = document.getElementById(pid + "-gen2");
+    var btnRaw = document.getElementById(pid + "-raw");
+    if (!btnR) return;
+    btnR.addEventListener("click", function () {
+      btnR.disabled = true;
+      st.innerHTML = '<span class="ps-spin"></span>AI 正在改写提示词（适配当前多模态模型）…';
+      refinePrompt(src.value, "").then(function (newP) {
+        dst.value = newP;
+        btnR.disabled = false;
+        st.innerHTML = '改写完成 ✓ 可在右侧微调，然后点「用右侧提示词生图」。';
+      });
+    });
+    btnG.addEventListener("click", function () {
+      var newP = (dst.value || "").trim() || prompt;
+      st.innerHTML = '<span class="ps-spin"></span>正在用优化后的提示词生图，通常 10-40 秒…';
+      btnG.disabled = true;
+      tryGenerate(PP_ACTIVE, { prompt: newP, ratio: ratio }).then(function (d) {
+        btnG.disabled = false;
+        if (d && d.url) {
+          genCache[r.id] = { url: d.url, via: d.via, prompt: newP, ratio: ratio };
+          saveWork(r, d.url, d.via);
+          out.innerHTML = cmpHtml(r, b, d.url, d.via) + worksHtml();
+          bindCmp(out);
+          var cmp = out.querySelector(".ps-cmp");
+          if (cmp && cmp.scrollIntoView) cmp.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else if (d && d.retryAfter) {
+          startCooldown(d.retryAfter);
+          st.innerHTML = "免费通道每分钟一张，" + d.retryAfter + " 秒后自动继续…";
+          setTimeout(function () { gen(r, true, { prompt: newP, ratio: ratio }); }, d.retryAfter * 1000 + 400);
+        } else {
+          st.innerHTML = '<span style="color:var(--danger,#b53333)">失败：' + esc((d && d.error) || "未知错误") + '</span>';
+        }
+      });
+    });
+    btnRaw.addEventListener("click", function () {
+      gen(r, true, { prompt: prompt, ratio: ratio });
+    });
+  }
   function gen(r, force, opts) {
     var out = document.getElementById("ps-out");
     if (!out) return;
@@ -338,11 +439,11 @@
         setTimeout(function () { gen(r, true, { prompt: prompt, ratio: useRatio }); }, Math.min(remain() * 1000 + 400, 61000));
         return;
       }
-      out.innerHTML = '<div class="ps-note"><span class="ps-spin"></span>正在让智谱 CogView 出图，通常 10-40 秒…</div>';
+      out.innerHTML = renderGenPanel(r, b, prompt, useRatio);
+      startRefineFlow(r, b, prompt, useRatio);
       startCooldown(COOL_SEC);
       logEvent("same", r.id);
       tryGenerate(PP_ACTIVE, { prompt: prompt, ratio: useRatio })
-        .then(function (res) { return res.json().catch(function () { return { error: "代理返回异常 HTTP " + res.status }; }); })
         .then(function (d) {
           if (d.url) {
             genCache[r.id] = { url: d.url, via: d.via, prompt: prompt, ratio: useRatio };
@@ -446,7 +547,88 @@
     });
   }
 
+  /* ---------- 需求 → 配方 ---------- */
+  var SCENES = ["小红书封面", "公众号头图", "电商主图", "信息图", "人物头像", "手机壁纸", "PPT 配图", "Logo", "漫画分镜", "产品海报"];
+  var sceneBox = document.getElementById("scene-chips"), needIn = document.getElementById("need"), matchOut = document.getElementById("match-out");
+
+  function imgOf(p) { return ASSET_BASE + esc(String(p || "").replace(/^img\//, "")); }
+
+  function doMatch(need) {
+    need = String(need || "").trim();
+    if (!need || !matchOut) return;
+    if (needIn) needIn.value = need;
+    matchOut.innerHTML = '<div class="pp-matching"><span class="ps-spin"></span>正在从 ' + IDX.length + ' 条配方里挑…</div>';
+    fetch(API_BASE + "/match", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ need: need }) })
+      .then(function (r) { return r.json().catch(function () { return {}; }); })
+      .then(function (d) {
+        var list = (d && d.list) || [];
+        if (!list.length) { matchOut.innerHTML = '<div class="pp-empty-line">没匹配到，换个说法试试（比如「健身」「茶叶」「儿童绘本」）</div>'; return; }
+        matchOut.innerHTML = '<div class="pp-match-title">给你 ' + list.length + ' 条 · 需求「' + esc(need) + '」</div><div class="pp-match-grid">' +
+          list.map(function (x) {
+            return '<div class="pp-mcard glass"><img loading="lazy" src="' + imgOf(x.img) + '" alt="' + esc(x.t) + '">' +
+              '<div class="pp-mbody"><div class="pp-mt" data-goto="' + x.id + '">' + esc(x.t) + "</div>" +
+              '<div class="pp-mwhy">' + esc(x.why) + " · " + esc(x.cn) + "</div>" +
+              '<div class="pp-macts"><button class="pp-btn pri" data-same2="' + x.id + '">&#9889; 做同款</button>' +
+              '<button class="pp-btn gho" data-copy2="' + x.id + '">&#128203; 复制</button></div></div></div>';
+          }).join("") + "</div>";
+      })
+      .catch(function () { matchOut.innerHTML = '<div class="pp-empty-line">推荐服务暂不可用，先用下面的搜索</div>'; });
+  }
+
+  /* ---------- 榜单页 ---------- */
+  var rankBody = document.getElementById("rank-body");
+  function renderRank() {
+    if (!rankBody || rankBody.dataset.done) return;
+    rankBody.innerHTML = '<div class="pp-matching"><span class="ps-spin"></span>正在统计…</div>';
+    var picks = IDX.filter(function (r) { return r.f; }).slice(0, 24);
+    function paint(board) {
+      var html = "";
+      if (board && board.length) {
+        html += '<h2 class="pp-rh1">真实热榜 · 按复制与复刻次数</h2><div class="pp-rank-list">' + board.map(function (x, i) {
+          return '<div class="pp-rank glass" data-goto="' + x.id + '"><span class="pp-rank-n">' + (i + 1) + "</span>" +
+            '<img loading="lazy" src="' + imgOf(x.img) + '" alt=""><div class="pp-rank-b"><div>' + esc(x.t) + "</div>" +
+            "<small>" + esc(x.cn) + " · 复制 " + x.copy + " · 复刻 " + x.same + "</small></div>" +
+            '<button class="pp-btn pri" data-same2="' + x.id + '">&#9889;</button></div>';
+        }).join("") + "</div>";
+      } else {
+        html += '<div class="pp-empty-line">还没有真实数据 —— 先去复刻几张，榜单每天更新一次。</div>';
+      }
+      html += '<h2 class="pp-rh1">编辑精选 · 最稳的起手式</h2><div class="pp-rank-list">' + picks.map(function (r) {
+        return '<div class="pp-rank glass" data-goto="' + r.id + '"><span class="pp-rank-n">&#11088;</span>' +
+          '<img loading="lazy" src="' + imgOf(r.im) + '" alt=""><div class="pp-rank-b"><div>' + esc(r.t) + "</div><small>" + esc(r.cn) + "</small></div>" +
+          '<button class="pp-btn pri" data-same2="' + r.id + '">&#9889;</button></div>';
+      }).join("") + "</div>";
+      rankBody.innerHTML = html;
+      rankBody.dataset.done = "1";
+    }
+    fetch(API_BASE + "/leaderboard").then(function (r) { return r.json().catch(function () { return {}; }); })
+      .then(function (d) { paint((d && d.board) || []); })
+      .catch(function () { paint([]); });
+  }
+
   /* ---- 事件绑定 ---- */
+  if (sceneBox) {
+    sceneBox.innerHTML = SCENES.map(function (s) { return '<button class="pp-chip" data-scene="' + esc(s) + '">' + esc(s) + "</button>"; }).join("");
+    sceneBox.addEventListener("click", function (e) {
+      var c = e.target.closest("[data-scene]"); if (c) doMatch(c.dataset.scene);
+    });
+  }
+  if (needIn) needIn.addEventListener("keydown", function (e) { if (e.key === "Enter") doMatch(needIn.value); });
+  var needGo = document.getElementById("need-go");
+  if (needGo) needGo.onclick = function () { doMatch(needIn && needIn.value); };
+  if (matchOut) matchOut.addEventListener("click", function (e) {
+    var s = e.target.closest("[data-same2]"); if (s) { openSame(+s.dataset.same2); return; }
+    var c = e.target.closest("[data-copy2]"); if (c) { copyPrompt(+c.dataset.copy2); return; }
+    var g = e.target.closest("[data-goto]"); if (g) openDetail(+g.dataset.goto);
+  });
+  if (rankBody) rankBody.addEventListener("click", function (e) {
+    var s = e.target.closest("[data-same2]"); if (s) { e.stopPropagation(); openSame(+s.dataset.same2); return; }
+    var g = e.target.closest("[data-goto]"); if (g) openDetail(+g.dataset.goto);
+  });
+  document.querySelector("nav") && document.querySelector("nav").addEventListener("click", function (e) {
+    var t = e.target.closest("[data-view]");
+    if (t && t.dataset.view === "rank") setTimeout(renderRank, 50);
+  });
   filters.addEventListener("click", function (e) {
     var c = e.target.closest(".pp-chip"); if (!c) return;
     if (c.dataset.f) st[c.dataset.f] = st[c.dataset.f] === c.dataset.v ? "" : c.dataset.v;

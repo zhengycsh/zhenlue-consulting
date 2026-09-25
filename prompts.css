@@ -142,3 +142,46 @@
   font-family:inherit;opacity:0;pointer-events:none;transition:.25s;box-shadow:0 8px 26px rgba(31,38,135,.14);}
 #to-top.show{opacity:1;pointer-events:auto;}
 @media (max-width:640px){.ps-rrow{align-items:stretch;flex-direction:column;}}
+
+/* 需求 → 配方 hero */
+.pp-hero{margin:0 0 18px;padding:20px 22px;border-radius:20px;
+  background:linear-gradient(135deg,rgba(0,113,227,.10),rgba(175,82,222,.12));border:1px solid rgba(255,255,255,.85);}
+.pp-hero-q{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:12px;}
+.pp-hero-bar{display:flex;gap:10px;flex-wrap:wrap;}
+.pp-hero-bar input{flex:1;min-width:240px;padding:12px 16px;border-radius:14px;border:1px solid rgba(0,0,0,.08);
+  background:rgba(255,255,255,.9);font:14px/1.5 inherit;outline:none;color:var(--ink);}
+.pp-hero-bar input:focus{border-color:var(--ac,#0071e3);box-shadow:0 0 0 3px rgba(0,113,227,.12);}
+.pp-hero-scenes{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px;}
+.pp-matching{margin-top:14px;font-size:13px;color:var(--ts);display:flex;align-items:center;gap:8px;}
+.pp-empty-line{margin-top:14px;font-size:13px;color:var(--tt);}
+.pp-match-title{margin-top:16px;font-size:12.5px;color:var(--ts);}
+.pp-match-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:10px;}
+.pp-mcard{display:flex;gap:11px;padding:11px;cursor:pointer;overflow:hidden;}
+.pp-mcard img{width:82px;height:82px;border-radius:12px;object-fit:cover;flex:none;background:rgba(31,38,135,.05);}
+.pp-mbody{min-width:0;flex:1;display:flex;flex-direction:column;gap:5px;}
+.pp-mt{font-size:13.5px;font-weight:700;line-height:1.4;cursor:pointer;}
+.pp-mt:hover{color:var(--ac,#0071e3);}
+.pp-mwhy{font-size:11.5px;color:var(--tt);}
+.pp-macts{display:flex;gap:6px;margin-top:auto;}
+.pp-macts .pp-btn{padding:6px 12px;font-size:12px;}
+
+/* 榜单 */
+.pp-rh1{font-size:16px;font-weight:800;margin:22px 0 10px;}
+.pp-rank-list{display:flex;flex-direction:column;gap:9px;}
+.pp-rank{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;}
+.pp-rank:hover{box-shadow:var(--shadow-hover,#0 8px 32px rgba(31,38,135,.16));}
+.pp-rank-n{width:26px;text-align:center;font-weight:800;color:var(--tt);flex:none;}
+.pp-rank img{width:52px;height:52px;border-radius:10px;object-fit:cover;flex:none;}
+.pp-rank-b{flex:1;min-width:0;font-size:13.5px;font-weight:600;}
+.pp-rank-b small{display:block;font-size:11.5px;color:var(--tt);font-weight:400;margin-top:2px;}
+
+/* 配方解读与占位符 */
+.pp-guide{margin-bottom:12px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.8);}
+.pp-g-row{display:flex;gap:10px;padding:9px 13px;font-size:12.5px;line-height:1.65;color:var(--ts);background:rgba(255,255,255,.55);}
+.pp-g-row+.pp-g-row{border-top:1px solid rgba(0,0,0,.05);}
+.pp-g-row span{flex:none;width:62px;font-weight:700;color:var(--ac,#0071e3);font-size:11.5px;}
+.pp-ph{font-size:11px;color:var(--ts);line-height:1.5;}
+.pp-ph b{color:var(--accent3,#ff9500);font-weight:700;}
+.pp-phs{font-size:12px;color:var(--ts);margin-bottom:10px;}
+.pp-phs b{color:var(--accent3,#ff9500);background:rgba(255,149,0,.12);padding:1px 7px;border-radius:6px;margin:0 2px;}
+@media (max-width:640px){.pp-match-grid{grid-template-columns:1fr;}.pp-hero{padding:16px;}}

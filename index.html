@@ -472,6 +472,7 @@ footer p{line-height:2;}
   <div class="nav-brand" data-view="prompts"><span class="logo-mark">智</span>智富AI <em>ZHIFU.AI</em></div>
   <div class="nav-tabs">
     <button class="nav-tab hl active" data-view="prompts">&#127912; 提示词库</button>
+    <button class="nav-tab" data-view="rank">&#128293; 榜单</button>
     <button class="nav-tab" data-view="tools">&#129520; AI工具箱</button>
   </div>
   <button class="login-btn" id="login-btn">&#128172; 微信扫码登录</button>
@@ -485,6 +486,15 @@ footer p{line-height:2;}
       <div class="search-bar"><input id="pp-q" placeholder="搜索提示词（海报 / 信息图 / 电商主图 / 摄影 / 图生图…）"/></div>
     </div>
   </div>
+  <div class="pp-hero">
+    <div class="pp-hero-q">说出你要做什么图，我们给你配方</div>
+    <div class="pp-hero-bar">
+      <input id="need" placeholder="例：小红书健身封面 / 茶叶电商主图 / 国风儿童绘本页" />
+      <button class="pp-btn pri" id="need-go">找配方</button>
+    </div>
+    <div class="pp-hero-scenes" id="scene-chips"></div>
+    <div id="match-out"></div>
+  </div>
   <div class="pp-filters" id="pp-filters"></div>
   <div class="pp-bar" id="pp-count"></div>
   <div class="pp-grid" id="pp-grid"></div>
@@ -495,6 +505,12 @@ footer p{line-height:2;}
 <!-- ============ MAKE SAME ============ -->
 <div class="view" id="view-same">
   <div id="ps-body"></div>
+</div>
+
+<!-- ============ RANK ============ -->
+<div class="view" id="view-rank">
+  <div class="pp-top"><h1 class="pp-h1">榜单 <em>真实复刻与收藏数据 · 每天更新</em></h1></div>
+  <div id="rank-body"></div>
 </div>
 
 <!-- ============ TOOLS ============ -->
