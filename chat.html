@@ -4,14 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light" />
-<meta name="description" content="智富AI · 免费AI聊天台，直连 new-api 网关" />
-<title>AI 聊天台 · 智富AI</title>
+<meta name="description" content="鏅哄瘜AI 路 鍏嶈垂AI鑱婂ぉ鍙帮紝鐩磋繛 new-api 缃戝叧" />
+<title>AI 鑱婂ぉ鍙?路 鏅哄瘜AI</title>
 <!--
-  智富AI · AI 聊天台（chat.html）
-  · 单文件、无构建；浏览器直连任意 new-api（OpenAI 兼容）网关
-  · 设计语言与首页 index.html 一致：蓝紫渐变 + 玻璃拟态
-  · 站点地址与令牌仅存于本浏览器 localStorage；首次使用走页面内引导
--->
+  鏅哄瘜AI 路 AI 鑱婂ぉ鍙帮紙chat.html锛?  路 鍗曟枃浠躲€佹棤鏋勫缓锛涙祻瑙堝櫒鐩磋繛浠绘剰 new-api锛圤penAI 鍏煎锛夌綉鍏?  路 璁捐璇█涓庨椤?index.html 涓€鑷达細钃濈传娓愬彉 + 鐜荤拑鎷熸€?  路 绔欑偣鍦板潃涓庝护鐗屼粎瀛樹簬鏈祻瑙堝櫒 localStorage锛涢娆′娇鐢ㄨ蛋椤甸潰鍐呭紩瀵?-->
 <style>
   :root{
     --bg:#eef0f6;--card:rgba(255,255,255,0.55);--card-border:rgba(255,255,255,0.78);
@@ -45,7 +41,7 @@
 
   .glass{background:linear-gradient(145deg,rgba(255,255,255,.62),rgba(255,255,255,.30));backdrop-filter:blur(26px) saturate(190%);-webkit-backdrop-filter:blur(26px) saturate(190%);border:1px solid rgba(255,255,255,.7);border-radius:var(--radius);box-shadow:0 8px 32px rgba(31,38,135,.10),inset 0 1px 1px rgba(255,255,255,.9),inset 0 -1px 1px rgba(255,255,255,.35);}
 
-  /* ── 顶栏 ── */
+  /* 鈹€鈹€ 椤舵爮 鈹€鈹€ */
   nav{position:fixed;top:0;left:0;width:100%;z-index:100;padding:10px 24px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.5);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border-bottom:1px solid rgba(255,255,255,0.6);}
   .nav-brand{font-size:16px;font-weight:800;display:flex;align-items:center;gap:9px;white-space:nowrap;cursor:pointer;color:var(--tp);text-decoration:none;}
   .nav-brand:hover{text-decoration:none;}
@@ -59,7 +55,7 @@
   .btn-line:hover{border-color:var(--accent);color:var(--accent);}
   .btn-home{color:var(--ts);}
 
-  /* ── 布局 ── */
+  /* 鈹€鈹€ 甯冨眬 鈹€鈹€ */
   .app{display:grid;grid-template-columns:272px 1fr;height:100dvh;padding-top:57px;}
   .sidebar{background:rgba(255,255,255,0.42);backdrop-filter:blur(26px) saturate(190%);-webkit-backdrop-filter:blur(26px) saturate(190%);border-right:1px solid rgba(255,255,255,0.7);display:flex;flex-direction:column;min-height:0;}
   .side-head{padding:16px 14px 10px;}
@@ -80,7 +76,7 @@
   .convo-item .del.confirm{display:grid;color:var(--red);width:auto;padding:0 6px;font-size:11px;}
   .convo-empty{padding:14px 10px;font-size:12.5px;color:var(--tt);line-height:1.7;}
 
-  /* ── 消息区 ── */
+  /* 鈹€鈹€ 娑堟伅鍖?鈹€鈹€ */
   .main{display:flex;flex-direction:column;min-height:0;min-width:0;}
   .subbar{display:flex;align-items:center;gap:10px;padding:10px 20px;border-bottom:1px solid rgba(255,255,255,0.6);}
   .chat-title{flex:1;min-width:0;font-weight:700;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -127,8 +123,8 @@
   .codeblock code{font-family:var(--mono);font-size:13px;line-height:1.6;color:#e8e8ec;white-space:pre;}
   .thinking{margin:0 0 10px;text-align:left;}
   .thinking summary{cursor:pointer;font-family:var(--mono);font-size:11.5px;color:var(--tt);list-style:none;user-select:none;}
-  .thinking summary::before{content:'▸ ';}
-  .thinking[open] summary::before{content:'▾ ';}
+  .thinking summary::before{content:'鈻?';}
+  .thinking[open] summary::before{content:'鈻?';}
   .thinking .think-body{border-left:2px solid rgba(31,38,135,.15);margin:6px 0 0 2px;padding:2px 0 2px 12px;font-size:13px;color:var(--tt);line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;}
   .cursor-blink{display:inline-block;width:7px;height:15px;background:var(--accent);vertical-align:-2px;margin-left:2px;animation:blink 1s steps(2) infinite;border-radius:2px;}
   @keyframes blink{50%{opacity:0;}}
@@ -144,7 +140,7 @@
   .msg-error .retry{margin-top:8px;display:inline-flex;border:1px solid rgba(255,59,48,.35);border-radius:100px;padding:4px 14px;font-size:12.5px;color:var(--red);background:rgba(255,255,255,.6);}
   .msg-error .retry:hover{background:rgba(255,59,48,.1);}
 
-  /* ── 输入区 ── */
+  /* 鈹€鈹€ 杈撳叆鍖?鈹€鈹€ */
   .composer-wrap{padding:0 22px 18px;}
   .composer{max-width:800px;margin:0 auto;display:flex;align-items:flex-end;gap:10px;padding:10px 12px 10px 18px;background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(255,255,255,.42));backdrop-filter:blur(26px) saturate(190%);-webkit-backdrop-filter:blur(26px) saturate(190%);border:1px solid rgba(255,255,255,.8);border-radius:22px;box-shadow:0 8px 32px rgba(31,38,135,.10);transition:border-color .15s;}
   .composer:focus-within{border-color:rgba(0,113,227,.45);}
@@ -157,7 +153,20 @@
   .composer-hint{max-width:800px;margin:8px auto 0;font-family:var(--mono);font-size:10.5px;color:var(--tt);text-align:center;}
   .composer-hint kbd{border:1px solid rgba(31,38,135,.18);border-radius:4px;padding:0 4px;background:rgba(255,255,255,.6);font-family:inherit;}
 
-  /* ── 引导 & 弹窗 ── */
+  /* 鈹€鈹€ 璐﹀彿浣撶郴 鈹€鈹€ */
+  .user-badge{display:flex;align-items:center;gap:8px;padding:5px 12px;border-radius:100px;background:rgba(48,177,78,.10);border:1px solid rgba(48,177,78,.35);font-size:12px;white-space:nowrap;}
+  .user-badge b{font-weight:800;color:var(--tp);max-width:110px;overflow:hidden;text-overflow:ellipsis;}
+  .ub-quota{font-family:var(--mono);font-size:11px;color:var(--muted);}
+  .ub-out{border:1px solid rgba(31,38,135,.2);border-radius:100px;padding:1px 8px;font-size:11px;color:var(--ts);}
+  .ub-out:hover{color:var(--red);border-color:rgba(255,59,48,.4);}
+  .auth-tabs{display:flex;gap:6px;margin-bottom:16px;}
+  .auth-tab{flex:1;padding:9px 0;border-radius:12px;font-size:13.5px;font-weight:700;color:var(--ts);background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.7);}
+  .auth-tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:transparent;}
+  .auth-err{font-size:12.5px;color:var(--red);min-height:18px;margin:2px 0 6px;}
+  .auth-ok{font-size:12.5px;color:var(--green);min-height:18px;margin:2px 0 6px;}
+  .auth-foot{font-size:11.5px;color:var(--tt);line-height:1.7;margin-top:12px;}
+
+  /* 鈹€鈹€ 寮曞 & 寮圭獥 鈹€鈹€ */
   .overlay{position:fixed;inset:0;z-index:60;background:rgba(31,38,135,.25);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:grid;place-items:center;padding:20px;overflow-y:auto;}
   .overlay[hidden]{display:none;}
   .modal{width:min(540px,100%);max-height:min(88dvh,760px);overflow-y:auto;background:linear-gradient(145deg,rgba(255,255,255,.85),rgba(255,255,255,.65));backdrop-filter:blur(30px) saturate(190%);border:1px solid rgba(255,255,255,.85);border-radius:24px;padding:28px 28px 24px;box-shadow:0 24px 60px rgba(31,38,135,.2);}
@@ -206,95 +215,120 @@
 <div class="ambient" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 
 <nav>
-  <a class="nav-brand" href="index.html" title="返回首页">
-    <span class="logo-mark">智</span>智富AI <em style="font-style:normal;font-size:10px;color:var(--tt);letter-spacing:2px;">AI 聊天台</em>
+  <a class="nav-brand" href="index.html" title="杩斿洖棣栭〉">
+    <span class="logo-mark">鏅?/span>鏅哄瘜AI <em style="font-style:normal;font-size:10px;color:var(--tt);letter-spacing:2px;">AI 鑱婂ぉ鍙?/em>
   </a>
   <div class="nav-status">
-    <span class="status-pill" id="statusPill" title="网关连接状态"><span class="dot" id="statusDot"></span><span class="st-text" id="statusText">未连接</span></span>
-    <button class="btn-line" id="btnSettings" type="button">设置</button>
+    <span class="status-pill" id="statusPill" title="缃戝叧杩炴帴鐘舵€?><span class="dot" id="statusDot"></span><span class="st-text" id="statusText">鏈繛鎺?/span></span>
+    <button class="btn-line" id="btnSettings" type="button">璁剧疆</button>
+    <button class="btn-line" id="btnAuth" type="button">鐧诲綍 / 娉ㄥ唽</button>
+    <span id="userBadge" class="user-badge" hidden><b id="ubName"></b><span id="ubQuota" class="ub-quota"></span><button id="btnLogout" class="ub-out" type="button" title="閫€鍑虹櫥褰?>閫€鍑?/button></span>
   </div>
-  <button class="btn-line btn-home" id="btnMenu" type="button" aria-label="打开会话列表" style="display:none;">会话</button>
+  <button class="btn-line btn-home" id="btnMenu" type="button" aria-label="鎵撳紑浼氳瘽鍒楄〃" style="display:none;">浼氳瘽</button>
 </nav>
 
 <div class="app" id="app">
-  <aside class="sidebar" id="sidebar" aria-label="会话列表">
+  <aside class="sidebar" id="sidebar" aria-label="浼氳瘽鍒楄〃">
     <div class="side-head">
       <button class="btn-new" id="btnNew" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-        新对话
-      </button>
+        鏂板璇?      </button>
     </div>
-    <div class="convos" id="convos" role="list" aria-label="历史会话"></div>
+    <div class="convos" id="convos" role="list" aria-label="鍘嗗彶浼氳瘽"></div>
   </aside>
   <div class="scrim" id="scrim" hidden></div>
 
   <main class="main">
     <div class="subbar">
-      <button class="icon-btn btn-menu" id="btnMenu2" type="button" aria-label="打开会话列表">
+      <button class="icon-btn btn-menu" id="btnMenu2" type="button" aria-label="鎵撳紑浼氳瘽鍒楄〃">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
-      <div class="chat-title" id="chatTitle">新对话</div>
+      <div class="chat-title" id="chatTitle">鏂板璇?/div>
       <div class="model-pick">
-        <label for="modelSelect">模型</label>
-        <select class="model-select" id="modelSelect" aria-label="选择模型"></select>
+        <label for="modelSelect">妯″瀷</label>
+        <select class="model-select" id="modelSelect" aria-label="閫夋嫨妯″瀷"></select>
       </div>
-      <button class="icon-btn" id="btnExport" type="button" aria-label="导出当前会话为 Markdown" title="导出 Markdown">
+      <button class="icon-btn" id="btnExport" type="button" aria-label="瀵煎嚭褰撳墠浼氳瘽涓?Markdown" title="瀵煎嚭 Markdown">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 19h16"/></svg>
       </button>
-      <button class="icon-btn" id="btnDelete" type="button" aria-label="删除当前会话" title="删除会话">
+      <button class="icon-btn" id="btnDelete" type="button" aria-label="鍒犻櫎褰撳墠浼氳瘽" title="鍒犻櫎浼氳瘽">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 .9h8a1 1 0 0 0 1-.9L18 7"/></svg>
       </button>
     </div>
-    <div class="messages" id="messages" aria-label="聊天内容"></div>
+    <div class="messages" id="messages" aria-label="鑱婂ぉ鍐呭"></div>
     <div class="composer-wrap">
       <div class="composer">
-        <textarea id="input" rows="1" placeholder="输入消息，Enter 发送" aria-label="输入消息" enterkeyhint="send"></textarea>
-        <button class="btn-send" id="btnSend" type="button" aria-label="发送" disabled>
+        <textarea id="input" rows="1" placeholder="杈撳叆娑堟伅锛孍nter 鍙戦€? aria-label="杈撳叆娑堟伅" enterkeyhint="send"></textarea>
+        <button class="btn-send" id="btnSend" type="button" aria-label="鍙戦€? disabled>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
         </button>
       </div>
-      <div class="composer-hint"><kbd>Enter</kbd> 发送 · <kbd>Shift+Enter</kbd> 换行 · 会话与令牌仅保存在你的浏览器</div>
+      <div class="composer-hint"><kbd>Enter</kbd> 鍙戦€?路 <kbd>Shift+Enter</kbd> 鎹㈣ 路 浼氳瘽涓庝护鐗屼粎淇濆瓨鍦ㄤ綘鐨勬祻瑙堝櫒</div>
     </div>
   </main>
+</div>
+
+<div class="overlay" id="authOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="modal-head">
+      <h2 id="authTitle">璐﹀彿</h2>
+      <button class="icon-btn" id="btnCloseAuth" type="button" aria-label="鍏抽棴">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" type="button">鐧诲綍</button>
+      <button class="auth-tab" id="tabRegister" type="button">娉ㄥ唽锛堥€侀搴︼級</button>
+    </div>
+    <form id="authForm" novalidate>
+      <div class="field"><label for="authUser">鐢ㄦ埛鍚?/label><input id="authUser" type="text" autocomplete="username" spellcheck="false" placeholder="鐢ㄦ埛鍚? /></div>
+      <div class="field"><label for="authPass">瀵嗙爜</label><input id="authPass" type="password" autocomplete="current-password" placeholder="鑷冲皯 8 浣? /></div>
+      <div class="field" id="authPass2Row" hidden><label for="authPass2">纭瀵嗙爜</label><input id="authPass2" type="password" autocomplete="new-password" placeholder="鍐嶈緭涓€娆? /></div>
+      <div class="auth-err" id="authErr"></div>
+      <div class="auth-ok" id="authOk"></div>
+      <button class="btn-primary" type="submit" id="authSubmit" style="width:100%">鐧诲綍</button>
+    </form>
+    <p class="auth-foot" id="authFoot">鐧诲綍鍚庤嚜鍔ㄨ幏寰椾綘鐨勪笓灞?AI 浠ょ墝骞跺紑濮嬪璇濓紱浠ょ墝鍙繚瀛樺湪鏈祻瑙堝櫒銆傚綋鍓嶈禒閫侀搴︿互绔欐柟鍏憡涓哄噯銆?/p>
+  </div>
 </div>
 
 <div class="overlay" id="settingsOverlay" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
     <div class="modal-head">
-      <h2 id="settingsTitle">连接设置</h2>
-      <button class="icon-btn" id="btnCloseSettings" type="button" aria-label="关闭设置">
+      <h2 id="settingsTitle">杩炴帴璁剧疆</h2>
+      <button class="icon-btn" id="btnCloseSettings" type="button" aria-label="鍏抽棴璁剧疆">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
     <form id="settingsForm" novalidate>
       <div class="field" id="fBase">
-        <label for="setBase">new-api 站点地址</label>
-        <input id="setBase" type="text" autocomplete="off" spellcheck="false" placeholder="https://你的域名.com" />
-        <span class="hint">填 new-api 网关的根地址（不带 /v1 后缀）；需 HTTPS 或已加入跨域白名单</span>
+        <label for="setBase">new-api 绔欑偣鍦板潃</label>
+        <input id="setBase" type="text" autocomplete="off" spellcheck="false" placeholder="https://浣犵殑鍩熷悕.com" />
+        <span class="hint">濉?new-api 缃戝叧鐨勬牴鍦板潃锛堜笉甯?/v1 鍚庣紑锛夛紱闇€ HTTPS 鎴栧凡鍔犲叆璺ㄥ煙鐧藉悕鍗?/span>
         <span class="err" id="errBase"></span>
       </div>
       <div class="field" id="fKey">
-        <label for="setKey">访问令牌（API Key）</label>
+        <label for="setKey">璁块棶浠ょ墝锛圓PI Key锛?/label>
         <input id="setKey" type="password" autocomplete="off" spellcheck="false" placeholder="sk-..." />
-        <span class="hint">在 new-api 后台「令牌」页创建；仅保存在你的浏览器</span>
+        <span class="hint">鍦?new-api 鍚庡彴銆屼护鐗屻€嶉〉鍒涘缓锛涗粎淇濆瓨鍦ㄤ綘鐨勬祻瑙堝櫒</span>
         <span class="err" id="errKey"></span>
       </div>
       <div class="field" id="fModel">
-        <label for="setModel">默认模型</label>
+        <label for="setModel">榛樿妯″瀷</label>
         <input id="setModel" type="text" autocomplete="off" spellcheck="false" placeholder="glm-4-flash" />
-        <span class="hint">如 glm-4-flash、gemini-2.0-flash 等（以网关渠道配置为准）</span>
+        <span class="hint">濡?glm-4-flash銆乬emini-2.0-flash 绛夛紙浠ョ綉鍏虫笭閬撻厤缃负鍑嗭級</span>
         <span class="err" id="errModel"></span>
       </div>
       <div class="field">
-        <label for="setSystem">系统提示词（可选）</label>
-        <textarea id="setSystem" rows="2" placeholder="你是一个乐于助人的中文助手。"></textarea>
+        <label for="setSystem">绯荤粺鎻愮ず璇嶏紙鍙€夛級</label>
+        <textarea id="setSystem" rows="2" placeholder="浣犳槸涓€涓箰浜庡姪浜虹殑涓枃鍔╂墜銆?></textarea>
       </div>
       <div class="field">
         <span class="hint" id="testResult"></span>
       </div>
       <div class="modal-foot">
-        <button class="btn-line" type="button" id="btnTest">测试连接</button>
-        <button class="btn-primary" type="submit">保存</button>
+        <button class="btn-line" type="button" id="btnTest">娴嬭瘯杩炴帴</button>
+        <button class="btn-primary" type="submit">淇濆瓨</button>
       </div>
     </form>
   </div>
@@ -303,34 +337,34 @@
 <div class="overlay" id="onboard" hidden>
   <div class="modal">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-      <span class="mark" style="width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;font-size:22px;display:inline-flex;align-items:center;justify-content:center;">智</span>
-      <h2 style="font-size:21px;font-weight:800;margin:0;">连接你的 AI 网关</h2>
+      <span class="mark" style="width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;font-size:22px;display:inline-flex;align-items:center;justify-content:center;">鏅?/span>
+      <h2 style="font-size:21px;font-weight:800;margin:0;">杩炴帴浣犵殑 AI 缃戝叧</h2>
     </div>
-    <p style="color:var(--ts);font-size:14px;margin:0 0 20px;line-height:1.7;">聊天台直连 new-api 网关，密钥只存在你的浏览器，站方不存储对话。</p>
+    <p style="color:var(--ts);font-size:14px;margin:0 0 20px;line-height:1.7;">鑱婂ぉ鍙扮洿杩?new-api 缃戝叧锛屽瘑閽ュ彧瀛樺湪浣犵殑娴忚鍣紝绔欐柟涓嶅瓨鍌ㄥ璇濄€?/p>
     <ol class="steps">
-      <li><span>部署好 <b>new-api</b>，后台「渠道」里配置上游模型</span></li>
-      <li><span>后台「令牌」页创建一个 <b>API Key</b></span></li>
-      <li><span>把站点地址和 Key 填在下面，开聊</span></li>
+      <li><span>閮ㄧ讲濂?<b>new-api</b>锛屽悗鍙般€屾笭閬撱€嶉噷閰嶇疆涓婃父妯″瀷</span></li>
+      <li><span>鍚庡彴銆屼护鐗屻€嶉〉鍒涘缓涓€涓?<b>API Key</b></span></li>
+      <li><span>鎶婄珯鐐瑰湴鍧€鍜?Key 濉湪涓嬮潰锛屽紑鑱?/span></li>
     </ol>
     <form id="onboardForm" novalidate>
       <div class="field" id="ofBase">
-        <label for="obBase">站点地址</label>
-        <input id="obBase" type="text" autocomplete="off" spellcheck="false" placeholder="https://你的域名.com" />
+        <label for="obBase">绔欑偣鍦板潃</label>
+        <input id="obBase" type="text" autocomplete="off" spellcheck="false" placeholder="https://浣犵殑鍩熷悕.com" />
         <span class="err" id="obErrBase"></span>
       </div>
       <div class="field" id="ofKey">
-        <label for="obKey">访问令牌</label>
+        <label for="obKey">璁块棶浠ょ墝</label>
         <input id="obKey" type="password" autocomplete="off" spellcheck="false" placeholder="sk-..." />
         <span class="err" id="obErrKey"></span>
       </div>
       <div class="field" id="ofModel">
-        <label for="obModel">模型名</label>
+        <label for="obModel">妯″瀷鍚?/label>
         <input id="obModel" type="text" autocomplete="off" spellcheck="false" placeholder="glm-4-flash" />
         <span class="err" id="obErrModel"></span>
       </div>
-      <button class="btn-primary" type="submit" id="obSubmit" style="width:100%">连接并开始</button>
+      <button class="btn-primary" type="submit" id="obSubmit" style="width:100%">杩炴帴骞跺紑濮?/button>
     </form>
-    <p class="onboard-foot">提示：地址必须是公网可访问的 HTTPS（或已配置跨域白名单），浏览器才能直连。本地 localhost 地址仅在本机打开时可用。</p>
+    <p class="onboard-foot">鎻愮ず锛氬湴鍧€蹇呴』鏄叕缃戝彲璁块棶鐨?HTTPS锛堟垨宸查厤缃法鍩熺櫧鍚嶅崟锛夛紝娴忚鍣ㄦ墠鑳界洿杩炪€傛湰鍦?localhost 鍦板潃浠呭湪鏈満鎵撳紑鏃跺彲鐢ㄣ€?/p>
   </div>
 </div>
 
@@ -340,6 +374,42 @@
 (function () {
   'use strict';
   var STORE_KEY = 'zhifu.chat.v1';
+  var AUTH_BASE = 'https://flashing-interviews-vessel-varieties.trycloudflare.com'; // 缃戝叧锛堥毀閬撴崲鍧€鍙敼杩欎竴琛岋級
+  var AUTH_KEY = 'zhifu_auth_v1';
+  var auth = (function () { try { return JSON.parse(localStorage.getItem(AUTH_KEY)) || null; } catch (e) { return null; } })();
+  function authSave() { try { localStorage.setItem(AUTH_KEY, JSON.stringify(auth)); } catch (e) {} }
+  function authClear() { auth = null; try { localStorage.removeItem(AUTH_KEY); } catch (e) {} }
+  function quotaText(q) {
+    if (q == null) return '';
+    var usd = q / 500000; // new-api: 500000 quota = $1
+    return '$' + usd.toFixed(2);
+  }
+  async function api(path, method, body, token) {
+    const h = { 'Content-Type': 'application/json' };
+    if (token) h['Authorization'] = 'Bearer ' + token;
+    const r = await fetch(AUTH_BASE + path, { method: method || 'GET', headers: h, body: body ? JSON.stringify(body) : undefined });
+    let d; try { d = await r.json(); } catch (e) { d = { success: false, message: 'HTTP ' + r.status }; }
+    return d;
+  }
+  async function applyCredential() {
+    if (!auth) return null;
+    const d = await api('/api/chat-credential', 'GET', null, auth.access_token);
+    if (d.success && d.data && d.data.apiKey) {
+      state.config.baseUrl = AUTH_BASE;
+      state.config.apiKey = d.data.apiKey;
+      state.config.saved = true;
+      persist(); renderStatus();
+      const me = await api('/api/user/self', 'GET', null, auth.access_token);
+      if (me.success) { auth.quota = me.data.quota; auth.username = me.data.username; authSave(); }
+      renderUser();
+      return true;
+    }
+    return false;
+  }
+  async function createTokenForMe() {
+    return api('/api/token/', 'POST', { name: 'chat-' + Date.now().toString(36), remain_quota: 300000, expired_time: -1, unlimited_quota: false }, auth.access_token);
+  }
+
   var DEFAULT_STATE = {
     config: { saved: false, baseUrl: '', apiKey: '', model: 'glm-4-flash', models: [], systemPrompt: '', temperature: 0.7, status: '' },
     convos: [], activeId: null
@@ -380,7 +450,7 @@
   var tt = null;
   function toast(msg) { toastEl.textContent = msg; toastEl.classList.add('show'); if (tt) clearTimeout(tt); tt = setTimeout(function () { toastEl.classList.remove('show'); }, 2200); }
   function copyText(text, tip) {
-    var done = function () { toast(tip || '已复制'); };
+    var done = function () { toast(tip || '宸插鍒?); };
     if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done, function () { legacyCopy(text, done); }); }
     else legacyCopy(text, done);
   }
@@ -389,7 +459,7 @@
   function renderMarkdown(src) {
     var text = esc(src), blocks = [];
     text = text.replace(/```([A-Za-z0-9_+-]*)\n?([\s\S]*?)(?:```|$)/g, function (m, lang, code) {
-      blocks.push('<div class="codeblock"><div class="codeblock-head"><span>' + (lang || 'text') + '</span><button class="code-copy" type="button">复制</button></div><pre><code>' + code.replace(/\n$/, '') + '</code></pre></div>');
+      blocks.push('<div class="codeblock"><div class="codeblock-head"><span>' + (lang || 'text') + '</span><button class="code-copy" type="button">澶嶅埗</button></div><pre><code>' + code.replace(/\n$/, '') + '</code></pre></div>');
       return '\u0001B' + (blocks.length - 1) + '\u0001';
     });
     text = text.replace(/`([^`\n]+)`/g, '<code class="inline-code">$1</code>');
@@ -414,49 +484,49 @@
 
   function activeConvo() { for (var i = 0; i < state.convos.length; i++) if (state.convos[i].id === state.activeId) return state.convos[i]; return null; }
   function newConvo() {
-    var c = { id: 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7), title: '新对话', createdAt: Date.now(), updatedAt: Date.now(), messages: [] };
+    var c = { id: 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7), title: '鏂板璇?, createdAt: Date.now(), updatedAt: Date.now(), messages: [] };
     state.convos.unshift(c); state.activeId = c.id; persist(); renderAll(); inputEl.focus(); return c;
   }
   function deleteConvo(id) {
     state.convos = state.convos.filter(function (c) { return c.id !== id; });
     if (state.activeId === id) state.activeId = state.convos.length ? state.convos[0].id : null;
-    persist(); renderAll(); if (!state.convos.length) toast('已删除');
+    persist(); renderAll(); if (!state.convos.length) toast('宸插垹闄?);
   }
 
   var SUGGESTS = [
-    { t: '起标题', d: '帮我给一篇关于"AI 提示词写作"的文章起 5 个吸引人的标题。' },
-    { t: '改写提示词', d: '我想生成一张"赛博朋克风格的城市夜景"图片，帮我把这句提示词扩写得更专业。' },
-    { t: '解释概念', d: '用通俗的话解释：什么是 API 网关？为什么自建 AI 站需要它？' }
+    { t: '璧锋爣棰?, d: '甯垜缁欎竴绡囧叧浜?AI 鎻愮ず璇嶅啓浣?鐨勬枃绔犺捣 5 涓惛寮曚汉鐨勬爣棰樸€? },
+    { t: '鏀瑰啓鎻愮ず璇?, d: '鎴戞兂鐢熸垚涓€寮?璧涘崥鏈嬪厠椋庢牸鐨勫煄甯傚鏅?鍥剧墖锛屽府鎴戞妸杩欏彞鎻愮ず璇嶆墿鍐欏緱鏇翠笓涓氥€? },
+    { t: '瑙ｉ噴姒傚康', d: '鐢ㄩ€氫織鐨勮瘽瑙ｉ噴锛氫粈涔堟槸 API 缃戝叧锛熶负浠€涔堣嚜寤?AI 绔欓渶瑕佸畠锛? }
   ];
 
   function renderAll() { renderSidebar(); renderHeader(); renderMessages(); renderStatus(); }
   function renderSidebar() {
-    if (!state.convos.length) { convosEl.innerHTML = '<div class="convo-empty">还没有会话。<br>点「新对话」开始第一次提问。</div>'; return; }
-    var html = '<div class="convo-label">历史会话</div>';
+    if (!state.convos.length) { convosEl.innerHTML = '<div class="convo-empty">杩樻病鏈変細璇濄€?br>鐐广€屾柊瀵硅瘽銆嶅紑濮嬬涓€娆℃彁闂€?/div>'; return; }
+    var html = '<div class="convo-label">鍘嗗彶浼氳瘽</div>';
     state.convos.forEach(function (c) {
-      html += '<div class="convo-item' + (c.id === state.activeId ? ' active' : '') + '" data-id="' + c.id + '" role="button" tabindex="0"><span class="t">' + esc(c.title) + '</span><span class="d">' + fmtDate(c.updatedAt) + '</span><button class="del" type="button" aria-label="删除会话" title="删除"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>';
+      html += '<div class="convo-item' + (c.id === state.activeId ? ' active' : '') + '" data-id="' + c.id + '" role="button" tabindex="0"><span class="t">' + esc(c.title) + '</span><span class="d">' + fmtDate(c.updatedAt) + '</span><button class="del" type="button" aria-label="鍒犻櫎浼氳瘽" title="鍒犻櫎"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>';
     });
     convosEl.innerHTML = html;
   }
   function renderHeader() {
     var c = activeConvo();
-    chatTitle.textContent = c ? c.title : '新对话';
+    chatTitle.textContent = c ? c.title : '鏂板璇?;
     var models = (state.config.models && state.config.models.length) ? state.config.models : [state.config.model];
     if (models.indexOf(state.config.model) < 0) models.unshift(state.config.model);
     var html = models.map(function (m) { return '<option value="' + esc(m) + '"' + (m === state.config.model ? ' selected' : '') + '>' + esc(m) + '</option>'; }).join('');
-    html += '<option value="__manage">管理…</option>';
+    html += '<option value="__manage">绠＄悊鈥?/option>';
     modelSelect.innerHTML = html;
     refreshSendBtn();
   }
   function renderStatus() {
     var cfg = state.config;
     statusDot.className = 'dot ' + (cfg.status === 'ok' ? 'ok' : cfg.status === 'bad' ? 'bad' : '');
-    statusText.textContent = !cfg.baseUrl ? '未连接' : cfg.status === 'ok' ? hostOf(cfg.baseUrl) : cfg.status === 'bad' ? '连接异常' : '已配置';
+    statusText.textContent = !cfg.baseUrl ? '鏈繛鎺? : cfg.status === 'ok' ? hostOf(cfg.baseUrl) : cfg.status === 'bad' ? '杩炴帴寮傚父' : '宸查厤缃?;
   }
   function renderMessages() {
     var c = activeConvo();
     if (!c || !c.messages.length) {
-      messagesEl.innerHTML = '<div class="welcome"><span class="mark">智</span><h1>问点什么吧</h1><p class="wsub">由你的 new-api 网关驱动 · ' + esc(state.config.model) + '</p><div class="suggests">' + SUGGESTS.map(function (s, i) { return '<button class="suggest" type="button" data-sg="' + i + '"><span class="st">' + s.t + '</span>' + s.d + '</button>'; }).join('') + '</div></div>';
+      messagesEl.innerHTML = '<div class="welcome"><span class="mark">鏅?/span><h1>闂偣浠€涔堝惂</h1><p class="wsub">鐢变綘鐨?new-api 缃戝叧椹卞姩 路 ' + esc(state.config.model) + '</p><div class="suggests">' + SUGGESTS.map(function (s, i) { return '<button class="suggest" type="button" data-sg="' + i + '"><span class="st">' + s.t + '</span>' + s.d + '</button>'; }).join('') + '</div></div>';
       return;
     }
     var html = '<div class="msg-col">';
@@ -467,17 +537,17 @@
   }
   function renderMessage(m) {
     if (m.role === 'user') {
-      return '<div class="msg user" data-mid="' + m.id + '"><div class="msg-head"><span class="who">你</span></div><div class="bubble">' + esc(m.content) + '</div><div class="msg-tools"><button class="tool-btn" type="button" data-act="copy" data-mid="' + m.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>复制</button></div></div>';
+      return '<div class="msg user" data-mid="' + m.id + '"><div class="msg-head"><span class="who">浣?/span></div><div class="bubble">' + esc(m.content) + '</div><div class="msg-tools"><button class="tool-btn" type="button" data-act="copy" data-mid="' + m.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>澶嶅埗</button></div></div>';
     }
-    var head = '<div class="msg-head"><span class="who">' + esc(m.model || '助手') + '</span>' + (m.durationMs ? '<span>' + (m.durationMs / 1000).toFixed(1) + 's</span>' : '') + '</div>';
-    var think = m.reasoning ? '<details class="thinking"><summary>思考过程</summary><div class="think-body">' + esc(m.reasoning) + '</div></details>' : '';
-    var bodyHtml = (m.pending && !m.content && !m.reasoning) ? '<span class="cursor-blink" aria-label="正在生成"></span>' : renderMarkdown(m.content) + (m.pending ? '<span class="cursor-blink"></span>' : '');
+    var head = '<div class="msg-head"><span class="who">' + esc(m.model || '鍔╂墜') + '</span>' + (m.durationMs ? '<span>' + (m.durationMs / 1000).toFixed(1) + 's</span>' : '') + '</div>';
+    var think = m.reasoning ? '<details class="thinking"><summary>鎬濊€冭繃绋?/summary><div class="think-body">' + esc(m.reasoning) + '</div></details>' : '';
+    var bodyHtml = (m.pending && !m.content && !m.reasoning) ? '<span class="cursor-blink" aria-label="姝ｅ湪鐢熸垚"></span>' : renderMarkdown(m.content) + (m.pending ? '<span class="cursor-blink"></span>' : '');
     var tools = '';
     if (!m.pending && m.content) {
-      tools = '<div class="msg-tools"><button class="tool-btn" type="button" data-act="copy" data-mid="' + m.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>复制</button><button class="tool-btn" type="button" data-act="regen" data-mid="' + m.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.34 5.66M20 5v6h-6"/></svg>重新生成</button></div>';
+      tools = '<div class="msg-tools"><button class="tool-btn" type="button" data-act="copy" data-mid="' + m.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>澶嶅埗</button><button class="tool-btn" type="button" data-act="regen" data-mid="' + m.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.34 5.66M20 5v6h-6"/></svg>閲嶆柊鐢熸垚</button></div>';
     }
-    var errHtml = m.error ? '<div class="msg-error"><div class="et">生成失败</div><div>' + m.error + '</div><button class="retry" type="button" data-act="retry" data-mid="' + m.id + '">重试</button></div>' : '';
-    var stopped = m.stopped && !m.error ? '<div class="stopped-flag">已手动停止</div>' : '';
+    var errHtml = m.error ? '<div class="msg-error"><div class="et">鐢熸垚澶辫触</div><div>' + m.error + '</div><button class="retry" type="button" data-act="retry" data-mid="' + m.id + '">閲嶈瘯</button></div>' : '';
+    var stopped = m.stopped && !m.error ? '<div class="stopped-flag">宸叉墜鍔ㄥ仠姝?/div>' : '';
     return '<div class="msg assistant" data-mid="' + m.id + '">' + head + think + '<div class="msg-body">' + bodyHtml + '</div>' + stopped + errHtml + tools + '</div>';
   }
   function updateMessageEl(m) {
@@ -494,28 +564,28 @@
   }
   function refreshSendBtn() {
     if (currentController) {
-      sendBtn.disabled = false; sendBtn.setAttribute('aria-label', '停止生成');
+      sendBtn.disabled = false; sendBtn.setAttribute('aria-label', '鍋滄鐢熸垚');
       sendBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg>';
       return;
     }
-    sendBtn.setAttribute('aria-label', '发送');
+    sendBtn.setAttribute('aria-label', '鍙戦€?);
     sendBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>';
     sendBtn.disabled = !inputEl.value.trim() || !state.config.saved;
   }
   function HttpError(status, detail) { var e = new Error('HTTP ' + status); e.status = status; e.detail = detail || ''; return e; }
   function explainError(err) {
     if (err && err.status) {
-      var d = err.detail ? '（' + String(err.detail).slice(0, 160) + '）' : '';
+      var d = err.detail ? '锛? + String(err.detail).slice(0, 160) + '锛? : '';
       switch (err.status) {
-        case 401: return '令牌无效或未授权（401）。请检查 API Key 是否正确、令牌是否被禁用或过期。' + d;
-        case 402: return '额度不足（402）。这个令牌的余额为 0，请联系站点管理员。' + d;
-        case 403: return '访问被拒绝（403）。令牌可能无权使用该模型，或用户分组受限。' + d;
-        case 404: return '接口不存在（404）。站点地址可能不正确——请填 new-api 根地址（不带 /v1）。' + d;
-        case 429: return '请求过于频繁（429）。已触发限流，稍等几秒再试。' + d;
-        default: return '网关或上游服务异常（' + err.status + '）。可稍后重试。' + d;
+        case 401: return '浠ょ墝鏃犳晥鎴栨湭鎺堟潈锛?01锛夈€傝妫€鏌?API Key 鏄惁姝ｇ‘銆佷护鐗屾槸鍚﹁绂佺敤鎴栬繃鏈熴€? + d;
+        case 402: return '棰濆害涓嶈冻锛?02锛夈€傝繖涓护鐗岀殑浣欓涓?0锛岃鑱旂郴绔欑偣绠＄悊鍛樸€? + d;
+        case 403: return '璁块棶琚嫆缁濓紙403锛夈€備护鐗屽彲鑳芥棤鏉冧娇鐢ㄨ妯″瀷锛屾垨鐢ㄦ埛鍒嗙粍鍙楅檺銆? + d;
+        case 404: return '鎺ュ彛涓嶅瓨鍦紙404锛夈€傜珯鐐瑰湴鍧€鍙兘涓嶆纭€斺€旇濉?new-api 鏍瑰湴鍧€锛堜笉甯?/v1锛夈€? + d;
+        case 429: return '璇锋眰杩囦簬棰戠箒锛?29锛夈€傚凡瑙﹀彂闄愭祦锛岀◢绛夊嚑绉掑啀璇曘€? + d;
+        default: return '缃戝叧鎴栦笂娓告湇鍔″紓甯革紙' + err.status + '锛夈€傚彲绋嶅悗閲嶈瘯銆? + d;
       }
     }
-    return '无法连接到站点。请确认：① 地址为公网可访问的 HTTPS；② 网关已启动且已把本站加入跨域白名单。';
+    return '鏃犳硶杩炴帴鍒扮珯鐐广€傝纭锛氣憼 鍦板潃涓哄叕缃戝彲璁块棶鐨?HTTPS锛涒憽 缃戝叧宸插惎鍔ㄤ笖宸叉妸鏈珯鍔犲叆璺ㄥ煙鐧藉悕鍗曘€?;
   }
   function buildPayload(convo, assistant) {
     var msgs = [];
@@ -531,7 +601,7 @@
     if (currentController) return;
     var convo = activeConvo() || newConvo();
     convo.messages.push({ id: 'm' + Date.now().toString(36), role: 'user', content: text });
-    if (convo.messages.length === 1) convo.title = text.length > 22 ? text.slice(0, 22) + '…' : text.replace(/\n/g, ' ');
+    if (convo.messages.length === 1) convo.title = text.length > 22 ? text.slice(0, 22) + '鈥? : text.replace(/\n/g, ' ');
     convo.updatedAt = Date.now();
     var assistant = { id: 'm' + Date.now().toString(36) + 'a', role: 'assistant', content: '', reasoning: '', model: state.config.model, pending: true };
     convo.messages.push(assistant);
@@ -581,7 +651,7 @@
       return pump();
     }).then(function () {
       assistant.durationMs = performance.now() - started;
-      if (!assistant.content && !assistant.reasoning && !assistant.error) assistant.error = '站点返回了空内容，请检查网关渠道配置或换个模型。';
+      if (!assistant.content && !assistant.reasoning && !assistant.error) assistant.error = '绔欑偣杩斿洖浜嗙┖鍐呭锛岃妫€鏌ョ綉鍏虫笭閬撻厤缃垨鎹釜妯″瀷銆?;
     }).catch(function (err) {
       if (err && err.name === 'AbortError') assistant.stopped = true;
       else { assistant.error = explainError(err); cfg.status = 'bad'; renderStatus(); }
@@ -607,14 +677,14 @@
   function runTest(resultEl, btn) {
     var cfg = state.config;
     cfg.baseUrl = ($('setBase').value || '').trim(); cfg.apiKey = $('setKey').value.trim();
-    if (!cfg.baseUrl || !cfg.apiKey) { resultEl.textContent = '请先填写站点地址和令牌。'; return Promise.resolve(false); }
-    btn.disabled = true; resultEl.textContent = '正在连接 ' + hostOf(cfg.baseUrl) + ' …';
+    if (!cfg.baseUrl || !cfg.apiKey) { resultEl.textContent = '璇峰厛濉啓绔欑偣鍦板潃鍜屼护鐗屻€?; return Promise.resolve(false); }
+    btn.disabled = true; resultEl.textContent = '姝ｅ湪杩炴帴 ' + hostOf(cfg.baseUrl) + ' 鈥?;
     return fetchModels().then(function (ids) {
       btn.disabled = false; cfg.status = 'ok';
-      if (ids.length) { cfg.models = ids; if (ids.indexOf(cfg.model) < 0) cfg.model = ids[0]; resultEl.textContent = '连接成功 · 可用模型 ' + ids.length + ' 个'; }
-      else resultEl.textContent = '连接成功，但站点未返回模型列表；请手动填写模型名。';
+      if (ids.length) { cfg.models = ids; if (ids.indexOf(cfg.model) < 0) cfg.model = ids[0]; resultEl.textContent = '杩炴帴鎴愬姛 路 鍙敤妯″瀷 ' + ids.length + ' 涓?; }
+      else resultEl.textContent = '杩炴帴鎴愬姛锛屼絾绔欑偣鏈繑鍥炴ā鍨嬪垪琛紱璇锋墜鍔ㄥ～鍐欐ā鍨嬪悕銆?;
       renderStatus(); renderHeader(); persist(); return true;
-    }).catch(function (err) { btn.disabled = false; cfg.status = 'bad'; renderStatus(); resultEl.textContent = '连接失败：' + explainError(err); return false; });
+    }).catch(function (err) { btn.disabled = false; cfg.status = 'bad'; renderStatus(); resultEl.textContent = '杩炴帴澶辫触锛? + explainError(err); return false; });
   }
   var settingsOverlay = $('settingsOverlay'), lastFocus = null;
   function openSettings() {
@@ -651,7 +721,7 @@
     if (bad) return;
     state.config.baseUrl = base; state.config.apiKey = key; state.config.model = model;
     state.config.systemPrompt = $('setSystem').value; state.config.saved = true;
-    persist(); closeSettings(); renderAll(); toast('设置已保存');
+    persist(); closeSettings(); renderAll(); toast('璁剧疆宸蹭繚瀛?);
   });
   $('onboardForm').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -661,7 +731,7 @@
     $('ofModel').classList.toggle('invalid', !model); if (!model) bad = true;
     if (bad) return;
     state.config.baseUrl = base; state.config.apiKey = key; state.config.model = model || 'glm-4-flash';
-    var btn = $('obSubmit'); btn.disabled = true; btn.textContent = '正在连接…';
+    var btn = $('obSubmit'); btn.disabled = true; btn.textContent = '姝ｅ湪杩炴帴鈥?;
     fetchModels().then(function (ids) {
       state.config.status = 'ok'; state.config.models = ids;
       if (ids.length && ids.indexOf(state.config.model) < 0) state.config.model = ids[0];
@@ -669,33 +739,33 @@
       state.config.saved = true; persist();
       $('onboard').hidden = true; renderAll();
       if (!state.convos.length) newConvo();
-      toast(state.config.status === 'ok' ? '连接成功' : '已保存；连接失败可稍后在设置里重试');
+      toast(state.config.status === 'ok' ? '杩炴帴鎴愬姛' : '宸蹭繚瀛橈紱杩炴帴澶辫触鍙◢鍚庡湪璁剧疆閲岄噸璇?);
       inputEl.focus();
     });
   });
   modelSelect.addEventListener('change', function () {
     if (this.value === '__manage') { openSettings(); renderHeader(); return; }
-    state.config.model = this.value; persist(); renderHeader(); toast('已切换到 ' + this.value);
+    state.config.model = this.value; persist(); renderHeader(); toast('宸插垏鎹㈠埌 ' + this.value);
   });
   $('btnExport').addEventListener('click', function () {
     var c = activeConvo();
-    if (!c || !c.messages.length) { toast('当前会话为空'); return; }
-    var lines = ['# ' + c.title, '', '> 导出自 智富AI 聊天台 · ' + new Date().toLocaleString('zh-CN'), ''];
+    if (!c || !c.messages.length) { toast('褰撳墠浼氳瘽涓虹┖'); return; }
+    var lines = ['# ' + c.title, '', '> 瀵煎嚭鑷?鏅哄瘜AI 鑱婂ぉ鍙?路 ' + new Date().toLocaleString('zh-CN'), ''];
     c.messages.forEach(function (m) {
-      if (m.role === 'user') lines.push('## 你', '', m.content, '');
-      else if (m.content) lines.push('## 助手（' + (m.model || '') + '）', '', m.content, '');
+      if (m.role === 'user') lines.push('## 浣?, '', m.content, '');
+      else if (m.content) lines.push('## 鍔╂墜锛? + (m.model || '') + '锛?, '', m.content, '');
     });
     var blob = new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = (c.title.replace(/[\\/:*?"<>|]/g, '') || '会话') + '.md';
+    a.download = (c.title.replace(/[\\/:*?"<>|]/g, '') || '浼氳瘽') + '.md';
     document.body.appendChild(a); a.click();
     setTimeout(function () { URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 200);
-    toast('已导出 Markdown');
+    toast('宸插鍑?Markdown');
   });
   $('btnDelete').addEventListener('click', function () {
     var c = activeConvo();
-    if (!c) { toast('没有可删除的会话'); return; }
+    if (!c) { toast('娌℃湁鍙垹闄ょ殑浼氳瘽'); return; }
     deleteConvo(c.id);
   });
   $('btnMenu').addEventListener('click', openDrawer);
@@ -709,7 +779,7 @@
       e.stopPropagation();
       if (del.classList.contains('confirm')) deleteConvo(id);
       else {
-        del.classList.add('confirm'); del.textContent = '确认删除？';
+        del.classList.add('confirm'); del.textContent = '纭鍒犻櫎锛?;
         setTimeout(function () { del.classList.remove('confirm'); del.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>'; }, 2600);
       }
       return;
@@ -723,7 +793,7 @@
   });
   messagesEl.addEventListener('click', function (e) {
     var codeCopy = e.target.closest('.code-copy');
-    if (codeCopy) { copyText(codeCopy.closest('.codeblock').querySelector('code').textContent, '代码已复制'); return; }
+    if (codeCopy) { copyText(codeCopy.closest('.codeblock').querySelector('code').textContent, '浠ｇ爜宸插鍒?); return; }
     var sg = e.target.closest('.suggest');
     if (sg) { inputEl.value = SUGGESTS[+sg.getAttribute('data-sg')].d; inputEl.dispatchEvent(new Event('input')); inputEl.focus(); return; }
     var btn = e.target.closest('[data-act]'); if (!btn) return;
@@ -732,7 +802,7 @@
     for (k = 0; k < convo.messages.length; k++) if (convo.messages[k].id === mid) { msg = convo.messages[k]; break; }
     if (!msg) return;
     var act = btn.getAttribute('data-act');
-    if (act === 'copy') copyText(msg.content, '已复制');
+    if (act === 'copy') copyText(msg.content, '宸插鍒?);
     else if (act === 'regen' || act === 'retry') regenerate(mid);
   });
   document.addEventListener('keydown', function (e) {
@@ -749,9 +819,90 @@
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
 
+  /* 鈹€鈹€ 璁よ瘉 UI 鈹€鈹€ */
+  var authOverlay = $('authOverlay');
+  var authMode = 'login';
+  function setAuthMsg(m, ok) { $(ok ? 'authOk' : 'authErr').textContent = m || ''; $(ok ? 'authErr' : 'authOk').textContent = ''; }
+  function openAuth(mode) {
+    authMode = mode || 'login';
+    $('tabLogin').classList.toggle('active', authMode === 'login');
+    $('tabRegister').classList.toggle('active', authMode === 'register');
+    $('authPass2Row').hidden = authMode === 'login';
+    $('authSubmit').textContent = authMode === 'login' ? '鐧诲綍' : '娉ㄥ唽骞跺紑濮?;
+    setAuthMsg('', true);
+    authOverlay.hidden = false;
+    setTimeout(function () { $('authUser').focus(); }, 30);
+  }
+  function closeAuth() { authOverlay.hidden = true; }
+  function renderUser() {
+    var badge = $('userBadge'), btn = $('btnAuth');
+    if (auth && auth.username) {
+      badge.hidden = false; btn.hidden = true;
+      $('ubName').textContent = auth.username;
+      $('ubQuota').textContent = auth.quota != null ? ' 路 ' + quotaText(auth.quota) : '';
+    } else {
+      badge.hidden = true; btn.hidden = false;
+    }
+  }
+  $('btnAuth').addEventListener('click', function () { openAuth('login'); });
+  $('btnCloseAuth').addEventListener('click', closeAuth);
+  authOverlay.addEventListener('click', function (e) { if (e.target === authOverlay && auth) closeAuth(); });
+  $('tabLogin').addEventListener('click', function () { openAuth('login'); });
+  $('tabRegister').addEventListener('click', function () { openAuth('register'); });
+  $('btnLogout').addEventListener('click', function () {
+    authClear();
+    state.config.saved = false; state.config.apiKey = ''; state.config.baseUrl = '';
+    persist(); renderUser(); renderStatus(); refreshSendBtn();
+    openAuth('login');
+  });
+  $('authForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const u = $('authUser').value.trim(), p = $('authPass').value;
+    if (!u || !p || p.length < 8) { setAuthMsg('鐢ㄦ埛鍚嶅繀濉紝瀵嗙爜鑷冲皯 8 浣?); return; }
+    if (authMode === 'register' && p !== $('authPass2').value) { setAuthMsg('涓ゆ瀵嗙爜涓嶄竴鑷?); return; }
+    $('authSubmit').disabled = true;
+    try {
+      if (authMode === 'register') {
+        const rg = await api('/api/user/register', 'POST', { username: u, password: p, password2: p });
+        if (!rg.success) { setAuthMsg(rg.message || '娉ㄥ唽澶辫触'); return; }
+      }
+      const lg = await api('/api/user/login', 'POST', { username: u, password: p });
+      if (!lg.success || !lg.data) { setAuthMsg(lg.message || '鐧诲綍澶辫触'); return; }
+      auth = { username: u, access_token: lg.data.access_token, quota: lg.data.user.quota };
+      authSave();
+      renderUser();
+      setAuthMsg('鐧诲綍鎴愬姛锛屾鍦ㄨ幏鍙栦綘鐨勪笓灞炰护鐗屸€?, true);
+      let ok = await applyCredential();
+      if (!ok) {
+        const tk = await createTokenForMe();
+        ok = await applyCredential();
+      }
+      if (ok) {
+        closeAuth();
+        if (!state.convos.length) newConvo();
+        toast('娆㈣繋锛? + u + '锛佸凡鎺ュ叆浣犵殑涓撳睘棰濆害');
+        inputEl.focus();
+      } else {
+        setAuthMsg('浠ょ墝鑾峰彇澶辫触锛岃绋嶅悗閲嶈瘯鎴栧湪 new-api 鍚庡彴鎵嬪姩鍒涘缓');
+      }
+    } catch (err) {
+      setAuthMsg('缃戠粶閿欒锛? + err.message);
+    } finally {
+      $('authSubmit').disabled = false;
+    }
+  });
+
   renderAll();
-  if (!state.config.saved) $('onboard').hidden = false;
-  else if (!state.convos.length) newConvo();
+  renderUser();
+  if (auth) {
+    applyCredential().then(function (ok) {
+      if (ok && !state.convos.length) newConvo();
+      if (!ok) { $('onboard').hidden = true; openAuth('login'); setAuthMsg('鐧诲綍宸茶繃鏈燂紝璇烽噸鏂扮櫥褰?, false); }
+    });
+  } else if (!state.config.saved) {
+    $('onboard').hidden = true;
+    openAuth('login');
+  } else if (!state.convos.length) newConvo();
 })();
 </script>
 </body>
