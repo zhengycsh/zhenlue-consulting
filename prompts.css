@@ -185,3 +185,14 @@
 .pp-phs{font-size:12px;color:var(--ts);margin-bottom:10px;}
 .pp-phs b{color:var(--accent3,#ff9500);background:rgba(255,149,0,.12);padding:1px 7px;border-radius:6px;margin:0 2px;}
 @media (max-width:640px){.pp-match-grid{grid-template-columns:1fr;}.pp-hero{padding:16px;}}
+
+/* 官方对比集 */
+.pp-works{display:flex;flex-direction:column;gap:12px;}
+.pp-work{padding:13px 15px;}
+.pp-work-t{font-size:14px;font-weight:700;cursor:pointer;margin-bottom:9px;}
+.pp-work-t:hover{color:var(--ac,#0071e3);}
+.pp-work-t small{font-weight:400;color:var(--tt);font-size:11.5px;margin-left:6px;}
+.pp-work-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;}
+.pp-work-row figure{flex:none;width:132px;margin:0;}
+.pp-work-row img{width:132px;height:176px;object-fit:cover;border-radius:12px;display:block;background:rgba(31,38,135,.05);}
+.pp-work-row figcaption{font-size:11px;color:var(--tt);text-align:center;margin-top:5px;}

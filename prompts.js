@@ -601,9 +601,31 @@
       rankBody.innerHTML = html;
       rankBody.dataset.done = "1";
     }
-    fetch(API_BASE + "/leaderboard").then(function (r) { return r.json().catch(function () { return {}; }); })
-      .then(function (d) { paint((d && d.board) || []); })
-      .catch(function () { paint([]); });
+    Promise.all([
+      fetch(API_BASE + "/leaderboard").then(function (r) { return r.json().catch(function () { return {}; }); }).catch(function () { return {}; }),
+      fetch("data/works.json").then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; }),
+    ]).then(function (res) {
+      paint((res[0] && res[0].board) || []);
+      renderWorks(res[1] || []);
+    });
+  }
+  function renderWorks(list) {
+    if (!rankBody || !list.length) return;
+    var byId = {};
+    list.forEach(function (w) { (byId[w.id] = byId[w.id] || []).push(w); });
+    var html = '<h2 class="pp-rh1">官方对比集 · 同一条配方换画幅</h2><div class="pp-works">';
+    Object.keys(byId).forEach(function (id) {
+      var g = byId[id], first = g[0];
+      html += '<div class="pp-work glass"><div class="pp-work-t" data-goto="' + id + '">' + esc(first.t) + " <small>" + esc(first.cn) + "</small></div><div class='pp-work-row'>" +
+        '<figure><img loading="lazy" src="' + imgOf(first.ref) + '" alt="参考原图"><figcaption>原图</figcaption></figure>' +
+        g.map(function (w) {
+          return '<figure><img loading="lazy" src="' + imgOf(w.img) + '" alt="' + esc(w.ratio) + '"><figcaption>' + esc(w.ratio) + " · " + esc(w.model || "") + "</figcaption></figure>";
+        }).join("") + "</div></div>";
+    });
+    rankBody.insertAdjacentHTML("beforeend", html + "</div>");
+    rankBody.querySelectorAll(".pp-work-t").forEach(function (n) {
+      n.onclick = function () { openDetail(+n.dataset.goto); };
+    });
   }
 
   /* ---- 事件绑定 ---- */
