@@ -15,6 +15,7 @@
   var PP_API = PP_APIS[PP_APIS.length - 1];
   // 页面由合并服务自己托管时（QW 镜像/本地预览）走同源；只有纯静态的 jackcats.xyz 才打远端代理
   var API_BASE = location.hostname === "jackcats.xyz" ? PP_API : "";
+  var GATEWAY = API_BASE;   // 提示词改写走同一套服务（镜像同源、主站远端）
   function tryGenerate(i, payload) {
     if (i >= PP_APIS.length) return Promise.resolve({ error: "所有生图通道都不可用，请稍后再试" });
     return fetch(PP_APIS[i] + "/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
@@ -287,23 +288,61 @@
     w.unshift({ id: r.id, t: r.t, url: url, via: via, ts: Date.now() });
     localStorage.setItem(WORK_KEY, JSON.stringify(w.slice(0, 50)));
   }
-  function worksHtml() {
-    var w = works();
-    if (!w.length) return "";
-    return '<div class="ps-works"><div class="pp-plabel">我的生成记录（最近 ' + w.length + ' 张 · 上游直链约 7 天后失效）</div><div class="ps-works-grid">' +
-      w.slice(0, 12).map(function (x) {
-        return '<a class="ps-work" href="' + esc(x.url) + '" target="_blank" rel="noopener"><img loading="lazy" src="' + esc(x.url) + '" alt="' + esc(x.t) + '"><span>' + esc(x.t.slice(0, 14)) + "</span></a>";
-      }).join("") + "</div></div>";
+  /* ── 对比舞台：永远先有参考原图，生成中/失败都不塌版 ── */
+  function stageHtml() {
+    var r = ps.r, b = ps.b;
+    if (!r || !b) return "";
+    var base = '<img class="ps-base" src="' + imgOf(b.img) + '" data-fb="' + esc(b.oj) + '" onerror="ppImgFallback(this)" alt="参考原图">';
+    var inner;
+    if (ps.stage.url) {
+      inner = base + '<div class="ps-top"><img src="' + esc(ps.stage.url) + '" alt="AI 生成"></div>' +
+        '<div class="ps-handle"></div><span class="ps-tag l">原图</span><span class="ps-tag r">AI 生成</span>';
+    } else {
+      inner = base + '<span class="ps-tag l">参考原图</span>' +
+        (ps.stage.busy ? '<div class="ps-busy"><span class="ps-spin"></span>正在生成，通常 10-40 秒…</div>' : "") +
+        (!ps.stage.busy && ps.stage.err
+          ? '<div class="ps-bad">失败：' + esc(ps.stage.err) + (ps.stage.tried ? "<br>通道轨迹：" + esc(ps.stage.tried) : "") +
+            '<div class="ps-bad-act"><button class="pp-btn pri" data-retry>重试</button><button class="pp-btn gho" data-openref>看原图大图</button></div></div>'
+          : (!ps.stage.busy ? '<div class="ps-idle">点上方「用这段生成」产出 AI 版本，这里会变成可拖动对比</div>' : ""));
+    }
+    var foot = ps.stage.url
+      ? '按住竖线左右拖动对比 · <a href="' + esc(ps.stage.url) + '" target="_blank" rel="noopener">查看 / 下载生成图</a> · 由 <b>' +
+        esc(ps.stage.via || "") + "</b> 生成 · 画幅 " + esc(ps.stage.ratio || "")
+      : "左为社区参考原图 · 生成后就地对比";
+    return '<div class="ps-cmp"><div class="ps-track" style="--pos:50%">' + inner + '</div><div class="ps-foot">' + foot + "</div></div>";
+  }
+  function renderStage() {
+    var el = document.getElementById("ps-stage");
+    if (!el) return;
+    el.innerHTML = stageHtml();
+    bindCmp(el);
   }
 
-  /* ---- 对比 ---- */
-  function cmpHtml(r, b, url, via) {
-    return '<div class="ps-cmp"><div class="ps-track" style="--pos:50%">' +
-      '<img class="ps-base" src="' + ASSET_BASE + esc(b.img) + '" data-fb="' + esc(b.oj) + '" onerror="ppImgFallback(this)" alt="原图">' +
-      '<div class="ps-top"><img src="' + esc(url) + '" alt="AI 同款"></div>' +
-      '<div class="ps-handle"></div><span class="ps-tag l">原图</span><span class="ps-tag r">AI 同款</span></div>' +
-      '<div class="ps-foot">按住中间竖线左右拖动对比 · <a href="' + esc(url) + '" target="_blank" rel="noopener">下载 / 查看大图</a>' +
-      (via ? " · 由 <b>" + esc(via) + "</b> 生成" : "") + "</div></div>";
+  /* ── 右侧历史列表：缩略图 + 元信息，点击切换对比，可删除 ── */
+  function ago(ts) {
+    var s = Math.floor((Date.now() - ts) / 1000);
+    if (s < 60) return s + " 秒前";
+    if (s < 3600) return Math.floor(s / 60) + " 分钟前";
+    if (s < 86400) return Math.floor(s / 3600) + " 小时前";
+    return Math.floor(s / 86400) + " 天前";
+  }
+  function renderHistory() {
+    var el = document.getElementById("ps-side");
+    if (!el) return;
+    var w = works();
+    var html = '<div class="ps-side-h">生成历史<small>' + w.length + " 张 · 仅存本机</small></div>";
+    if (!w.length) {
+      html += '<div class="ps-side-empty">还没有记录。生成一张后会出现在这里，点任意一条可回到那次的对比。</div>';
+    } else {
+      html += w.slice(0, 24).map(function (x) {
+        var on = ps.stage.url && x.url === ps.stage.url;
+        return '<div class="ps-hitem' + (on ? " on" : "") + '" data-hist="' + esc(x.url) + '" data-hid="' + x.id + '">' +
+          '<img loading="lazy" src="' + esc(x.url) + '" alt="">' +
+          '<div class="ps-hb"><div>' + esc(x.t.slice(0, 18)) + "</div><small>" + esc(x.via || "未知模型") + " · " + ago(x.ts) + "</small></div>" +
+          '<button class="ps-hdel" data-hdel="' + x.ts + '" title="删除这条">&times;</button></div>';
+      }).join("");
+    }
+    el.innerHTML = html;
   }
   function bindCmp(root) {
     (root || document).querySelectorAll(".ps-track").forEach(function (track) {
@@ -349,125 +388,154 @@
     }).catch(function () { return rawPrompt; });
   }
 
-  /* ── AI 优化提示词面板 ─────────────────────────────────
-     左：原始提示词（只读）。右：改写结果（可编辑）。底部按钮：
-     [AI 优化提示词] [直接用右侧提示词生图] [跳过优化直接生图] */
-  function renderGenPanel(r, b, prompt, ratio) {
-    var pid = "rf-" + r.id;
+/* ── 常驻提示词面板：默认「适配当前模型」版（进入即自动改写、可编辑），另一页是原始提示词 ── */
+  var ps = { r: null, b: null, adapted: "", tab: "adapt", busy: false, note: "" };
+
+  function currentPrompt() {
+    var ta = document.getElementById("ps-adapt");
+    if (ps.tab === "adapt" && ta && ta.value.trim()) return ta.value.trim();
+    return (ps.b && ps.b.p) || "";
+  }
+
+  function promptPanelHtml() {
+    var raw = ps.b ? ps.b.p : "";
+    var body;
+    if (ps.tab === "adapt") {
+      body = '<div class="ps-cap">适配当前模型（智谱 CogView）<span class="ps-sub">已去掉结构化包装并补画质词，可直接编辑</span></div>' +
+        (ps.busy && !ps.adapted
+          ? '<div class="ps-skeleton"><span class="ps-spin"></span>AI 正在按模型改写提示词…</div>'
+          : '<textarea id="ps-adapt" class="ps-ta" rows="6" spellcheck="false">' + esc(ps.adapted || raw) + "</textarea>");
+    } else {
+      body = '<div class="ps-cap">原始提示词<span class="ps-sub">社区原文，可能含 JSON / 参数结构</span></div>' +
+        '<textarea class="ps-ta" rows="6" readonly spellcheck="false">' + esc(raw) + "</textarea>";
+    }
+    var btns = ps.tab === "adapt"
+      ? '<button class="pp-btn pri" data-psgen>用这段生成</button><button class="pp-btn gho" data-psrefine>' + (ps.adapted ? "重新改写" : "AI 改写") + "</button>"
+      : '<button class="pp-btn gho" data-psrawgen>直接生成原文</button>';
     return '<div class="ps-panel">' +
-      '<div class="ps-row"><div class="ps-col"><div class="ps-cap">原始提示词</div>' +
-      '<textarea id="' + pid + '-src" class="ps-ta" rows="8" readonly>' + esc(prompt) + '</textarea></div>' +
-      '<div class="ps-col"><div class="ps-cap">适配当前模型的提示词 <span class="ps-sub">（AI 改写 · 可编辑）</span></div>' +
-      '<textarea id="' + pid + '-dst" class="ps-ta" rows="8" placeholder="点击下方按钮，AI 将改写出适配当前生图模型的提示词；也可以直接在此编辑">' + esc(prompt) + '</textarea></div></div>' +
-      '<div class="ps-act">' +
-      '<button type="button" class="btn" id="' + pid + '-refine">AI 优化提示词</button>' +
-      '<button type="button" class="btn hl" id="' + pid + '-gen2">用右侧提示词生图</button>' +
-      '<button type="button" class="btn" id="' + pid + '-raw">跳过优化直接生图</button>' +
-      '</div>' +
-      '<div id="' + pid + '-st" class="ps-note">点「AI 优化提示词」开始；改写完成后点「用右侧提示词生图」。</div>' +
-      '</div>' + panelCss();
+      '<div class="ps-tabs">' +
+      '<button class="pp-chip' + (ps.tab === "adapt" ? " on" : "") + '" data-pstab="adapt">适配当前模型</button>' +
+      '<button class="pp-chip' + (ps.tab === "raw" ? " on" : "") + '" data-pstab="raw">原始提示词</button>' +
+      '<button class="pp-btn gho ps-copy" data-pscopy="' + (ps.tab === "adapt" ? "1" : "0") + '">&#128203; 复制</button></div>' +
+      body +
+      '<div class="ps-act">' + btns + '<span class="ps-note-inline" id="ps-note">' + esc(ps.note) + "</span></div></div>";
   }
-  function panelCss() {
-    return '<style>' +
-      '.ps-panel{background:var(--surface,#fff);border:1px solid var(--border,#e8e6dc);border-radius:12px;padding:16px;margin:8px 0}' +
-      '.ps-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}' +
-      '@media(max-width:760px){.ps-row{grid-template-columns:1fr}}' +
-      '.ps-col{min-width:0}' +
-      '.ps-cap{font-weight:700;font-size:13px;margin-bottom:6px}' +
-      '.ps-sub{font-weight:400;color:var(--tt,#87867f);font-size:11px}' +
-      '.ps-ta{width:100%;box-sizing:border-box;background:var(--bg,#f5f4ed);border:1px solid var(--border,#e8e6dc);border-radius:8px;padding:10px;font:inherit;font-size:13px;line-height:1.6;resize:vertical}' +
-      '.ps-ta:focus{outline:2px solid rgba(201,100,66,.25);border-color:var(--accent,#c96442)}' +
-      '.ps-act{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}' +
-      '</style>';
+
+  function mountPromptPanel() {
+    var host = document.getElementById("ps-panel");
+    if (host) host.innerHTML = promptPanelHtml();
   }
-  function startRefineFlow(r, b, prompt, ratio) {
-    var pid = "rf-" + r.id;
-    var src = document.getElementById(pid + "-src");
-    var dst = document.getElementById(pid + "-dst");
-    var st = document.getElementById(pid + "-st");
-    var btnR = document.getElementById(pid + "-refine");
-    var btnG = document.getElementById(pid + "-gen2");
-    var btnRaw = document.getElementById(pid + "-raw");
-    if (!btnR) return;
-    btnR.addEventListener("click", function () {
-      btnR.disabled = true;
-      st.innerHTML = '<span class="ps-spin"></span>AI 正在改写提示词（适配当前多模态模型）…';
-      refinePrompt(src.value, "").then(function (newP) {
-        dst.value = newP;
-        btnR.disabled = false;
-        st.innerHTML = '改写完成 ✓ 可在右侧微调，然后点「用右侧提示词生图」。';
-      });
+
+  function autoRefine(force) {
+    if (!ps.b) return;
+    if (ps.adapted && !force) return;
+    ps.busy = true; ps.note = ""; mountPromptPanel();
+    refinePrompt(ps.b.p, "").then(function (newP) {
+      ps.busy = false;
+      ps.adapted = newP && newP !== ps.b.p ? newP : "";
+      ps.note = ps.adapted ? "已改写 ✓ 可微调后生成" : "改写服务暂不可用，已用原文";
+      mountPromptPanel();
     });
-    btnG.addEventListener("click", function () {
-      var newP = (dst.value || "").trim() || prompt;
-      st.innerHTML = '<span class="ps-spin"></span>正在用优化后的提示词生图，通常 10-40 秒…';
-      btnG.disabled = true;
-      tryGenerate(PP_ACTIVE, { prompt: newP, ratio: ratio }).then(function (d) {
-        btnG.disabled = false;
-        if (d && d.url) {
-          genCache[r.id] = { url: d.url, via: d.via, prompt: newP, ratio: ratio };
-          saveWork(r, d.url, d.via);
-          out.innerHTML = cmpHtml(r, b, d.url, d.via) + worksHtml();
-          bindCmp(out);
-          var cmp = out.querySelector(".ps-cmp");
-          if (cmp && cmp.scrollIntoView) cmp.scrollIntoView({ behavior: "smooth", block: "center" });
-        } else if (d && d.retryAfter) {
+  }
+
+  function bindPromptPanel() {
+    var host = document.getElementById("ps-panel");
+    if (!host) return;
+    host.addEventListener("click", function (e) {
+      var tab = e.target.closest("[data-pstab]");
+      if (tab) { ps.tab = tab.dataset.pstab; mountPromptPanel(); return; }
+      var cp = e.target.closest("[data-pscopy]");
+      if (cp) { copyText(cp.dataset.pscopy === "1" ? currentPrompt() : ps.b.p, "提示词已复制"); return; }
+      if (e.target.closest("[data-psgen]")) { runGen(currentPrompt()); return; }
+      if (e.target.closest("[data-psrawgen]")) { runGen(ps.b.p); return; }
+      if (e.target.closest("[data-psrefine]")) { autoRefine(true); return; }
+    });
+    host.addEventListener("input", function (e) {
+      if (e.target.id === "ps-adapt") ps.adapted = e.target.value;
+    });
+  }
+
+  function copyText(text, msg) {
+    function fb() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); toast(msg); } catch (e) { toast("复制失败，请手动选中"); }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { toast(msg); }, fb);
+    else fb();
+  }
+  function readRatio() { try { return localStorage.getItem("zhifu_ratio") || "1:1"; } catch (e) { return "1:1"; } }
+
+  function runGen(prompt) {
+    if (!ps.r || !ps.b) return;
+    if (remain() > 0) {
+      ps.stage = { busy: false, url: "", via: "", ratio: ps.ratio, err: "免费通道每分钟只跑一张，" + remain() + " 秒后自动继续" };
+      renderStage();
+      setTimeout(function () { runGen(prompt); }, remain() * 1000 + 400);
+      return;
+    }
+    var ratio = ps.ratio || "1:1";
+    ps.stage = { busy: true, url: "", via: "", ratio: ratio, err: "" };
+    renderStage();
+    startCooldown(COOL_SEC);
+    logEvent("same", ps.r.id);
+    tryGenerate(PP_ACTIVE, { prompt: prompt, ratio: ratio })
+      .then(function (d) {
+        if (d.url) {
+          ps.stage = { busy: false, url: d.url, via: d.via, ratio: ratio, err: "" };
+          genCache[ps.r.id] = { url: d.url, via: d.via, prompt: prompt, ratio: ratio };
+          saveWork(ps.r, d.url, d.via);
+          ps.note = "生成完成 ✓";
+        } else if (d.retryAfter) {
           startCooldown(d.retryAfter);
-          st.innerHTML = "免费通道每分钟一张，" + d.retryAfter + " 秒后自动继续…";
-          setTimeout(function () { gen(r, true, { prompt: newP, ratio: ratio }); }, d.retryAfter * 1000 + 400);
+          ps.stage = { busy: false, url: "", via: "", ratio: ratio, err: "队列繁忙，" + d.retryAfter + " 秒后自动重试" };
+          setTimeout(function () { runGen(prompt); }, d.retryAfter * 1000 + 400);
         } else {
-          st.innerHTML = '<span style="color:var(--danger,#b53333)">失败：' + esc((d && d.error) || "未知错误") + '</span>';
+          ps.stage = { busy: false, url: "", via: "", ratio: ratio, err: d.error || "未知错误", tried: (d.tried || []).join(" | ") };
         }
+        mountPromptPanel(); renderStage(); renderHistory(); tickCool();
+      })
+      .catch(function (e) {
+        ps.stage = { busy: false, url: "", via: "", ratio: ratio, err: "连不上生图服务：" + e.message };
+        mountPromptPanel(); renderStage(); renderHistory(); tickCool();
       });
-    });
-    btnRaw.addEventListener("click", function () {
-      gen(r, true, { prompt: prompt, ratio: ratio });
+  }
+
+  /* 进入页面：先按模型改写提示词，再用改写结果生成（改写失败则用原文，不阻塞） */
+  function startFlow() {
+    ps.busy = true; ps.note = ""; mountPromptPanel();
+    refinePrompt(ps.b.p, "").then(function (newP) {
+      ps.busy = false;
+      ps.adapted = newP && newP !== ps.b.p ? newP : "";
+      ps.note = ps.adapted ? "已按模型改写 ✓ 正在用适配版生成" : "改写服务暂不可用，用原文生成";
+      mountPromptPanel();
+      runGen(ps.adapted || ps.b.p);
     });
   }
+
   function gen(r, force, opts) {
-    var out = document.getElementById("ps-out");
-    if (!out) return;
     opts = opts || {};
     ensureBody(r, function (b) {
       if (!b) return;
-      var prompt = (opts.prompt != null ? opts.prompt : b.p).trim() || b.p;
-      var useRatio = opts.ratio || (function () { try { return localStorage.getItem("zhifu_ratio") || "1:1"; } catch (e) { return "1:1"; } })();
-      var g = genCache[r.id];
-      if (g && !force && g.prompt === prompt && g.ratio === useRatio) { out.innerHTML = cmpHtml(r, b, g.url, g.via) + worksHtml(); bindCmp(out); tickCool(); return; }
-      if (remain() > 0) {
-        out.innerHTML = '<div class="ps-note">免费通道每分钟只跑一张，<b>' + remain() + "</b> 秒后自动继续…</div>";
-        setTimeout(function () { gen(r, true, { prompt: prompt, ratio: useRatio }); }, Math.min(remain() * 1000 + 400, 61000));
-        return;
+      var reused = genCache[r.id];
+      ps.r = r; ps.b = b; ps.tab = "adapt"; ps.adapted = ""; ps.note = "";
+      ps.ratio = opts.ratio || (reused && reused.ratio) || readRatio();
+      if (reused && !force) {
+        ps.stage = { busy: false, url: reused.url, via: reused.via, ratio: reused.ratio, err: "" };
+        ps.adapted = reused.prompt && reused.prompt !== b.p ? reused.prompt : "";
+        mountPromptPanel(); renderStage(); renderHistory(); tickCool();
+      } else {
+        ps.stage = { busy: false, url: "", via: "", ratio: ps.ratio, err: "" };
+        mountPromptPanel(); renderStage(); renderHistory(); tickCool();
+        startFlow();
       }
-      out.innerHTML = renderGenPanel(r, b, prompt, useRatio);
-      startRefineFlow(r, b, prompt, useRatio);
-      startCooldown(COOL_SEC);
-      logEvent("same", r.id);
-      tryGenerate(PP_ACTIVE, { prompt: prompt, ratio: useRatio })
-        .then(function (d) {
-          if (d.url) {
-            genCache[r.id] = { url: d.url, via: d.via, prompt: prompt, ratio: useRatio };
-            saveWork(r, d.url, d.via);
-            out.innerHTML = cmpHtml(r, b, d.url, d.via) + worksHtml();
-            bindCmp(out);
-            var cmp = out.querySelector(".ps-cmp");
-            if (cmp && cmp.scrollIntoView) cmp.scrollIntoView({ behavior: "smooth", block: "center" });
-          } else if (d.retryAfter) {
-            startCooldown(d.retryAfter);
-            out.innerHTML = '<div class="ps-note">免费通道每分钟只跑一张，<b>' + d.retryAfter + "</b> 秒后自动继续…</div>";
-            setTimeout(function () { gen(r, true, { prompt: prompt, ratio: useRatio }); }, d.retryAfter * 1000 + 400);
-          } else {
-            out.innerHTML = '<div class="ps-note ps-bad">失败：' + esc(d.error || "未知错误") +
-              (d.tried && d.tried.length ? "<br>通道轨迹：" + esc(d.tried.join(" | ")) : "") + "</div>";
-          }
-          tickCool();
-        })
-        .catch(function (e) { out.innerHTML = '<div class="ps-note ps-bad">连不上生图服务：' + esc(e.message) + "</div>"; tickCool(); });
     });
   }
 
   /* 反推：本地图片压缩到 768px → 代理 → 视觉模型输出提示词 */
-  function reverseImage(file, ta, note) {
+  function reverseImage(file, ta, note, cb) {
     if (!/^image\//.test(file.type)) { note.textContent = "请选择图片文件"; return; }
     note.textContent = "反推中…";
     var fr = new FileReader();
@@ -479,16 +547,16 @@
         c.width = Math.round(w * k); c.height = Math.round(h * k);
         c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
         var dataURL = c.toDataURL("image/jpeg", 0.85);
-        fetch(PP_API + "/reverse", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: dataURL }) })
+        fetch(API_BASE + "/reverse", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: dataURL }) })
           .then(function (res) { return res.json().catch(function () { return { error: "代理返回异常 HTTP " + res.status }; }); })
           .then(function (d) {
             if (d.text) {
-              ta.value = d.text;
-              note.textContent = "反推完成（由 " + (d.via || "glm-4.6v-flash") + " 生成）· 可直接编辑后生成";
+              if (cb) cb(d.text); else if (ta) ta.value = d.text;
+              note.textContent = "反推完成（" + (d.via || "glm-4.6v-flash") + "）· 已填入，可编辑后生成";
               logEvent("reverse", "ok");
             } else if (d.retryAfter) {
               note.textContent = "视觉模型忙，" + d.retryAfter + " 秒后自动重试…";
-              setTimeout(function () { reverseImage(file, ta, note); }, d.retryAfter * 1000 + 400);
+              setTimeout(function () { reverseImage(file, ta, note, cb); }, d.retryAfter * 1000 + 400);
             } else {
               note.textContent = "反推失败：" + (d.error || "未知错误");
             }
@@ -501,50 +569,96 @@
   }
 
   function similarHtml(r) {
-    var pool = IDX.filter(function (x) { return x.cn === r.cn && x.id !== r.id; }).slice(0, 40);
+    var pool = IDX.filter(function (x) { return x.cn === r.cn && x.id !== r.id; }).slice(0, 60);
     if (!pool.length) return "";
     var picks = [];
-    while (picks.length < 3 && pool.length) picks.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
-    return '<div class="ps-similar"><div class="pp-plabel">同场景再试这几条</div><div class="ps-sim-grid">' +
-      picks.map(function (x) { return '<button class="ps-sim" data-goto="' + x.id + '">&#9889; ' + esc(x.t.slice(0, 18)) + "</button>"; }).join("") +
-      "</div></div>";
+    while (picks.length < 4 && pool.length) picks.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+    return '<div class="ps-similar"><div class="ps-cap2">同场景还可以试</div><div class="ps-sim-grid">' +
+      picks.map(function (x) {
+        return '<div class="ps-sim" data-goto="' + x.id + '"><img loading="lazy" src="' + imgOf(x.im) + '" alt=""><span>' + esc(x.t.slice(0, 16)) + "</span></div>";
+      }).join("") + "</div></div>";
+  }
+
+  function navHtml(r) {
+    var prev = sameCtx.pos > 0, next = sameCtx.pos < sameCtx.list.length - 1;
+    return '<div class="ps-nav">' +
+      (prev ? '<button class="pp-btn gho" data-samenav="-1">&#8592;</button>' : "") +
+      '<small>' + (sameCtx.pos + 1) + " / " + sameCtx.list.length + "</small>" +
+      (next ? '<button class="pp-btn gho" data-samenav="1">&#8594;</button>' : "") + "</div>";
   }
 
   function openSame(id) {
     var r = byId(id); if (!r) return;
     closeDetail(); showPage("same");
     if (history.replaceState) history.replaceState(null, "", "#same" + r.id);
-    ensureBody(r, function (b) {
-      if (!b) return;
-      var cur = (function () { try { return localStorage.getItem("zhifu_ratio") || "1:1"; } catch (e) { return "1:1"; } })();
-      sameCtx.list = IDX.filter(function (x) { return x.cn === r.cn; }).map(function (x) { return x.id; });
-      sameCtx.pos = sameCtx.list.indexOf(r.id);
-      var nav = sameCtx.pos > 0 ? '<button class="pp-chip" data-samenav="-1">&#8592; 上一张</button>' : "";
-      nav += sameCtx.pos < sameCtx.list.length - 1 ? '<button class="pp-chip" data-samenav="1">下一张 &#8594;</button>' : "";
-      document.getElementById("ps-body").innerHTML =
-        '<button class="ps-back" id="ps-back">&#8592; 返回提示词库</button>' +
-        '<h1 class="ps-h1">' + esc(r.t) + "</h1>" +
-        '<div class="ps-meta">' + esc(r.cn) + " · " + esc(SRC_NAME[r.src] || r.src) +
-        (b.su ? ' · 出处 <a href="' + esc(b.su) + '" target="_blank" rel="noopener nofollow">' + esc(b.sl || "原帖") + "</a>" : "") + "</div>" +
-        '<div class="ps-meta">提示词可直接编辑（#p' + r.id + '）</div>' +
-        '<textarea class="ps-edit" id="ps-edit" rows="7">' + esc(b.p) + "</textarea>" +
-        '<div class="ps-rrow"><span class="pp-flabel">画幅</span><div class="pp-fchips">' + ratioChips(cur) + "</div>" +
-        '<span class="pp-flabel" style="flex:none;margin-left:14px">反推</span>' +
-        '<label class="ps-upfile">&#128247; 选图片反推<input type="file" id="ps-rev" accept="image/*"></label>' +
-        '<span class="ps-note-inline" id="ps-revnote"></span></div>' +
-        '<div class="ps-acts"><button class="pp-btn pri" data-gen="' + r.id + '">&#9889; 生成这张</button>' +
-        '<button class="pp-btn gho" data-copy="' + r.id + '">&#128203; 复制原版</button>' +
-        nav + "</div>" +
-        '<div id="ps-out"></div>' + similarHtml(r) + leadHtml() + worksHtml();
-      document.getElementById("ps-back").onclick = function () {
-        showPage("prompts");
-        if (history.replaceState) history.replaceState(null, "", location.pathname + location.search);
-      };
-      document.getElementById("ps-rev").addEventListener("change", function () {
-        if (this.files && this.files[0]) reverseImage(this.files[0], document.getElementById("ps-edit"), document.getElementById("ps-revnote"));
+    sameCtx.list = IDX.filter(function (x) { return x.cn === r.cn; }).map(function (x) { return x.id; });
+    sameCtx.pos = sameCtx.list.indexOf(r.id);
+    document.getElementById("ps-body").innerHTML =
+      '<div class="ps-head"><button class="pp-btn gho" id="ps-back">&#8592; 返回词库</button>' +
+      '<div class="ps-head-t"><h1 class="ps-h1">' + esc(r.t) + "</h1>" +
+      '<div class="ps-meta">' + esc(r.cn) + " · " + esc(SRC_NAME[r.src] || r.src) + " · 编号 #" + r.id +
+      (r.ph && r.ph.length ? ' · 改这几个词就能用：<b>' + esc(r.ph.slice(0, 2).join(" / ")) + "</b>" : "") + "</div></div>" +
+      navHtml(r) + "</div>" +
+      '<div class="ps-grid"><div class="ps-main">' +
+      '<div id="ps-panel"></div>' +
+      '<div class="ps-ctrl"><span class="ps-cap2">画幅</span><div class="pp-fchips" id="ps-ratios">' + ratioChips(readRatio()) + "</div>" +
+      '<label class="ps-upfile">&#128247; 选图片反推提示词<input type="file" id="ps-rev" accept="image/*"></label>' +
+      '<span class="ps-note-inline" id="ps-revnote"></span></div>' +
+      '<div id="ps-stage"></div>' +
+      '<div id="ps-similar">' + similarHtml(r) + "</div>" +
+      leadHtml() +
+      "</div>" +
+      '<aside class="ps-side" id="ps-side"></aside></div>';
+
+    document.getElementById("ps-back").onclick = function () {
+      showPage("prompts");
+      if (history.replaceState) history.replaceState(null, "", location.pathname + location.search);
+    };
+    bindPromptPanel();
+    document.getElementById("ps-rev").addEventListener("change", function () {
+      if (this.files && this.files[0]) reverseImage(this.files[0], { value: "" }, document.getElementById("ps-revnote"), function (txt) {
+        ps.tab = "adapt"; ps.adapted = txt; ps.note = "反推完成 ✓ 已填入适配版，可编辑后生成";
+        var ta = document.getElementById("ps-adapt"); if (ta) ta.value = txt;
+        mountPromptPanel();
       });
-      gen(r);
     });
+    var view = document.getElementById("view-same");
+    view.addEventListener("click", function (e) {
+      var nv = e.target.closest("[data-samenav]");
+      if (nv) {
+        var np = sameCtx.pos + (+nv.dataset.samenav);
+        if (np >= 0 && np < sameCtx.list.length) openSame(sameCtx.list[np]);
+        return;
+      }
+      var rt = e.target.closest("[data-ratio]");
+      if (rt) {
+        ps.ratio = rt.dataset.ratio;
+        document.querySelectorAll("[data-ratio]").forEach(function (x) { x.classList.toggle("on", x.dataset.ratio === ps.ratio); });
+        return;
+      }
+      if (e.target.closest("[data-retry]")) { runGen(currentPrompt()); return; }
+      var orf = e.target.closest("[data-openref]");
+      if (orf && ps.b) { window.open(imgOf(ps.b.img), "_blank"); return; }
+      var hm = e.target.closest("[data-hist]");
+      if (hm) {
+        var del = e.target.closest("[data-hdel]");
+        if (del) {
+          var ts = +del.dataset.hdel;
+          var left = works().filter(function (x) { return x.ts !== ts; });
+          localStorage.setItem(WORK_KEY, JSON.stringify(left));
+          renderHistory();
+          return;
+        }
+        var hid = +hm.dataset.hid, rec = byId(hid);
+        ps.stage = { busy: false, url: hm.dataset.hist, via: (works().find(function (x) { return x.url === hm.dataset.hist; }) || {}).via || "", ratio: ps.ratio, err: "" };
+        if (rec) ensureBody(rec, function (b) { ps.b = b; renderStage(); renderHistory(); });
+        else { renderStage(); renderHistory(); }
+        return;
+      }
+      var sm = e.target.closest("#ps-similar [data-goto]");
+      if (sm) { openSame(+sm.dataset.goto); return; }
+    });
+    gen(r);
   }
 
   /* ---------- 需求 → 配方 ---------- */
@@ -732,7 +846,6 @@
     if (e.target === mask || e.target.closest("[data-close]")) { closeDetail(); return; }
     anywhere(e);
   });
-  document.getElementById("view-same").addEventListener("click", anywhere);
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && mask.classList.contains("show")) { closeDetail(); return; }
     if (document.getElementById("view-same").classList.contains("show") && (e.key === "ArrowLeft" || e.key === "ArrowRight") && !/TEXTAREA|INPUT/.test(document.activeElement.tagName)) {
