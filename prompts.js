@@ -307,7 +307,8 @@
     }
     var foot = ps.stage.url
       ? '按住竖线左右拖动对比 · <a href="' + esc(ps.stage.url) + '" target="_blank" rel="noopener">查看 / 下载生成图</a> · 由 <b>' +
-        esc(ps.stage.via || "") + "</b> 生成 · 画幅 " + esc(ps.stage.ratio || "")
+        esc(ps.stage.via || "") + "</b> 生成 · 画幅 " + esc(ps.stage.ratio || "") +
+        " · " + (ps.stage.wm === false ? '<span class="ps-nowm">无水印</span>' : '<span class="ps-wm">该通道带「AI生成」水印</span>')
       : "左为社区参考原图 · 生成后就地对比";
     return '<div class="ps-cmp"><div class="ps-track" style="--pos:50%">' + inner + '</div><div class="ps-foot">' + foot + "</div></div>";
   }
@@ -367,9 +368,9 @@
   var RATIOS = [["1:1", "1:1"], ["9:16", "9:16 竖"], ["16:9", "16:9 横"], ["3:4", "3:4 竖"], ["4:3", "4:3 横"]];
   var sameCtx = { list: [], pos: -1 };   // 当前分类内的翻页序列
 
-  function ratioChips(cur) {
+  function ratioChips(cur, orig) {
     return RATIOS.map(function (p) {
-      return '<button class="pp-chip' + (cur === p[0] ? " on" : "") + '" data-ratio="' + p[0] + '">' + p[1] + "</button>";
+      return '<button class="pp-chip' + (cur === p[0] ? " on" : "") + '" data-ratio="' + p[0] + '">' + p[1] + (orig === p[0] ? " · 原图" : "") + "</button>";
     }).join("");
   }
 
@@ -401,7 +402,7 @@
     var raw = ps.b ? ps.b.p : "";
     var body;
     if (ps.tab === "adapt") {
-      body = '<div class="ps-cap">适配当前模型（智谱 CogView）<span class="ps-sub">已去掉结构化包装并补画质词，可直接编辑</span></div>' +
+      body = '<div class="ps-cap">适配当前模型<span class="ps-sub">已去掉结构化包装并补画质词，可直接编辑</span></div>' +
         (ps.busy && !ps.adapted
           ? '<div class="ps-skeleton"><span class="ps-spin"></span>AI 正在按模型改写提示词…</div>'
           : '<textarea id="ps-adapt" class="ps-ta" rows="6" spellcheck="false">' + esc(ps.adapted || raw) + "</textarea>");
@@ -484,8 +485,8 @@
     tryGenerate(PP_ACTIVE, { prompt: prompt, ratio: ratio })
       .then(function (d) {
         if (d.url) {
-          ps.stage = { busy: false, url: d.url, via: d.via, ratio: ratio, err: "" };
-          genCache[ps.r.id] = { url: d.url, via: d.via, prompt: prompt, ratio: ratio };
+          ps.stage = { busy: false, url: d.url, via: d.via, ratio: ratio, err: "", wm: d.wm !== false };
+          genCache[ps.r.id] = { url: d.url, via: d.via, prompt: prompt, ratio: ratio, wm: d.wm !== false };
           saveWork(ps.r, d.url, d.via);
           ps.note = "生成完成 ✓";
         } else if (d.retryAfter) {
@@ -521,7 +522,7 @@
       if (!b) return;
       var reused = genCache[r.id];
       ps.r = r; ps.b = b; ps.tab = "adapt"; ps.adapted = ""; ps.note = "";
-      ps.ratio = opts.ratio || (reused && reused.ratio) || readRatio();
+      ps.ratio = opts.ratio || (reused && reused.ratio) || r.ar || readRatio();
       if (reused && !force) {
         ps.stage = { busy: false, url: reused.url, via: reused.via, ratio: reused.ratio, err: "" };
         ps.adapted = reused.prompt && reused.prompt !== b.p ? reused.prompt : "";
@@ -601,7 +602,7 @@
       navHtml(r) + "</div>" +
       '<div class="ps-grid"><div class="ps-main">' +
       '<div id="ps-panel"></div>' +
-      '<div class="ps-ctrl"><span class="ps-cap2">画幅</span><div class="pp-fchips" id="ps-ratios">' + ratioChips(readRatio()) + "</div>" +
+      '<div class="ps-ctrl"><span class="ps-cap2">画幅</span><div class="pp-fchips" id="ps-ratios">' + ratioChips(r.ar || readRatio(), r.ar) + "</div>" +
       '<label class="ps-upfile">&#128247; 选图片反推提示词<input type="file" id="ps-rev" accept="image/*"></label>' +
       '<span class="ps-note-inline" id="ps-revnote"></span></div>' +
       '<div id="ps-stage"></div>' +
