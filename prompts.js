@@ -66,6 +66,40 @@
     } catch (x) { }
   }
 
+  /* 卡片热度：每条配方有一个固定种子的初始热度（同一 id 永远同一个数，不是刷新随机），
+     再加上服务端统计到的真实点击；拉到 /leaderboard 后原地刷新卡片上的数字。 */
+  var CLICKS = {};
+  function seedHeat(id) {
+    var h = (id * 2654435761) >>> 0;
+    h = ((h ^ (h >>> 13)) * 1274126177) >>> 0;
+    return 600 + (h % 1201);            // 600 ~ 1800
+  }
+  function heatOf(id) { return seedHeat(id) + (CLICKS[id] || 0); }
+  function fmtHeat(n) { return n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n); }
+  function heatTag(id, cls) {
+    return '<span class="' + (cls || "pp-heat") + '" data-heat="' + id + '">&#128293; ' + fmtHeat(heatOf(id)) + "</span>";
+  }
+  function paintHeats(root) {
+    (root || document).querySelectorAll("[data-heat]").forEach(function (el) {
+      el.textContent = "\uD83D\uDD25 " + fmtHeat(heatOf(+el.dataset.heat));
+    });
+  }
+  function loadClicks() {
+    if (!API_BASE) return;            // 纯静态预览没有代理，跳过
+    fetch(API_BASE + "/leaderboard").then(function (r) { return r.json(); }).then(function (d) {
+      (d && d.board || []).forEach(function (x) { CLICKS[x.id] = (x.copy || 0) + (x.same || 0); });
+      paintHeats(document);
+    }).catch(function () { });
+  }
+  /* 卡片的标签行：分类 / 来源库 / 场景 / 风格，四处（词库、榜单、配方、做同款）共用一套口径 */
+  function tagList(id, max) {
+    var r = byId(id); if (!r) return "";
+    var out = ['<i class="cat">' + esc(r.cn) + "</i>", '<i class="src">' + esc(SRC_NAME[r.src] || r.src) + "</i>"];
+    (r.sc || []).slice(0, 1).forEach(function (x) { out.push('<i class="scene">' + esc(x) + "</i>"); });
+    (r.s || []).slice(0, max || 2).forEach(function (x) { out.push("<i>" + esc(x) + "</i>"); });
+    return out.join("");
+  }
+
   /* 按需注入正文分片 */
   function ensureBody(rec, cb) {
     if (!rec) return cb(null);
@@ -179,6 +213,7 @@
       var d = document.createElement("div");
       d.className = "pp-card glass"; d.dataset.id = r.id;
       d.innerHTML = (r.f ? '<span class="pp-flag">精选</span>' : "") +
+        heatTag(r.id) +
         '<button class="pp-same" data-same="' + r.id + '" title="一键做同款">&#9889;</button>' +
         '<button class="pp-fav' + (favs.has(r.id) ? " on" : "") + '" data-fav="' + r.id + '" title="收藏">&#9733;</button>' +
         '<img class="pp-thumb" loading="lazy" decoding="async" src="' + ASSET_BASE + esc(r.im) + '" alt="' + esc(r.t) + '">' +
@@ -206,7 +241,7 @@
 
   function showPage(name) {
     document.querySelectorAll(".view").forEach(function (v) { v.classList.toggle("show", v.id === "view-" + name); });
-    document.querySelectorAll(".nav-tab").forEach(function (t) {
+    document.querySelectorAll(".rail-tab").forEach(function (t) {
       t.classList.toggle("active", t.dataset.view === name || (name === "same" && t.dataset.view === "prompts"));
     });
     window.scrollTo({ top: 0, behavior: "auto" });
@@ -219,6 +254,7 @@
   /* ---- 详情弹层 ---- */
   function openDetail(id) {
     var r = byId(id); if (!r) return;
+    logEvent("open", id);
     ensureBody(r, function (b) {
       if (!b) return;
       box.innerHTML = '<button class="detail-close" data-close>&#10005;</button>' +
@@ -523,6 +559,7 @@
       var reused = genCache[r.id];
       ps.r = r; ps.b = b; ps.tab = "adapt"; ps.adapted = ""; ps.note = "";
       ps.ratio = opts.ratio || (reused && reused.ratio) || r.ar || readRatio();
+      renderInfo();
       if (reused && !force) {
         ps.stage = { busy: false, url: reused.url, via: reused.via, ratio: reused.ratio, err: "" };
         ps.adapted = reused.prompt && reused.prompt !== b.p ? reused.prompt : "";
@@ -588,6 +625,28 @@
       (next ? '<button class="pp-btn gho" data-samenav="1">&#8594;</button>' : "") + "</div>";
   }
 
+  /* 做同款页左栏：把这条配方的信息一次摊开（标签、画幅、出处、解读、输入图） */
+  function infoHtml(r) {
+    var b = ps.b || {};
+    var kv = function (k, v) { return '<div class="ps-kv"><span>' + k + "</span><div>" + v + "</div></div>"; };
+    return '<div class="ps-ref"><img loading="lazy" src="' + imgOf(b.img || r.im) + '" alt="' + esc(r.t) + '">' + heatTag(r.id) + "</div>" +
+      '<div class="pp-tags ps-tags">' + tagList(r.id, 6) + "</div>" +
+      (r.ph && r.ph.length ? '<div class="ps-swap">改这几个词就是你的：' + r.ph.slice(0, 4).map(function (x) { return "<b>" + esc(x) + "</b>"; }).join(" / ") + "</div>" : "") +
+      kv("出图画幅", esc(r.ar || "跟随原图") + (r.ar ? ' <small>已按原图比例预选</small>' : "")) +
+      kv("提示词长度", (b.p ? b.p.length : "…") + " 字符") +
+      kv("来源与编号", esc(SRC_NAME[r.src] || r.src) + " · #" + r.id) +
+      (b.su ? kv("原始出处", '<a href="' + esc(b.su) + '" target="_blank" rel="noopener nofollow">' + esc(b.sl || "查看原帖") + "</a>") : "") +
+      (b.in ? '<div class="ps-inwrap"><img loading="lazy" src="' + imgOf(b.in) + '" alt="输入图">' +
+        '<div class="ps-note-inline">图生图玩法：原效果是拿这张输入图做的；只做文生图会更接近风格而非同一主体</div></div>' : "") +
+      (b.gd ? '<div class="ps-guide"><div class="pp-g-row"><span>在干什么</span>' + esc(b.gd.what) + "</div>" +
+        '<div class="pp-g-row"><span>改哪个词</span>' + esc(b.gd.swap) + "</div>" +
+        '<div class="pp-g-row"><span>踩坑提醒</span>' + esc(b.gd.tip) + "</div></div>" : "");
+  }
+  function renderInfo() {
+    var el = document.getElementById("ps-info");
+    if (el && ps.r) el.innerHTML = infoHtml(ps.r);
+  }
+
   function openSame(id) {
     var r = byId(id); if (!r) return;
     closeDetail(); showPage("same");
@@ -600,16 +659,20 @@
       '<div class="ps-meta">' + esc(r.cn) + " · " + esc(SRC_NAME[r.src] || r.src) + " · 编号 #" + r.id +
       (r.ph && r.ph.length ? ' · 改这几个词就能用：<b>' + esc(r.ph.slice(0, 2).join(" / ")) + "</b>" : "") + "</div></div>" +
       navHtml(r) + "</div>" +
-      '<div class="ps-grid"><div class="ps-main">' +
+      '<div class="ps-grid3">' +
+      '<aside class="ps-col ps-col-l glass" id="ps-info"><div class="ps-side-empty">配方信息加载中…</div></aside>' +
+      '<main class="ps-col ps-col-c">' +
       '<div id="ps-panel"></div>' +
       '<div class="ps-ctrl"><span class="ps-cap2">画幅</span><div class="pp-fchips" id="ps-ratios">' + ratioChips(r.ar || readRatio(), r.ar) + "</div>" +
       '<label class="ps-upfile">&#128247; 选图片反推提示词<input type="file" id="ps-rev" accept="image/*"></label>' +
       '<span class="ps-note-inline" id="ps-revnote"></span></div>' +
       '<div id="ps-stage"></div>' +
+      "</main>" +
+      '<aside class="ps-col ps-col-r">' +
+      '<div class="ps-side glass" id="ps-side"></div>' +
       '<div id="ps-similar">' + similarHtml(r) + "</div>" +
       leadHtml() +
-      "</div>" +
-      '<aside class="ps-side" id="ps-side"></aside></div>';
+      "</aside></div>";
 
     document.getElementById("ps-back").onclick = function () {
       showPage("prompts");
@@ -680,9 +743,10 @@
         if (!list.length) { matchOut.innerHTML = '<div class="pp-empty-line">没匹配到，换个说法试试（比如「健身」「茶叶」「儿童绘本」）</div>'; return; }
         matchOut.innerHTML = '<div class="pp-match-title">给你 ' + list.length + ' 条 · 需求「' + esc(need) + '」</div><div class="pp-match-grid">' +
           list.map(function (x) {
-            return '<div class="pp-mcard glass"><img loading="lazy" src="' + imgOf(x.img) + '" alt="' + esc(x.t) + '">' +
+            return '<div class="pp-mcard glass"><div class="pp-mthumb"><img loading="lazy" src="' + imgOf(x.img) + '" alt="' + esc(x.t) + '">' + heatTag(x.id, "pp-heat mini") + "</div>" +
               '<div class="pp-mbody"><div class="pp-mt" data-goto="' + x.id + '">' + esc(x.t) + "</div>" +
-              '<div class="pp-mwhy">' + esc(x.why) + " · " + esc(x.cn) + "</div>" +
+              '<div class="pp-mwhy">' + esc(x.why) + "</div>" +
+              '<div class="pp-tags">' + tagList(x.id) + "</div>" +
               '<div class="pp-macts"><button class="pp-btn pri" data-same2="' + x.id + '">&#9889; 做同款</button>' +
               '<button class="pp-btn gho" data-copy2="' + x.id + '">&#128203; 复制</button></div></div></div>';
           }).join("") + "</div>";
@@ -690,30 +754,48 @@
       .catch(function () { matchOut.innerHTML = '<div class="pp-empty-line">推荐服务暂不可用，先用下面的搜索</div>'; });
   }
 
-  /* ---------- 榜单页 ---------- */
+  /* ---------- 榜单页（卡片式：缩略图 + 标题 + 多标签 + 热度 + 做同款）---------- */
   var rankBody = document.getElementById("rank-body");
+  function rankCard(o) {
+    var r = byId(o.id) || {};
+    return '<div class="pp-card rk-card glass" data-goto="' + o.id + '">' +
+      (o.rank ? '<span class="pp-rk' + (o.rank <= 3 ? " top" : "") + '">' + o.rank + "</span>" : '<span class="pp-rk star">&#11088;</span>') +
+      heatTag(o.id) +
+      '<img class="pp-thumb" loading="lazy" decoding="async" src="' + imgOf(o.img || r.im) + '" alt="' + esc(o.t) + '">' +
+      '<div class="pp-body"><div class="pp-title">' + esc(o.t) + "</div>" +
+      (r.dp ? '<div class="pp-desc">' + esc(r.dp) + "…</div>" : "") +
+      '<div class="pp-tags">' + tagList(o.id, 2) + "</div>" +
+      '<div class="pp-rfoot"><div class="pp-rstat">' +
+      (o.copy != null ? "<span>&#128203; 复制 <b>" + o.copy + "</b></span><span>&#9889; 复刻 <b>" + (o.same || 0) + "</b></span>" :
+        "<span>&#11088; 编辑精选</span>") +
+      '</div><button class="pp-btn pri" data-same2="' + o.id + '">做同款</button></div>' +
+      "</div></div>";
+  }
   function renderRank() {
     if (!rankBody || rankBody.dataset.done) return;
     rankBody.innerHTML = '<div class="pp-matching"><span class="ps-spin"></span>正在统计…</div>';
     var picks = IDX.filter(function (r) { return r.f; }).slice(0, 24);
     function paint(board) {
+      board = board || [];
       var html = "";
-      if (board && board.length) {
-        html += '<h2 class="pp-rh1">真实热榜 · 按复制与复刻次数</h2><div class="pp-rank-list">' + board.map(function (x, i) {
-          return '<div class="pp-rank glass" data-goto="' + x.id + '"><span class="pp-rank-n">' + (i + 1) + "</span>" +
-            '<img loading="lazy" src="' + imgOf(x.img) + '" alt=""><div class="pp-rank-b"><div>' + esc(x.t) + "</div>" +
-            "<small>" + esc(x.cn) + " · 复制 " + x.copy + " · 复刻 " + x.same + "</small></div>" +
-            '<button class="pp-btn pri" data-same2="' + x.id + '">&#9889;</button></div>';
-        }).join("") + "</div>";
-      } else {
-        html += '<div class="pp-empty-line">还没有真实数据 —— 先去复刻几张，榜单每天更新一次。</div>';
-      }
-      html += '<h2 class="pp-rh1">编辑精选 · 最稳的起手式</h2><div class="pp-rank-list">' + picks.map(function (r) {
-        return '<div class="pp-rank glass" data-goto="' + r.id + '"><span class="pp-rank-n">&#11088;</span>' +
-          '<img loading="lazy" src="' + imgOf(r.im) + '" alt=""><div class="pp-rank-b"><div>' + esc(r.t) + "</div><small>" + esc(r.cn) + "</small></div>" +
-          '<button class="pp-btn pri" data-same2="' + r.id + '">&#9889;</button></div>';
-      }).join("") + "</div>";
+      /* 真实数据还少的时候用编辑精选把首屏补满，星标区分「真跑过」和「我们挑的」，不混为一谈 */
+      var seen = {};
+      board.forEach(function (x) { seen[x.id] = 1; });
+      var fill = picks.filter(function (r) { return !seen[r.id]; }).slice(0, Math.max(0, 12 - board.length));
+      html += '<h2 class="pp-rh1">真实热榜 <em>按复制与复刻次数排序' +
+        (board.length < 12 ? "（数据不足 12 条，先用星标精选补齐）" : "") + "</em></h2>";
+      html += '<div class="rk-grid">' +
+        board.map(function (x, i) { return rankCard({ id: x.id, t: x.t, cn: x.cn, img: x.img, rank: i + 1, copy: x.copy, same: x.same }); }).join("") +
+        fill.map(function (r) { return rankCard({ id: r.id, t: r.t, cn: r.cn }); }).join("") +
+        "</div>";
+      html += '<h2 class="pp-rh1">编辑精选 <em>人工挑的最稳起手式</em></h2><div class="rk-grid">' +
+        picks.map(function (r) { return rankCard({ id: r.id, t: r.t, cn: r.cn }); }).join("") + "</div>";
       rankBody.innerHTML = html;
+      requestAnimationFrame(function () {
+        rankBody.querySelectorAll(".rk-card:not(.vis)").forEach(function (el, i) {
+          el.style.transitionDelay = (i % 8) * 0.04 + "s"; el.classList.add("vis");
+        });
+      });
       rankBody.dataset.done = "1";
     }
     Promise.all([
@@ -762,9 +844,26 @@
     var s = e.target.closest("[data-same2]"); if (s) { e.stopPropagation(); openSame(+s.dataset.same2); return; }
     var g = e.target.closest("[data-goto]"); if (g) openDetail(+g.dataset.goto);
   });
-  document.querySelector("nav") && document.querySelector("nav").addEventListener("click", function (e) {
+  var railEl = document.getElementById("rail");
+  if (railEl) railEl.addEventListener("click", function (e) {
     var t = e.target.closest("[data-view]");
     if (t && t.dataset.view === "rank") setTimeout(renderRank, 50);
+  });
+
+  /* 站点统计：进页面打一次访问点，点 logo 进站长按钮看板（看板在本服务 /admin，需口令） */
+  function trackView() {
+    try {
+      var u = API_BASE + "/track?p=" + encodeURIComponent(location.pathname + location.hash.slice(0, 24)) +
+        "&r=" + encodeURIComponent((document.referrer || "").slice(0, 160));
+      if (navigator.sendBeacon) navigator.sendBeacon(u); else new Image().src = u;
+    } catch (x) { }
+  }
+  trackView();
+  loadClicks();
+  var logo = document.getElementById("logo-stats");
+  if (logo) logo.addEventListener("click", function (e) {
+    e.preventDefault(); e.stopPropagation();
+    window.open(API_BASE + "/admin", "_blank", "noopener");
   });
   filters.addEventListener("click", function (e) {
     var c = e.target.closest(".pp-chip"); if (!c) return;
