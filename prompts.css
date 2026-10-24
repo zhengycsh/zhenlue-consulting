@@ -1,5 +1,5 @@
 /* ===== 提示词库样式（配合 index.html 的 glass 体系）===== */
-.view{max-width:none !important;padding:82px 26px 48px;}
+.view{max-width:none !important;padding:26px 26px 48px;}
 
 /* 顶部标题（库内搜索已下移到计数条右侧，见 .pp-qmini） */
 .pp-top{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:14px;}
@@ -83,7 +83,7 @@
 .pp-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;}
 
 /* ===== 做同款独立页 ===== */
-#view-same{padding-top:76px;}
+#view-same{padding-top:20px;}
 .ps-back{padding:7px 16px;border-radius:100px;border:1px solid rgba(0,0,0,.08);background:rgba(255,255,255,.6);font-size:12.5px;color:var(--ts);cursor:pointer;font-family:inherit;margin-bottom:16px;}
 .ps-back:hover{color:var(--accent);border-color:var(--accent);}
 .ps-h1{font-size:26px;font-weight:800;line-height:1.35;margin-bottom:6px;}
@@ -125,7 +125,7 @@
 
 /* 留资窄条 + 我的生成记录 */
 .pp-lead{margin-top:18px;padding:13px 16px;border-radius:14px;font-size:13px;color:var(--ts);line-height:1.7;
-  background:linear-gradient(135deg,rgba(13,110,86,.09),rgba(31,168,124,.11));border:1px solid rgba(255,255,255,.8);}
+  background:rgba(13,110,86,.055);}
 .pp-lead b{color:var(--tp);}
 .ps-works{margin-top:22px;}
 .ps-works-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;}
@@ -157,21 +157,20 @@
 #to-top.show{opacity:1;pointer-events:auto;}
 @media (max-width:640px){.ps-rrow{align-items:stretch;flex-direction:column;}}
 
-/* 需求 → 配方：首页主位，左对齐大字号 + 暖橙按钮（与库内小搜索框拉开层级） */
-.pp-hero{position:relative;margin:0 0 26px;padding:26px 28px 22px;border-radius:22px;
-  background:linear-gradient(120deg,rgba(13,110,86,.11),rgba(31,168,124,.07) 48%,rgba(242,113,28,.10));
-  border:1px solid rgba(255,255,255,.9);box-shadow:0 10px 40px rgba(16,53,42,.07);}
-.pp-hero-k{font-size:clamp(23px,3.1vw,33px);font-weight:800;letter-spacing:-.5px;line-height:1.3;color:var(--tp);}
+/* 需求 → 配方：居中、无外框，直接融进背景（沉浸感），层级靠字号与暖橙按钮拉开 */
+.pp-hero{position:relative;margin:8px auto 22px;text-align:center;}
+.pp-hero-k{font-size:clamp(21px,2.5vw,29px);font-weight:800;letter-spacing:-.5px;line-height:1.35;color:var(--tp);}
 .pp-hero-k em{font-style:normal;color:var(--accent);}
-.pp-hero-sub{font-size:13px;color:var(--ts);margin:7px 0 16px;line-height:1.7;}
-.pp-hero-bar{display:flex;gap:10px;flex-wrap:wrap;max-width:860px;}
-.pp-hero-bar input{flex:1;min-width:250px;padding:15px 19px;border-radius:14px;border:1px solid rgba(13,110,86,.18);
-  background:rgba(255,255,255,.94);font-size:16px;line-height:1.5;font-family:inherit;outline:none;color:var(--tp);}
+.pp-hero-sub{font-size:12.5px;color:var(--tt);margin:6px 0 14px;line-height:1.7;}
+.pp-hero-bar{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;max-width:720px;margin:0 auto;}
+.pp-hero-bar input{flex:1 1 300px;min-width:0;padding:14px 18px;border-radius:100px;border:1px solid rgba(13,110,86,.16);
+  background:rgba(255,255,255,.86);font-size:15px;line-height:1.5;font-family:inherit;outline:none;color:var(--tp);
+  box-shadow:0 6px 22px rgba(16,53,42,.06);transition:.18s;}
 .pp-hero-bar input::placeholder{color:#9aa6a0;}
-.pp-hero-bar input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(13,110,86,.13);}
+.pp-hero-bar input:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(13,110,86,.12);}
 .pp-btn.go{background:linear-gradient(135deg,var(--accent3),var(--accent4));color:#fff;box-shadow:0 8px 22px rgba(242,113,28,.3);
-  padding:0 26px;font-size:15px;font-weight:800;border-radius:14px;}
-.pp-hero-scenes{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:13px;}
+  height:48px;padding:0 24px;font-size:14.5px;font-weight:800;border-radius:100px;flex:none;}
+.pp-hero-scenes{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:12px;}
 .pp-hero-scenes::before{content:"试试这些";font-size:11.5px;color:var(--tt);}
 .pp-matching{margin-top:14px;font-size:13px;color:var(--ts);display:flex;align-items:center;gap:8px;}
 .pp-empty-line{margin-top:14px;font-size:13px;color:var(--tt);}
@@ -227,7 +226,7 @@
 .pp-work-row figcaption{font-size:11px;color:var(--tt);text-align:center;margin-top:5px;}
 
 /* ═════ 做同款页：左（配方信息）· 中（提示词与出图舞台）· 右（历史与推荐）═════ */
-#view-same{padding-top:76px;}
+#view-same{padding-top:20px;}
 .ps-head{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:14px;}
 .ps-head .pp-btn:first-child{flex:none;margin-top:4px;}
 .ps-head-t{flex:1;min-width:220px;}
@@ -240,7 +239,7 @@
 
 .ps-grid3{display:grid;grid-template-columns:264px minmax(0,1fr) 296px;gap:16px;align-items:start;}
 .ps-col{min-width:0;}
-.ps-col-l{position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;padding:13px;border-radius:18px;
+.ps-col-l{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto;padding:13px;border-radius:18px;
   background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.85);backdrop-filter:var(--blur,blur(24px));
   box-shadow:var(--shadow,0 4px 30px rgba(16,53,42,.08));scrollbar-width:thin;}
 .ps-col-r{display:flex;flex-direction:column;gap:14px;}
@@ -260,7 +259,7 @@
 .ps-guide{margin-top:10px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.8);}
 .ps-grid{display:grid;grid-template-columns:minmax(0,1fr) 302px;gap:18px;align-items:start;}
 .ps-main{min-width:0;}
-.ps-side{position:sticky;top:78px;max-height:calc(100vh - 96px);overflow-y:auto;padding:14px;border-radius:18px;
+.ps-side{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto;padding:14px;border-radius:18px;
   background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.85);backdrop-filter:var(--blur,blur(24px));
   box-shadow:var(--shadow,0 4px 30px rgba(16,53,42,.08));scrollbar-width:thin;}
 .ps-side-h{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;}
@@ -293,7 +292,7 @@
 .ps-note-inline{font-size:12px;color:var(--ts);}
 
 /* 控制条 */
-.ps-ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.42);}
+.ps-ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;padding:0;}
 
 /* 舞台状态 */
 .ps-only{position:absolute;inset:0;}

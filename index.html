@@ -50,17 +50,8 @@ body.rail-open{--rail:212px;}
 .rail-foot{margin-top:auto;font-size:10px;letter-spacing:1.6px;color:var(--tt);white-space:nowrap;opacity:0;transition:opacity .24s;}
 .rail:hover .rail-foot,.rail:focus-within .rail-foot,.rail.open .rail-foot{opacity:1;}
 
-/* 顶栏只剩品牌与副标题，菜单在左栏 */
-nav{position:fixed;top:0;left:var(--rail);right:0;z-index:100;padding:10px 28px;display:flex;align-items:center;gap:18px;
-  background:rgba(255,255,255,0.5);backdrop-filter:var(--blur);border-bottom:1px solid rgba(255,255,255,0.6);
-  transition:left .32s cubic-bezier(.22,.61,.36,1),background .4s;}
-nav.scrolled{background:rgba(255,255,255,0.82);}
-.nav-brand{font-size:16px;font-weight:800;display:flex;align-items:baseline;gap:10px;white-space:nowrap;cursor:pointer;transition:.2s;}
-.nav-brand em{font-style:normal;font-size:11px;font-weight:600;color:var(--tt);letter-spacing:.2px;}
-.nav-brand:hover em{color:var(--accent);}
-
-/* views */
-.view{display:none;max-width:1680px;margin:0 auto;padding:80px 24px 50px;}
+/* views：顶栏已整条去掉（菜单在左栏），内容从页面顶部直接开始 */
+.view{display:none;max-width:1680px;margin:0 auto;padding:26px 26px 56px;}
 .view.show{display:block;animation:fadeUp .5s both;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 
@@ -488,10 +479,6 @@ footer p{line-height:2;}
   <div class="rail-foot">ZHIFU.AI</div>
 </aside>
 
-<nav id="main-nav">
-  <div class="nav-brand" data-view="prompts">智富AI <em>2138 条 AI 图片提示词 · 复制即用</em></div>
-</nav>
-
 <!-- ============ PROMPTS ============ -->
 <div class="view show" id="view-prompts">
   <div class="pp-hero">
@@ -835,7 +822,7 @@ document.getElementById('search-btn').addEventListener('click',doSearch);
 document.getElementById('search-input').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
 document.addEventListener('click',e=>{if(!e.target.closest('.search-box'))drop.classList.remove('show');});
 
-addEventListener('scroll',()=>document.getElementById('main-nav').classList.toggle('scrolled',scrollY>30));
+/* 顶栏已删除，原来的 nav 滚动变实底监听一并去掉 */
 const obs=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('visible');obs.unobserve(en.target);}});},{threshold:.05,rootMargin:'0px 0px -20px 0px'});
 function observeAll(){document.querySelectorAll('.card,.combo-card,.course-item,.news-card,.gh-item,.tool-card,.tl-item,.gloss-card,.wf-card,.case-card2,.qa-item,.tn-item,.quote-card').forEach((el,i)=>{if(!el.classList.contains('visible')){el.style.transitionDelay=(i%4)*.05+'s';obs.observe(el);}});}
 observeAll();
