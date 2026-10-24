@@ -29,16 +29,12 @@ body.rail-open{--rail:212px;}
 #mouse-glow{position:fixed;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(13,110,86,0.07) 0%,transparent 60%);z-index:-1;pointer-events:none;transform:translate(-50%,-50%);}
 .glass{background:linear-gradient(145deg,rgba(255,255,255,.62),rgba(255,255,255,.30));backdrop-filter:blur(26px) saturate(190%);-webkit-backdrop-filter:blur(26px) saturate(190%);border:1px solid rgba(255,255,255,.7);border-radius:var(--radius);box-shadow:0 8px 32px rgba(16,53,42,.10), inset 0 1px 1px rgba(255,255,255,.9), inset 0 -1px 1px rgba(255,255,255,.35);}
 
-/* 左侧折叠导航：默认只露图标，hover（或键盘聚焦）丝滑推开右侧内容 */
+/* 左侧菜单：垂直居中、无底色无边框无阴影，只留图标本身；hover 展开时推开正文 */
 .logo-mark{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 2px 10px rgba(13,110,86,.45), inset 0 1px 1px rgba(255,255,255,.5);flex-shrink:0;}
-.rail{position:fixed;left:0;top:0;bottom:0;width:var(--rail);z-index:130;display:flex;flex-direction:column;gap:4px;padding:10px 8px;overflow:hidden;
-  background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,.5));backdrop-filter:var(--blur);
-  border-right:1px solid rgba(255,255,255,.85);box-shadow:2px 0 26px rgba(16,53,42,.07);transition:width .32s cubic-bezier(.22,.61,.36,1);}
+.rail{position:fixed;left:0;top:0;bottom:0;width:var(--rail);z-index:130;display:flex;flex-direction:column;justify-content:center;
+  gap:4px;padding:0 8px;overflow:hidden;background:none;border:none;box-shadow:none;
+  transition:width .32s cubic-bezier(.22,.61,.36,1);}
 .rail:hover,.rail:focus-within,.rail.open{width:212px;}
-.rail-logo{flex:none;width:42px;height:42px;margin:0 0 10px 1px;border-radius:13px;text-decoration:none;color:#fff;font-weight:800;font-size:21px;
-  display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),var(--accent2));
-  box-shadow:0 4px 14px rgba(13,110,86,.4);transition:.2s;}
-.rail-logo:hover{transform:rotate(-7deg) scale(1.06);}
 .rail-tabs{display:flex;flex-direction:column;gap:4px;}
 .rail-tab{display:flex;align-items:center;gap:12px;width:100%;padding:10px 9px;border:none;border-radius:13px;background:transparent;
   color:var(--ts);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;white-space:nowrap;transition:background .22s,color .22s,box-shadow .22s;}
@@ -47,8 +43,6 @@ body.rail-open{--rail:212px;}
 .rail:hover .rl,.rail:focus-within .rl,.rail.open .rl{opacity:1;transform:none;}
 .rail-tab:hover{background:rgba(13,110,86,.09);color:var(--accent);}
 .rail-tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 6px 18px rgba(13,110,86,.28);}
-.rail-foot{margin-top:auto;font-size:10px;letter-spacing:1.6px;color:var(--tt);white-space:nowrap;opacity:0;transition:opacity .24s;}
-.rail:hover .rail-foot,.rail:focus-within .rail-foot,.rail.open .rail-foot{opacity:1;}
 
 /* views：顶栏已整条去掉（菜单在左栏），内容从页面顶部直接开始 */
 .view{display:none;max-width:1680px;margin:0 auto;padding:26px 26px 56px;}
@@ -450,7 +444,6 @@ footer p{line-height:2;}
   nav{left:0;right:0;width:auto;}
   .rail{top:auto;left:0;right:0;bottom:0;width:auto!important;height:60px;flex-direction:row;padding:5px 8px;
     border-right:none;border-top:1px solid rgba(255,255,255,.9);box-shadow:0 -2px 22px rgba(16,53,42,.09);}
-  .rail-logo,.rail-foot{display:none;}
   .rail-tabs{flex-direction:row;flex:1;gap:2px;}
   .rail-tab{flex:1;flex-direction:column;gap:1px;padding:6px 2px;border-radius:11px;}
   .rail-tab .ri{width:auto;font-size:17px;}
@@ -470,20 +463,17 @@ footer p{line-height:2;}
 <div id="mouse-glow"></div>
 
 <aside class="rail" id="rail">
-  <a href="#" class="rail-logo" id="logo-stats" title="访问统计 · 站长入口">智</a>
   <div class="rail-tabs">
     <button class="rail-tab active" data-view="prompts"><span class="ri">&#127912;</span><span class="rl">提示词库</span></button>
     <button class="rail-tab" data-view="rank"><span class="ri">&#128293;</span><span class="rl">热榜</span></button>
     <button class="rail-tab" data-view="tools"><span class="ri">&#129520;</span><span class="rl">AI 工具箱</span></button>
   </div>
-  <div class="rail-foot">ZHIFU.AI</div>
 </aside>
 
 <!-- ============ PROMPTS ============ -->
 <div class="view show" id="view-prompts">
   <div class="pp-hero">
     <div class="pp-hero-k">说出你要做什么图，<em>我们直接给你能用的配方</em></div>
-    <div class="pp-hero-sub">写用途就行（不用会写提示词）· 返回 6 条带真实出图的配方 · 点一下即可复制或做同款</div>
     <div class="pp-hero-bar">
       <input id="need" placeholder="例：小红书健身封面 / 茶叶电商主图 / 国风儿童绘本页" />
       <button class="pp-btn go" id="need-go">找配方 &#8594;</button>
@@ -491,7 +481,6 @@ footer p{line-height:2;}
     <div class="pp-hero-scenes" id="scene-chips"></div>
     <div id="match-out"></div>
   </div>
-  <div class="pp-top"><h1 class="pp-h1">AI 图片提示词库 <em><span data-total>2138</span> 条 · 全部带真实出图效果 · 点卡片看完整提示词</em></h1></div>
   <div class="pp-filters" id="pp-filters"></div>
   <div class="pp-barwrap">
     <div class="pp-bar" id="pp-count"></div>
@@ -531,7 +520,7 @@ footer p{line-height:2;}
 
 <footer>
   <p style="font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;"><span class="logo-mark">智</span>智富AI · AI 图片提示词库 + 精选工具导航</p>
-  <p>联系邮箱：<a href="mailto:a951814898@163.com" style="color:var(--accent);">a951814898@163.com</a> · 工具信息来自公开渠道，价格与免费额度以官网为准</p>
+  <p>联系邮箱：<a href="mailto:a951814898@163.com" style="color:var(--accent);">a951814898@163.com</a> · 工具信息来自公开渠道，价格与免费额度以官网为准 · <a href="#" id="stats-link" style="color:var(--tt);">访问统计</a></p>
   <p>提示词数据源自开源项目 <a href="https://github.com/freestylefly/awesome-gpt-image-2" target="_blank" rel="noopener" style="color:var(--ts);">awesome-gpt-image-2</a>（MIT 许可，署名各条原作者）<br>© 2026 智富AI ZHIFU.AI · jackcats.xyz · <a href="https://beian.miit.gov.cn" target="_blank" style="color:var(--ts);">豫ICP备19018042号</a></p>
   <p style="max-width:900px;margin:10px auto 0;font-size:11px;color:var(--tt);line-height:1.7;">免责声明：本站内容仅供学习参考，不构成任何投资、理财或收益建议；AI工具、模型与行情数据来自公开渠道，不保证准确与完整；变现案例为公开信息整理，实际收益因人而异。据此操作，风险自担。</p>
 </footer>

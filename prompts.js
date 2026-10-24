@@ -202,8 +202,8 @@
         var p = s.split(":");
         return '<button class="pp-chip' + (st.sort === p[0] ? " on" : "") + '" data-sort="' + p[0] + '">' + p[1] + "</button>";
       }).join("") + "</div></div>";
-    bar.innerHTML = "当前 <b>" + base + "</b> 条 / 全库 " + IDX.length + " 条" +
-      (base !== IDX.length ? ' <button class="pp-clear" data-clear>清空筛选</button>' : "");
+    // 「当前 N 条 / 全库 M 条」按要求删掉了；筛选生效时只留一个清空按钮
+    bar.innerHTML = base !== IDX.length ? '<button class="pp-clear" data-clear>清空筛选 · ' + base + " 条</button>" : "";
   }
   function renderGrid() {
     var rows = filtered();
@@ -860,11 +860,14 @@
   }
   trackView();
   loadClicks();
-  var logo = document.getElementById("logo-stats");
-  if (logo) logo.addEventListener("click", function (e) {
-    e.preventDefault(); e.stopPropagation();
-    window.open(API_BASE + "/admin", "_blank", "noopener");
-  });
+  // 统计入口：logo 已按要求删除，改挂到页脚那颗不起眼的「访问统计」
+  var statsLink = document.getElementById("stats-link");
+  if (statsLink) {
+    statsLink.href = API_BASE + "/admin";
+    statsLink.target = "_blank";
+    statsLink.rel = "noopener nofollow";
+    statsLink.title = "访问统计 · 需口令";
+  }
   filters.addEventListener("click", function (e) {
     var c = e.target.closest(".pp-chip"); if (!c) return;
     if (c.dataset.f) st[c.dataset.f] = st[c.dataset.f] === c.dataset.v ? "" : c.dataset.v;

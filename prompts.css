@@ -7,8 +7,9 @@
 .pp-h1 em{font-style:normal;font-size:13px;font-weight:600;color:var(--tt);margin-left:10px;letter-spacing:0;}
 
 /* 计数条 + 库内搜索：一行里左边是结果数与筛选状态，右边是工具级小搜索框 */
-.pp-barwrap{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:12px;}
+.pp-barwrap{display:flex;align-items:center;justify-content:flex-end;gap:14px;flex-wrap:wrap;margin:0 0 12px;}
 .pp-barwrap .pp-bar{margin-bottom:0;}
+.pp-barwrap .pp-bar:empty{display:none;}
 .pp-qmini{display:flex;align-items:center;gap:7px;flex:none;width:min(320px,100%);height:34px;padding:0 13px;
   border-radius:100px;border:1px solid rgba(13,110,86,.16);background:rgba(255,255,255,.72);transition:.18s;}
 .pp-qmini::before{content:"\1F50D";font-size:12px;opacity:.55;flex:none;}
@@ -161,7 +162,6 @@
 .pp-hero{position:relative;margin:8px auto 22px;text-align:center;}
 .pp-hero-k{font-size:clamp(21px,2.5vw,29px);font-weight:800;letter-spacing:-.5px;line-height:1.35;color:var(--tp);}
 .pp-hero-k em{font-style:normal;color:var(--accent);}
-.pp-hero-sub{font-size:12.5px;color:var(--tt);margin:6px 0 14px;line-height:1.7;}
 .pp-hero-bar{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;max-width:720px;margin:0 auto;}
 .pp-hero-bar input{flex:1 1 300px;min-width:0;padding:14px 18px;border-radius:100px;border:1px solid rgba(13,110,86,.16);
   background:rgba(255,255,255,.86);font-size:15px;line-height:1.5;font-family:inherit;outline:none;color:var(--tp);
