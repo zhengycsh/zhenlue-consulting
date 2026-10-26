@@ -66,15 +66,20 @@
 .pp-more{display:block;margin:24px auto 0;padding:11px 30px;border-radius:100px;border:1px solid rgba(255,255,255,.8);background:rgba(255,255,255,.6);backdrop-filter:var(--blur);color:var(--tp);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
 
 /* 详情弹层 */
-.detail-box{width:min(1180px,94vw);max-width:1180px;padding:32px;}
+.detail-box{width:min(1180px,94vw);max-width:1180px;padding:32px;max-height:88vh;overflow:auto;}
 .pp-d-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px;}
-.pp-d-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:22px;align-items:start;}
-.pp-d-img{width:100%;border-radius:18px;display:block;background:rgba(16,53,42,.05);}
+.pp-d-head h2{flex:1;min-width:0;}
+.pp-d-head .pp-fav{flex:none;white-space:nowrap;}   /* 别被长标题挤成两行 */
+.pp-d-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:22px;align-items:stretch;}
+/* 右列撑到与左列图片等高，提示词框吃掉剩余高度，不再出现「图很长、字一小块」的错位 */
+.pp-d-grid>div+div{display:flex;flex-direction:column;min-height:0;}
+.pp-d-grid .pp-prompt{flex:1 1 auto;min-height:120px;}
+.pp-d-img{width:100%;max-height:56vh;object-fit:contain;border-radius:18px;display:block;background:rgba(16,53,42,.05);}
 .pp-d-in{margin-top:12px;border:1px dashed rgba(0,0,0,.12);}
 .pp-d-meta{font-size:12px;color:var(--tt);line-height:1.9;margin-top:8px;}
 .pp-d-meta a{color:var(--accent);text-decoration:none;}
 .pp-plabel{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tt);margin:0 0 8px;}
-.pp-prompt{white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.75;background:rgba(16,53,42,.05);border:1px solid rgba(255,255,255,.7);border-radius:16px;padding:16px 18px;max-height:46vh;overflow:auto;color:var(--tp);}
+.pp-prompt{white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.75;background:rgba(16,53,42,.05);border:1px solid rgba(255,255,255,.7);border-radius:16px;padding:16px 18px;max-height:56vh;overflow:auto;color:var(--tp);}
 .pp-var{background:rgba(242,113,28,.2);color:#a4480d;border-radius:5px;padding:0 4px;font-weight:700;}
 .pp-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
 .pp-btn{padding:10px 20px;border-radius:100px;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:.2s;}
@@ -160,7 +165,7 @@
 
 /* 需求 → 配方：居中、无外框，直接融进背景（沉浸感），层级靠字号与暖橙按钮拉开 */
 .pp-hero{position:relative;margin:8px auto 22px;text-align:center;}
-.pp-hero-k{font-size:clamp(21px,2.5vw,29px);font-weight:800;letter-spacing:-.5px;line-height:1.35;color:var(--tp);}
+.pp-hero-k{font-size:clamp(21px,2.5vw,29px);font-weight:800;letter-spacing:-.5px;line-height:1.35;color:var(--tp);margin-bottom:2px;}
 .pp-hero-k em{font-style:normal;color:var(--accent);}
 .pp-hero-bar{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;max-width:720px;margin:0 auto;}
 .pp-hero-bar input{flex:1 1 300px;min-width:0;padding:14px 18px;border-radius:100px;border:1px solid rgba(13,110,86,.16);
@@ -239,6 +244,9 @@
 
 .ps-grid3{display:grid;grid-template-columns:264px minmax(0,1fr) 296px;gap:16px;align-items:start;}
 .ps-col{min-width:0;}
+.ps-col-c{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:16px;align-items:start;}
+.ps-c-l{min-width:0;display:flex;flex-direction:column;gap:12px;}
+.ps-c-r{min-width:0;}
 .ps-col-l{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto;padding:13px;border-radius:18px;
   background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.85);backdrop-filter:var(--blur,blur(24px));
   box-shadow:var(--shadow,0 4px 30px rgba(16,53,42,.08));scrollbar-width:thin;}
@@ -276,14 +284,14 @@
 .ps-hitem:hover .ps-hdel{opacity:1;}
 
 /* 常驻提示词面板 */
-#ps-panel,.ps-panel{margin:0 0 12px;padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.62);
+#ps-panel,.ps-panel{margin:0;padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.62);
   border:1px solid rgba(255,255,255,.85);backdrop-filter:var(--blur,blur(24px));box-shadow:var(--shadow,0 4px 30px rgba(16,53,42,.08));}
 .ps-tabs{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
 .ps-copy{margin-left:auto;padding:6px 13px;font-size:12px;}
 .ps-cap{font-size:13px;font-weight:700;margin-bottom:7px;}
 .ps-cap2{font-size:12px;font-weight:700;color:var(--ts);flex:none;}
 .ps-sub{font-weight:400;font-size:11.5px;color:var(--tt);margin-left:7px;}
-.ps-ta{width:100%;box-sizing:border-box;background:rgba(255,255,255,.85);border:1px solid rgba(0,0,0,.08);border-radius:12px;
+.ps-ta{width:100%;box-sizing:border-box;min-height:300px;background:rgba(255,255,255,.85);border:1px solid rgba(0,0,0,.08);border-radius:12px;
   padding:11px 13px;font:12.5px/1.75 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink);resize:vertical;outline:none;}
 .ps-ta:focus{border-color:var(--ac,#0d6e56);box-shadow:0 0 0 3px rgba(13,110,86,.12);}
 .ps-skeleton{padding:18px 14px;font-size:13px;color:var(--ts);background:rgba(16,53,42,.04);border-radius:12px;display:flex;align-items:center;gap:9px;}
@@ -315,6 +323,8 @@
 
 @media (max-width:1280px){
   .ps-grid3{grid-template-columns:238px minmax(0,1fr);}
+  .ps-col-c{grid-template-columns:1fr;}          /* 中栏窄了就退回上下结构，别把舞台挤扁 */
+  .ps-c-l{gap:10px;}
   .ps-col-r{grid-column:1 / -1;flex-direction:row;align-items:flex-start;}
   .ps-col-r .ps-side{flex:1;min-width:0;}
   .ps-col-r #ps-similar{flex:1;min-width:0;}
@@ -325,5 +335,6 @@
   .ps-col:not(.ps-col-l){order:1;}
   .ps-col-r{order:3;flex-direction:column;}
   .ps-side{position:static;max-height:none;}
+  .ps-ta{min-height:200px;}
   #to-top{bottom:74px;right:14px;}   /* 让开底部标签栏 */
 }

@@ -661,13 +661,14 @@
       navHtml(r) + "</div>" +
       '<div class="ps-grid3">' +
       '<aside class="ps-col ps-col-l glass" id="ps-info"><div class="ps-side-empty">配方信息加载中…</div></aside>' +
-      '<main class="ps-col ps-col-c">' +
+      '<main class="ps-col ps-col-c"><div class="ps-c-l">' +
       '<div id="ps-panel"></div>' +
       '<div class="ps-ctrl"><span class="ps-cap2">画幅</span><div class="pp-fchips" id="ps-ratios">' + ratioChips(r.ar || readRatio(), r.ar) + "</div>" +
       '<label class="ps-upfile">&#128247; 选图片反推提示词<input type="file" id="ps-rev" accept="image/*"></label>' +
       '<span class="ps-note-inline" id="ps-revnote"></span></div>' +
+      '</div><div class="ps-c-r">' +
       '<div id="ps-stage"></div>' +
-      "</main>" +
+      "</div></main>" +
       '<aside class="ps-col ps-col-r">' +
       '<div class="ps-side glass" id="ps-side"></div>' +
       '<div id="ps-similar">' + similarHtml(r) + "</div>" +
